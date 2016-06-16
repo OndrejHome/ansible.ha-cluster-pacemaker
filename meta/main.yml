@@ -11,5 +11,5 @@ galaxy_info:
     - 7
   categories:
   - clustering
-  - clustering:rgmanager
+  - clustering:pacemaker
 dependencies: []
