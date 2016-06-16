@@ -1,0 +1,80 @@
+---
+- name: Check if cluster consist of at least 2 nodes
+  fail: msg="Cluster must have at least 2 members"
+  when: play_hosts|count() < 2
+
+- name: Include distribution version specific variables
+  include_vars: "el{{ ansible_distribution_major_version }}.yml"
+
+- name: Install libselinux-python to work with SELinux setting
+  yum: name=libselinux-python state=installed
+
+- name: Generate /etc/hosts
+  template:
+    src=hosts.j2
+    dest=/etc/hosts
+
+- name: Create /etc/cluster directory
+  file: path=/etc/cluster state=directory
+
+- name: Install Pacemaker cluster packages to all nodes
+  yum: name={{ item }} state=installed
+  with_items: 
+    - "{{ pacemaker_packages }}"
+
+- name: Create cluster system group
+  group: name={{ cluster_group }} state=present
+- name: Create cluster system user
+  user: 
+    name={{ cluster_user }} state=present
+    password={{ cluster_user_pass | password_hash('sha512', ansible_hostname) }}
+
+- name: Enable and start PCSD service
+  service: name=pcsd enabled=yes state=started
+
+- name: Setup firewall for RHEL/CentOS 6 systems (iptables)
+  include: firewall-el6.yml
+  when: ansible_distribution_major_version == "6" and cluster_firewall == true
+
+- name: Setup firewall for RHEL/CentOS 7 systems (firewalld)
+  include: firewall-el7.yml
+  when: ansible_distribution_major_version == "7" and cluster_firewall == true
+
+- name: Authorize cluster nodes
+  pcs_auth: fqdn={{ hostvars[item]['ansible_fqdn'].split('.')[0] }} username={{ cluster_user }} password={{ cluster_user_pass }}
+  run_once: true
+  with_items: play_hosts
+
+- name: Setup cluster
+  command: >
+    pcs cluster setup --name {{ cluster_name }} --start
+    {% for host in play_hosts %}
+    {% set short_name = hostvars[host]['ansible_fqdn'].split('.') %}
+    {{ short_name[0] }}
+    {% endfor %}
+  run_once: true
+  args:
+    creates: /var/lib/pacemaker/cib/cib.xml
+
+- name: Start cluster services on all nodes
+  service: name={{ item }} state=started
+  with_items:
+    - pacemaker 
+    - corosync
+
+- name: Enable cluster services on boot
+  service: name={{ item }} enabled=yes
+  when: cluster_enable_service == true
+  with_items:
+    - pacemaker 
+    - corosync
+
+- name: Copy fence_xvm key to all cluster nodes
+  copy: src=/etc/cluster/fence_xvm.key dest=/etc/cluster/fence_xvm.key owner=root group=root mode=0640
+  when: cluster_configure_fence_xvm == true
+
+- name: create fence_xvm STONITH devices
+  pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" stonith=true resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['hypervisor_hostname'] }}; op monitor interval=30s"
+  with_items: play_hosts
+  run_once: true
+  when: cluster_configure_fence_xvm == true

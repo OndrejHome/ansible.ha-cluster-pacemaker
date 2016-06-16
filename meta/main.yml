@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Ondrej Faměra 
+  description: pacemaker basic cluster role with fence_xvm
+  license: GPLv3
+  min_ansible_version: 1.9
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+  categories:
+  - clustering
+  - clustering:rgmanager
+dependencies: []

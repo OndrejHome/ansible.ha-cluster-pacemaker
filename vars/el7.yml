@@ -1,0 +1,5 @@
+---
+pacemaker_packages:
+ - fence-agents
+ - pcs
+ - pacemaker
