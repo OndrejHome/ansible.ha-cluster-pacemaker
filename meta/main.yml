@@ -12,4 +12,5 @@ galaxy_info:
   galaxy_tags:
   - clustering
   - clustering:pacemaker
-dependencies: []
+dependencies:
+  - { role: OndrejHome.pcs-modules }
