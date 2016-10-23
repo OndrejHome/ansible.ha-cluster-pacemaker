@@ -9,10 +9,15 @@
 - name: Install libselinux-python to work with SELinux setting
   yum: name=libselinux-python state=installed
 
-- name: Generate /etc/hosts
-  template:
-    src=hosts.j2
-    dest=/etc/hosts
+# WARNING: the 'ansible_fqdn' is resolved from /etc/hosts file! If you change hostname
+# of machine through /etc/hosts the ansible will pick it up and use it!
+- name: Add hosts to /etc/hosts
+  lineinfile:
+  args:
+    dest: '/etc/hosts'
+    regexp: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} "
+    line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+  with_items: "{{ play_hosts }}"
 
 - name: Create /etc/cluster directory
   file: path=/etc/cluster state=directory
