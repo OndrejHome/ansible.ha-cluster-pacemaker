@@ -69,12 +69,8 @@
     - pacemaker 
     - corosync
 
-- name: Copy fence_xvm key to all cluster nodes
-  copy: src=/etc/cluster/fence_xvm.key dest=/etc/cluster/fence_xvm.key owner=root group=root mode=0640
-  when: cluster_configure_fence_xvm == true
+### fencing setup
+- name: Setup automatic fence_xvm
+  include: fence_xvm.yml
+  when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm == true
 
-- name: create fence_xvm STONITH devices
-  pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" stonith=true resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['hypervisor_hostname'] }}; op monitor interval=30s"
-  with_items: '{{ play_hosts }}'
-  run_once: true
-  when: cluster_configure_fence_xvm == true

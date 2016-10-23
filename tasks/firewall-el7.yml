@@ -3,8 +3,3 @@
   firewalld: service=high-availability permanent=true state=enabled immediate=true
   notify:
     - reload firewalld
-
-- name: Enable fence_xvm port(1229/tcp) in firewalld
-  firewalld: port=1229/tcp permanent=true state=enabled immediate=true
-  notify:
-    - reload firewalld
