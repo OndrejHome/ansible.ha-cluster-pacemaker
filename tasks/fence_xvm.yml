@@ -10,7 +10,7 @@
 ## configure firewall
 - name: Enable fence_xvm port(1229/tcp) in firewalld
   firewalld: port=1229/tcp permanent=true state=enabled immediate=true
-  when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm == true
+  when: ansible_distribution_major_version == "7" and cluster_firewall == true
   notify:
     - reload firewalld
 # FIXME - EL6 firewall
