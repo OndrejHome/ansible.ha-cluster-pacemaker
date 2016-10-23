@@ -81,4 +81,3 @@
 
 - name: Setup custom fence devices
   include: fence_custom.yml
-  when: cluster_fence_config is defined
