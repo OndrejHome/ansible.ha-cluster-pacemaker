@@ -18,3 +18,14 @@ cluster_enable_service: true
 # this will copy /etc/cluster/fence_xvm.key to nodes and add fencing devices to cluster
 # NOTE: you need to define 'hypervisor_name' in the inventory for each cluster node
 cluster_configure_fence_xvm: true
+
+# custom fence device configuration variable which allows you to define your own fence devices
+# for proper options check examples below
+#
+#cluster_fence_config:
+#  fence_device_1:
+#    fence_type: 'fence_vmware_soap'
+#    fence_options: 'pcmk_host_map="fastvm-1:vm_name_on_hypevisor1" ipaddr="vcenter.hostname" login="root" passwd="testest" ssl="1" ssl_insecure="1" op monitor interval=30s'
+#  fence_device_2:
+#    fence_type: 'fence_xvm'
+#    fence_options: 'pcmk_host_map="fastvm-2:vm_name_n_hypervisor2" op monitor interval=30s'

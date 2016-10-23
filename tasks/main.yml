@@ -74,3 +74,6 @@
   include: fence_xvm.yml
   when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm == true
 
+- name: Setup custom fence devices
+  include: fence_custom.yml
+  when: cluster_fence_config is defined
