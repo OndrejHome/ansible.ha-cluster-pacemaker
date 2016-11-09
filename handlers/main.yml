@@ -3,4 +3,4 @@
   service: name=iptables state=restarted
 
 - name: reload firewalld
-  service: name=firewalld state=reloaded
+  service: name=firewalld state=restarted
