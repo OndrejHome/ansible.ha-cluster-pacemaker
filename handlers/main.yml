@@ -2,5 +2,5 @@
 - name : restart iptables
   service: name=iptables state=restarted
 
-- name: reload firewalld
+- name: restart firewalld
   service: name=firewalld state=restarted

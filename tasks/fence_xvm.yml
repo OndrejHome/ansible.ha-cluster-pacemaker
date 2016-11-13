@@ -12,5 +12,5 @@
   firewalld: port=1229/tcp permanent=true state=enabled immediate=true
   when: ansible_distribution_major_version == "7" and cluster_firewall == true
   notify:
-    - reload firewalld
+    - restart firewalld
 # FIXME - EL6 firewall

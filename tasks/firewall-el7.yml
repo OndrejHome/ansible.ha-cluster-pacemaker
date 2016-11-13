@@ -2,4 +2,4 @@
 - name: Enable 'high-availability' firewalld service
   firewalld: service=high-availability permanent=true state=enabled immediate=true
   notify:
-    - reload firewalld
+    - restart firewalld
