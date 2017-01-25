@@ -1,0 +1,8 @@
+---
+- name: Install libselinux-python to work with SELinux setting
+  yum: name=libselinux-python state=installed
+
+- name: Install Pacemaker cluster packages to all nodes
+  yum: name={{ item }} state=installed
+  with_items:
+    - "{{ pacemaker_packages }}"

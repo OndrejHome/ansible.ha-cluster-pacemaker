@@ -1,4 +1,7 @@
 ---
+# use local installation media instead of configured repositories (CentOS only)
+use_local_media: false
+
 # user used for authorizing cluster nodes
 cluster_user: hacluster
 cluster_user_pass: testtest
