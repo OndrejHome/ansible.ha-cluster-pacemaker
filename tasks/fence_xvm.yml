@@ -10,6 +10,11 @@
   with_items: '{{ play_hosts }}'
   run_once: true
 
+- name: create fence constraints
+  pcs_constraint: constraint_type='location' resource1="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" node_name="{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" score='-INFINITY'
+  with_items: '{{ play_hosts }}'
+  run_once: true
+
 ## configure firewall
 - name: Enable fence_xvm port(1229/tcp) in firewalld
   firewalld: port=1229/tcp permanent=true state=enabled immediate=true
