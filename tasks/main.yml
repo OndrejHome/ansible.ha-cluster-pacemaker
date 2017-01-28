@@ -26,9 +26,6 @@
     line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
   with_items: "{{ play_hosts }}"
 
-- name: Create /etc/cluster directory
-  file: path=/etc/cluster state=directory
-
 - name: Create cluster system group
   group: name={{ cluster_group }} state=present
 - name: Create cluster system user

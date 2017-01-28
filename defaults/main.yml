@@ -18,9 +18,12 @@ cluster_firewall: true
 cluster_enable_service: true
 
 # configure cluster with fence_xvm fencing device ?
-# this will copy /etc/cluster/fence_xvm.key to nodes and add fencing devices to cluster
-# NOTE: you need to define 'hypervisor_name' in the inventory for each cluster node
+# this will copy key defined by 'fence_xvm_key' to nodes and add fencing devices to cluster
+# NOTE: you need to define 'hypervisor_hostname' in the inventory for each cluster node
 cluster_configure_fence_xvm: true
+
+# location of the fence_xvm.key file
+fence_xvm_key: '/etc/cluster/fence_xvm.key'
 
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below
