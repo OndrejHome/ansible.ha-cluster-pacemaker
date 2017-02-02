@@ -1,0 +1,3 @@
+[cluster]
+192.168.34.23 hypervisor_hostname=fastvm-c7.3-23
+192.168.34.24 hypervisor_hostname=fastvm-c7.3-24
