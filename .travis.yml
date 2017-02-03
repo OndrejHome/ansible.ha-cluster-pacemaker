@@ -22,7 +22,7 @@ install:
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
 script:
-  # Basic role syntax check
+  # Basic role syntax check 
   - ansible-playbook tests/cluster-6.yml -i tests/hosts-6 --syntax-check
   - ansible-playbook tests/cluster-7.yml -i tests/hosts-7 --syntax-check
 
