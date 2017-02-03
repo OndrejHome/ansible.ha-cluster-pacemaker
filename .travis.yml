@@ -5,6 +5,10 @@ python: "2.7"
 # Use the new container infrastructure
 sudo: false
 
+# install ansible roles dependencies
+before_install:
+  - git clone --depth=50 --branch=master https://github.com/OndrejHome/ansible.pcs-modules-2.git ../OndrejHome.pcs-modules-2
+
 # Install ansible
 addons:
   apt:
