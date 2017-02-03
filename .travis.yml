@@ -23,7 +23,7 @@ install:
 
 script:
   # Basic role syntax check 
-  - ansible-playbook tests/cluster-6.yml -i tasks/main.yml --syntax-check
+  - ansible-playbook tasks/main.yml -i tests/hosts-6 --syntax-check
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
