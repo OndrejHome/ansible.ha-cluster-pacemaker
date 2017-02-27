@@ -31,7 +31,7 @@
 - name: Create cluster system user
   user: 
     name={{ cluster_user }} state=present
-    password={{ cluster_user_pass | password_hash('sha512', ansible_hostname) }}
+    password={{ cluster_user_pass | password_hash('sha512', ansible_hostname|replace('-','x')) }}
 
 - name: Enable and start PCSD service
   service: name=pcsd enabled=yes state=started
