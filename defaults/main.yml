@@ -35,3 +35,13 @@ fence_xvm_key: '/etc/cluster/fence_xvm.key'
 #  fence_device_2:
 #    fence_type: 'fence_xvm'
 #    fence_options: 'pcmk_host_map="fastvm-2:vm_name_n_hypervisor2" op monitor interval=30s'
+
+# (RHEL only) enable repositories(channels) containing the packages needed.
+# by default only High Availability is enabled
+enable_repos: true
+enable_eus_repos: false
+
+# (RHEL only) repos_type:
+# - ha - High Availability channel
+# - rs - Resilient Storage channel
+repos_type: 'ha'

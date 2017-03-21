@@ -53,6 +53,23 @@ Role Variables
     cluster_configure_fence_xvm: true
     ```
 
+  - (RHEL only) enable the repositories containint packages needed
+    ```
+    enable_repos: true
+    ```
+
+  - (RHEL only) enable the extended update (EUS) repositories containint packages needed
+    ```
+    enable_eus_repos: true
+    ```
+
+  - (RHEL only) type of enable repositories
+    - ha - High-Availability
+    - rs - Resilient Storage
+    ```
+    repos_type: 'ha'
+    ```
+
 Example Playbook
 ----------------
 

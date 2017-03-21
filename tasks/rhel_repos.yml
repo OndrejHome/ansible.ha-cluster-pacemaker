@@ -1,0 +1,8 @@
+---
+- name: enable HA/RS repository
+  command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-rpms"
+  when: enable_repos == true
+
+- name: enable HA/RS EUS repository
+  command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-eus-rpms"
+  when: enable_eus_repos == true

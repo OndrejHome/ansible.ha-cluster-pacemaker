@@ -7,6 +7,10 @@
 - name: Include distribution version specific variables
   include_vars: "el{{ ansible_distribution_major_version }}.yml"
 
+- name: (RHEL only) enable repositories
+  include: rhel_repos.yml
+  when: ansible_distribution == 'RedHat'
+
 - name: Install packages from local media
   include: install_local_media.yml
   when: use_local_media == true
