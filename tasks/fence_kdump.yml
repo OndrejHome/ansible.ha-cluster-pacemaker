@@ -1,0 +1,13 @@
+---
+- name: Enable kdump service
+  service: name=kdump state=started enabled=true
+
+- name: create fence_kdump STONITH devices
+  pcs_resource: name="fence-kdump-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" resource_class='stonith' resource_type=fence_kdump options="pcmk_host_list={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+  with_items: '{{ play_hosts }}'
+  run_once: true
+
+- name: create fence constraints
+  pcs_constraint: constraint_type='location' resource1="fence-kdump-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" node_name="{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" score='-INFINITY'
+  with_items: '{{ play_hosts }}'
+  run_once: true

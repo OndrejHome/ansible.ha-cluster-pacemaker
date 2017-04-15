@@ -53,6 +53,14 @@ Role Variables
     cluster_configure_fence_xvm: true
     ```
 
+  - configure cluster with fence_kdump fencing device ?
+    This starts kdump service and defines the fence_kdump stonith devices.
+    NOTE: if the kdump service is not started this won't work properly or at all
+  
+    ```
+    cluster_configure_fence_kdump: false
+    ```
+
   - (RHEL only) enable the repositories containint packages needed
     ```
     enable_repos: true

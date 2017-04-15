@@ -25,6 +25,9 @@ cluster_configure_fence_xvm: true
 # location of the fence_xvm.key file
 fence_xvm_key: '/etc/cluster/fence_xvm.key'
 
+# configure cluster with fence_kdump fencing device ?
+cluster_configure_fence_kdump: false
+
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below
 #
