@@ -36,6 +36,7 @@
   user: 
     name={{ cluster_user }} state=present
     password={{ cluster_user_pass | password_hash('sha512', ansible_hostname|replace('-','x')) }}
+    groups={{ cluster_group }} comment="HA Cluster Administrator"
 
 - name: Enable and start PCSD service
   service: name=pcsd enabled=yes state=started
