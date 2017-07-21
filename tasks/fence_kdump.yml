@@ -8,6 +8,6 @@
   run_once: true
 
 - name: create fence constraints
-  pcs_constraint: constraint_type='location' resource1="fence-kdump-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" node_name="{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" score='-INFINITY'
+  pcs_constraint_location: resource="fence-kdump-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" node_name="{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" score='-INFINITY'
   with_items: '{{ play_hosts }}'
   run_once: true
