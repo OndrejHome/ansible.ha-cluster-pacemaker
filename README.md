@@ -78,6 +78,11 @@ Role Variables
     repos_type: 'ha'
     ```
 
+  - (CentOS only) install the needed packages from the CD-ROM media available at /dev/cdrom
+    ```
+    use_local_media: false
+    ```
+
 Example Playbook
 ----------------
 
