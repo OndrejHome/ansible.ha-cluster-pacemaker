@@ -1,4 +1,8 @@
 ---
+- name: Check if 'vm_name' variable is defined for each node
+  fail: msg="'vm_name' must be defined for each node and contain name of VM as seen by hypervisor."
+  when: vm_name is not defined
+
 - name: Create /etc/cluster directory
   file: path=/etc/cluster state=directory
 
@@ -10,7 +14,7 @@
   when: ansible_distribution_major_version == "7" and cluster_firewall == true
 
 - name: create fence_xvm STONITH devices
-  pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" resource_class='stonith' resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['hypervisor_hostname'] }}; op monitor interval=30s"
+  pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" resource_class='stonith' resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; op monitor interval=30s"
   with_items: '{{ play_hosts }}'
   run_once: true
 

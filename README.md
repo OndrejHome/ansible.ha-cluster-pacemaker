@@ -47,7 +47,7 @@ Role Variables
 
   - configure cluster with fence_xvm fencing device ?
     This will copy /etc/cluster/fence_xvm.key to nodes and add fencing devices to cluster
-    NOTE: you need to define 'hypervisor_name' in the inventory for each cluster node
+    NOTE: you need to define 'vm_name' in the inventory for each cluster node
   
     ```
     cluster_configure_fence_xvm: true
