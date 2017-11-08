@@ -68,7 +68,12 @@ Role Variables
 
   - (RHEL only) enable the extended update (EUS) repositories containint packages needed
     ```
-    enable_eus_repos: true
+    enable_eus_repos: false
+    ```
+
+  - (RHEL only) enable the SAP Solutions update service (E4S) repositories containint packages needed
+    ```
+    enable_e4s_repos: false
     ```
 
   - (RHEL only) type of enable repositories

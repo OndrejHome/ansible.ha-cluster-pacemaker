@@ -41,8 +41,10 @@ cluster_configure_fence_kdump: false
 
 # (RHEL only) enable repositories(channels) containing the packages needed.
 # by default only High Availability is enabled
+# E4S repositories are High Availability only
 enable_repos: true
 enable_eus_repos: false
+enable_e4s_repos: false
 
 # (RHEL only) repos_type:
 # - ha - High Availability channel
