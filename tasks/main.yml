@@ -41,13 +41,9 @@
 - name: Enable and start PCSD service
   service: name=pcsd enabled=yes state=started
 
-- name: Setup firewall for RHEL/CentOS 6 systems (iptables)
-  include_tasks: firewall-el6.yml
-  when: ansible_distribution_major_version == "6" and cluster_firewall == true
-
-- name: Setup firewall for RHEL/CentOS 7 systems (firewalld)
-  include_tasks: firewall-el7.yml
-  when: ansible_distribution_major_version == "7" and cluster_firewall == true
+- name: Setup firewall for RHEL/CentOS systems
+  include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
+  when: cluster_firewall == true
 
 - name: Authorize cluster nodes
   pcs_auth: node_name={{ hostvars[item]['ansible_fqdn'].split('.')[0] }} username={{ cluster_user }} password={{ cluster_user_pass }}
