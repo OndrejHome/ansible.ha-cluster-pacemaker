@@ -8,15 +8,15 @@
   include_vars: "el{{ ansible_distribution_major_version }}.yml"
 
 - name: (RHEL only) enable repositories
-  include: rhel_repos.yml
+  include_tasks: rhel_repos.yml
   when: ansible_distribution == 'RedHat'
 
 - name: Install packages from local media
-  include: install_local_media.yml
+  include_tasks: install_local_media.yml
   when: use_local_media == true
 
 - name: Install packages from system defined repositories
-  include: install_normal.yml
+  include_tasks: install_normal.yml
   when: use_local_media != true
 
 # TODO allow to choose if to use FQDN or just short hostname, defaulting to short hostname
@@ -42,11 +42,11 @@
   service: name=pcsd enabled=yes state=started
 
 - name: Setup firewall for RHEL/CentOS 6 systems (iptables)
-  include: firewall-el6.yml
+  include_tasks: firewall-el6.yml
   when: ansible_distribution_major_version == "6" and cluster_firewall == true
 
 - name: Setup firewall for RHEL/CentOS 7 systems (firewalld)
-  include: firewall-el7.yml
+  include_tasks: firewall-el7.yml
   when: ansible_distribution_major_version == "7" and cluster_firewall == true
 
 - name: Authorize cluster nodes
@@ -72,12 +72,12 @@
 
 ### fencing setup
 - name: Setup automatic fence_xvm
-  include: fence_xvm.yml
+  include_tasks: fence_xvm.yml
   when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm == true
 
 - name: Setup fence_kdump
-  include: fence_kdump.yml
+  include_tasks: fence_kdump.yml
   when: cluster_configure_fence_kdump is defined and cluster_configure_fence_kdump == true
 
 - name: Setup custom fence devices
-  include: fence_custom.yml
+  include_tasks: fence_custom.yml
