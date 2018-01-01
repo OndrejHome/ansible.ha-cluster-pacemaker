@@ -13,11 +13,11 @@
 
 - name: Install packages from local media
   include_tasks: install_local_media.yml
-  when: use_local_media == true
+  when: use_local_media|bool
 
 - name: Install packages from system defined repositories
   include_tasks: install_normal.yml
-  when: use_local_media != true
+  when: not use_local_media|bool
 
 # TODO allow to choose if to use FQDN or just short hostname, defaulting to short hostname
 # WARNING: the 'ansible_fqdn' is resolved from /etc/hosts file! If you change hostname
@@ -44,7 +44,7 @@
 
 - name: Setup firewall for RHEL/CentOS systems
   include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
-  when: cluster_firewall == true
+  when: cluster_firewall|bool
 
 - name: Authorize cluster nodes
   pcs_auth: node_name={{ hostvars[item]['ansible_fqdn'].split('.')[0] }} username={{ cluster_user }} password={{ cluster_user_pass }}
@@ -62,7 +62,7 @@
 
 - name: Enable cluster services on boot
   service: name={{ item }} enabled=yes
-  when: cluster_enable_service == true
+  when: cluster_enable_service|bool
   with_items:
     - pacemaker 
     - corosync
@@ -70,11 +70,11 @@
 ### fencing setup
 - name: Setup automatic fence_xvm
   include_tasks: fence_xvm.yml
-  when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm == true
+  when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm|bool
 
 - name: Setup fence_kdump
   include_tasks: fence_kdump.yml
-  when: cluster_configure_fence_kdump is defined and cluster_configure_fence_kdump == true
+  when: cluster_configure_fence_kdump is defined and cluster_configure_fence_kdump|bool
 
 - name: Setup custom fence devices
   include_tasks: fence_custom.yml

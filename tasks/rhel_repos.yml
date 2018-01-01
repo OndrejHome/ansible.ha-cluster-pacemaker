@@ -1,12 +1,12 @@
 ---
 - name: enable HA/RS repository
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-rpms"
-  when: enable_repos == true
+  when: enable_repos|bool
 
 - name: enable HA/RS EUS repository
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-eus-rpms"
-  when: enable_eus_repos == true
+  when: enable_eus_repos|bool
 
 - name: enable HA E4S repository
   command: subscription-manager repos --enable="rhel-ha-for-rhel-{{ ansible_distribution_major_version }}-server-e4s-rpms"
-  when: enable_e4s_repos == true
+  when: enable_e4s_repos|bool

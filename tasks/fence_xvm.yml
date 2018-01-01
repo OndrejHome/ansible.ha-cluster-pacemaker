@@ -11,7 +11,7 @@
 
 - name: Enable fence_xvm port(1229/tcp) in firewalld
   firewalld: port=1229/tcp permanent=true state=enabled immediate=true
-  when: ansible_distribution_major_version == "7" and cluster_firewall == true
+  when: ansible_distribution_major_version == "7" and cluster_firewall|bool
 
 - name: create fence_xvm STONITH devices
   pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" resource_class='stonith' resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; op monitor interval=30s"
