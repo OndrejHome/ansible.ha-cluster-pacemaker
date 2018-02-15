@@ -88,6 +88,13 @@ Role Variables
     use_local_media: false
     ```
 
+  - Enable or disable PCSD web GUI. By default the role keeps the default of installation means that
+    PCSD web GUI is disabled on CentOS/RHEL 6.X and enabled on CentOS/RHEL 7.X. `true` or `false` can
+    be passed to this variable to make sure that PCSD web GUI is enabled or disabled.
+    ```
+    enable_pcsd_gui: 'nochange'
+    ```
+
 Example Playbook
 ----------------
 

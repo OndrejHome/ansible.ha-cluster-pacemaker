@@ -39,6 +39,14 @@
     password={{ cluster_user_pass | password_hash('sha512', ansible_hostname|replace('-','x')|truncate(16, True, '')) }}
     groups={{ cluster_group }} comment="HA Cluster Administrator"
 
+- name: Enable/Disable PCSD web GUI
+  lineinfile:
+  args:
+    dest: '/etc/sysconfig/pcsd'
+    regexp: "PCSD_DISABLE_GUI=.*"
+    line: "PCSD_DISABLE_GUI={{ enable_pcsd_gui|bool|ternary('false','true') }}"
+  when: enable_pcsd_gui != 'nochange'
+
 - name: Enable and start PCSD service
   service: name=pcsd enabled=yes state=started
 

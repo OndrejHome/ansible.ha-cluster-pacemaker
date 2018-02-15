@@ -50,3 +50,10 @@ enable_e4s_repos: false
 # - ha - High Availability channel
 # - rs - Resilient Storage channel
 repos_type: 'ha'
+
+# Enable/Disable PCSD web GUI
+# available options are:
+# 'nochange' (default) - don't change the PCSD GUI settings
+# true - enable PCSD GUI
+# false - disable PCSD GUI
+enable_pcsd_gui: 'nochange'
