@@ -10,3 +10,7 @@
 - name: enable HA E4S repository
   command: subscription-manager repos --enable="rhel-ha-for-rhel-{{ ansible_distribution_major_version }}-server-e4s-rpms"
   when: enable_e4s_repos|bool
+
+- name: enable HA/RS BETA repository
+  command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-beta-rpms"
+  when: enable_beta_repos|bool

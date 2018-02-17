@@ -76,6 +76,11 @@ Role Variables
     enable_e4s_repos: false
     ```
 
+  - (RHEL only) enable Beta repositories containint packages needed
+    ```
+    enable_beta_repos: false
+    ```
+
   - (RHEL only) type of enable repositories
     - ha - High-Availability
     - rs - Resilient Storage

@@ -45,6 +45,7 @@ cluster_configure_fence_kdump: false
 enable_repos: true
 enable_eus_repos: false
 enable_e4s_repos: false
+enable_beta_repos: false
 
 # (RHEL only) repos_type:
 # - ha - High Availability channel
