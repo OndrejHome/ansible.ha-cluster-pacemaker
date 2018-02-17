@@ -95,6 +95,13 @@ Role Variables
     enable_pcsd_gui: 'nochange'
     ```
 
+  - Cluster transport protocol. By default this role will use what is default for give OS.
+    For CentOS/RHEL 6.X this means 'udp' (UDP multicast) and for CentOS/RHEL 7.X this means 'udpu'
+    (UDP unicast). This variable accepts following options: `default`, `udp` and `udpu`.
+    ```
+    cluster_transport: 'default'
+    ```
+
 Example Playbook
 ----------------
 

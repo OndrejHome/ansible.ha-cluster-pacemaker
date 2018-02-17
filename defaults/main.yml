@@ -57,3 +57,10 @@ repos_type: 'ha'
 # true - enable PCSD GUI
 # false - disable PCSD GUI
 enable_pcsd_gui: 'nochange'
+
+# Cluster transport protocol
+# avaialble options:
+# 'default' (default) - use the OS default for cluster transport
+# 'udp' - UDP multicast
+# 'udpu' - UDP unicast
+cluster_transport: 'default'
