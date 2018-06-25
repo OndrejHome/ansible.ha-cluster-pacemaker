@@ -1,0 +1,5 @@
+---                                                                                                 
+- hosts: servers                                                                                      
+  remote_user: root                                                                                   
+  roles:                                                                                                
+  - { role: OndrejHome.ha-cluster-pacemaker } 

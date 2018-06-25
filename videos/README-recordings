@@ -1,0 +1,19 @@
+== Howto for recodings ==
+Below is procedure for making recordings of this role.
+Any recording should be done using asciinema v2 format.
+
+1. Have some machine that will be executing the commands.
+I will use remote machine (VM) in this procedure - 192.168.34.62
+
+2. Copy all scripts that will be used to machine user 'user'
+
+3. Make sure that:
+  - you can login to machine as 'user' without password
+  - user 'user' on machine can login without password to all future cluster nodes (needed for ansible)
+  - machine contains /etc/cluster/fence_xvm.key
+
+4. Run recording using command below.
+  # asciinema rec default_playbook-recording -c "ssh user@192.168.34.62 bash script.sh"
+
+5. Edit recording file to make sure that timings are not too long.
+(it is borring to look at non-moving output for long time)
