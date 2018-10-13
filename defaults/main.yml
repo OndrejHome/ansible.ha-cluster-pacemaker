@@ -65,3 +65,6 @@ enable_pcsd_gui: 'nochange'
 # 'udp' - UDP multicast
 # 'udpu' - UDP unicast
 cluster_transport: 'default'
+
+# Allow adding nodes to existing cluster
+allow_cluster_expansion: false

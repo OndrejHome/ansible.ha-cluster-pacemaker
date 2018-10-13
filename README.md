@@ -1,7 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring basic pacemaker cluster on CentOS/RHEL 6/7 systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 systems.
 
 Requirements
 ------------
@@ -105,6 +105,11 @@ Role Variables
     (UDP unicast). This variable accepts following options: `default`, `udp` and `udpu`.
     ```
     cluster_transport: 'default'
+    ```
+
+  - Allow adding nodes to existing cluster when used with OndrejHome.pcs-modules-2 v16 or newer.
+    ```
+    allow_cluster_expansion: false
     ```
 
 Example Playbook
