@@ -1,26 +1,45 @@
 ---
 - name: Check if 'vm_name' variable is defined for each node
-  fail: msg="'vm_name' must be defined for each node and contain name of VM as seen by hypervisor."
+  fail:
+    msg: "'vm_name' must be defined for each node and contain name of VM as seen by hypervisor."
   when: vm_name is not defined
 
 - name: Create /etc/cluster directory
-  file: path=/etc/cluster state=directory
+  file:
+    path: '/etc/cluster'
+    state: 'directory'
 
 - name: Copy fence_xvm key to all cluster nodes
-  copy: src="{{ fence_xvm_key }}" dest=/etc/cluster/fence_xvm.key owner=root group=root mode=0640
+  copy:
+    src: "{{ fence_xvm_key }}"
+    dest: '/etc/cluster/fence_xvm.key'
+    owner: 'root'
+    group: 'root'
+    mode: '0640'
 
 - name: Enable fence_xvm port(1229/tcp) in firewalld
-  firewalld: port=1229/tcp permanent=true state=enabled immediate=true
+  firewalld:
+    port: '1229/tcp'
+    permanent: true
+    state: 'enabled'
+    immediate: true
   when: ansible_distribution_major_version == "7" and cluster_firewall|bool
 
 - name: create fence_xvm STONITH devices
-  pcs_resource: name="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" resource_class='stonith' resource_type=fence_xvm options="pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; op monitor interval=30s"
-  with_items: '{{ play_hosts }}'
+  pcs_resource:
+    name: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    resource_class: 'stonith'
+    resource_type: 'fence_xvm'
+    options: "pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; op monitor interval=30s"
+  with_items: "{{ play_hosts }}"
   run_once: true
 
 - name: create fence constraints
-  pcs_constraint_location: resource="fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" node_name="{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}" score='-INFINITY'
-  with_items: '{{ play_hosts }}'
+  pcs_constraint_location:
+    resource: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    node_name: "{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    score: '-INFINITY'
+  with_items: "{{ play_hosts }}"
   run_once: true
 
 # FIXME - EL6 firewall

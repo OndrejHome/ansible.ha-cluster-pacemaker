@@ -1,11 +1,24 @@
 ---
 - name: mount cdrom to /media/CentOS
-  mount: name='/media/CentOS' src='/dev/cdrom' state='mounted' fstype='iso9660' opts='ro'
+  mount:
+    name: '/media/CentOS'
+    src: '/dev/cdrom'
+    state: 'mounted'
+    fstype: 'iso9660'
+    opts: 'ro'
 
 - name: Install libselinux-python to work with SELinux setting
-  yum: name=libselinux-python state=installed disablerepo='*' enablerepo='c{{ ansible_distribution_major_version }}-media'
+  yum:
+    name: 'libselinux-python'
+    state: 'installed'
+    disablerepo: '*'
+    enablerepo: "c{{ ansible_distribution_major_version }}-media"
 
 - name: Install Pacemaker cluster packages to all nodes
-  yum: name={{ item }} state=installed disablerepo='*' enablerepo='c{{ ansible_distribution_major_version }}-media'
+  yum:
+    name: "{{ item }}"
+    state: 'installed'
+    disablerepo: '*'
+    enablerepo: "c{{ ansible_distribution_major_version }}-media"
   with_items:
     - "{{ pacemaker_packages }}"
