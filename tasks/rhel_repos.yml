@@ -1,16 +1,24 @@
 ---
+- name: get list of active repositories
+  command: yum repolist
+  args:
+    warn: false
+  register: yum_repolist
+  changed_when: false
+
+# default value needs to be provided here to make the '--check' mode happy as it otherwise reports errors about undefined variable because the previous task is not run in '--check' mode
 - name: enable HA/RS repository
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-rpms"
-  when: enable_repos|bool
+  when: "['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-rpms']|join not in yum_repolist.stdout|default(['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-rpms']|join) and enable_repos|bool"
 
 - name: enable HA/RS EUS repository
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-eus-rpms"
-  when: enable_eus_repos|bool
+  when: "['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-eus-rpms']|join not in yum_repolist.stdout|default(['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-eus-rpms']|join) and enable_eus_repos|bool"
 
 - name: enable HA E4S repository
   command: subscription-manager repos --enable="rhel-ha-for-rhel-{{ ansible_distribution_major_version }}-server-e4s-rpms"
-  when: enable_e4s_repos|bool
+  when: "['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-e4s-rpms']|join not in yum_repolist.stdout|default(['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-e4s-rpms']|join) and enable_e4s_repos|bool"
 
 - name: enable HA/RS BETA repository
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-beta-rpms"
-  when: enable_beta_repos|bool
+  when: "['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-beta-rpms']|join not in yum_repolist.stdout|default(['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-beta-rpms']|join) and enable_beta_repos|bool"
