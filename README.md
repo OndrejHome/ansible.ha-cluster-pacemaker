@@ -14,23 +14,25 @@ Role Variables
   - user used for authorizing cluster nodes
 
     ```
-    cluster_user: hacluster
+    cluster_user: 'hacluster'
     ```
 
+  - password for user used for authorizing cluster nodes
+
     ```
-    cluster_user_pass: testtest
+    cluster_user_pass: 'testtest'
     ```
 
   - group to which cluster user belongs (should be 'haclient')
 
     ```
-    cluster_group: haclient
+    cluster_group: 'haclient'
     ```
 
   - name of the cluster
 
     ```
-    cluster_name: pacemaker
+    cluster_name: 'pacemaker'
     ```
 
   - configuration of firewall for clustering, NOTE in RHEL/Centos 6 this replaces iptables configuration file!
@@ -81,7 +83,7 @@ Role Variables
     enable_beta_repos: false
     ```
 
-  - (RHEL only) type of enable repositories
+  - (RHEL only) type of enable repositories, note that E4S repos have only 'ha' type available
     - ha - High-Availability
     - rs - Resilient Storage
     ```
@@ -115,18 +117,18 @@ Role Variables
 Example Playbook
 ----------------
 
-Example playbook for creating cluster named 'test1' enabled on boot, with fence_xvm and firewall settings
+Example playbook for creating cluster named 'test-cluster' enabled on boot, with fence_xvm and firewall settings
 
     - hosts: servers
       roles:
-         - { role: OndrejHome.ha-cluster-pacemaker, cluster_name: 'test1' }
+         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster' }
 
-Example for creating cluster named 'test2' without configuring firewalling and without fence_xvm.
+Example for creating cluster named 'test-cluster' without configuring firewalling and without fence_xvm.
 For cluster to get properly authorize it is expected that firewall is already configured or disabled.
 
     - hosts: servers
       roles:
-         - { role: OndrejHome.ha-cluster-pacemaker, cluster_name: 'test2', cluster_firewall: false, cluster_configure_fence_xvm: false }
+         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
 
 License
 -------
