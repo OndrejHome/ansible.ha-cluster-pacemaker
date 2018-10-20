@@ -39,7 +39,7 @@
   user:
     name: "{{ cluster_user }}"
     state: 'present'
-    password: "{{ cluster_user_pass | password_hash('sha512', ansible_hostname|replace('-','x')|truncate(16, True, '')) }}"
+    password: "{{ cluster_user_pass | password_hash('sha512', ansible_hostname|replace('-','x')|truncate(16, True, '', 0)) }}"
     groups: "{{ cluster_group }}"
     comment: 'HA Cluster Administrator'
 
