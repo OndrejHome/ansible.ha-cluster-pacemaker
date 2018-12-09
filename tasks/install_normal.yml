@@ -6,7 +6,5 @@
 
 - name: Install Pacemaker cluster packages to all nodes
   yum:
-    name: "{{ item }}"
+    name: "{{ pacemaker_packages }}"
     state: 'installed'
-  with_items:
-    - "{{ pacemaker_packages }}"

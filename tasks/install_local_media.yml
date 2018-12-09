@@ -16,9 +16,7 @@
 
 - name: Install Pacemaker cluster packages to all nodes
   yum:
-    name: "{{ item }}"
+    name: "{{ pacemaker_packages }}"
     state: 'installed'
     disablerepo: '*'
     enablerepo: "c{{ ansible_distribution_major_version }}-media"
-  with_items:
-    - "{{ pacemaker_packages }}"
