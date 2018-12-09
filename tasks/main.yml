@@ -5,8 +5,13 @@
   when: play_hosts|count() < 2
   run_once: true
 
-- name: Include distribution version specific variables
+- name: Include distribution version specific variables - RHEL/CentOS
   include_vars: "el{{ ansible_distribution_major_version }}.yml"
+  when: ansible_distribution == 'RedHat'
+
+- name: Include distribution version specific variables - Fedora
+  include_vars: "fedora{{ ansible_distribution_major_version }}.yml"
+  when: ansible_distribution == 'Fedora'
 
 - name: (RHEL only) enable repositories
   include_tasks: rhel_repos.yml
@@ -58,7 +63,11 @@
 
 - name: Setup firewall for RHEL/CentOS systems
   include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
-  when: cluster_firewall|bool
+  when: cluster_firewall|bool and ansible_distribution == 'RedHat'
+
+- name: Setup firewall for Fedora systems
+  include_tasks: "firewall-fedora{{ ansible_distribution_major_version }}.yml"
+  when: cluster_firewall|bool and ansible_distribution == 'Fedora'
 
 - name: Authorize cluster nodes
   pcs_auth:

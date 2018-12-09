@@ -1,0 +1,12 @@
+---
+- name: Install python3 package for manipulating firewalld
+  yum:
+    name: 'python3-firewall'
+    state: 'installed'
+
+- name: Enable 'high-availability' firewalld service
+  firewalld:
+    service: 'high-availability'
+    permanent: true
+    state: 'enabled'
+    immediate: true

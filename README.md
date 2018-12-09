@@ -1,12 +1,14 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 and Fedora 28 systems.
 
 Requirements
 ------------
 
 RHEL: It is expected that machines will already be registered and subscribed for access to 'High Availability' or 'Resilient storage' channels.
+
+Fedora: Don't forget to set `ansible_python_interpreter=/usr/bin/python3` for Fedora hosts as shown in example inventory at the end of this README. On Fedora systems this role uses Python 3.
 
 Role Variables
 --------------
@@ -129,6 +131,16 @@ For cluster to get properly authorize it is expected that firewall is already co
     - hosts: servers
       roles:
          - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
+
+Inventory file example for CentOS/RHEL and Fedora systems.
+
+    [cluster-el]
+    192.168.22.21 vm_name=fastvm-centos-7.6-21
+    192.168.22.22 vm_name=fastvm-centos-7.6-22
+    [cluster-fedora]
+    192.168.22.23 vm_name=fastvm-fedora28-23 ansible_python_interpreter=/usr/bin/python3
+    192.168.22.24 vm_name=fastvm-fedora28-24 ansible_python_interpreter=/usr/bin/python3
+
 
 License
 -------
