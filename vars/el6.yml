@@ -4,3 +4,8 @@ pacemaker_packages:
  - pcs
  - pacemaker
  - cman
+fence_xvm_packages:
+ - fence-virt
+fence_kdump_packages:
+ - fence-agents
+ - kexec-tools

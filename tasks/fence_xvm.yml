@@ -4,12 +4,6 @@
     msg: "'vm_name' must be defined for each node and contain name of VM as seen by hypervisor."
   when: vm_name is not defined
 
-- name: Install fence-virt package on Fedora systems
-  yum:
-    name: 'fence-virt'
-    state: 'installed'
-  when: ansible_distribution == 'Fedora'
-
 - name: Create /etc/cluster directory
   file:
     path: '/etc/cluster'

@@ -8,3 +8,21 @@
   yum:
     name: "{{ pacemaker_packages }}"
     state: 'installed'
+
+- name: Install python3 package for manipulating firewalld
+  yum:
+    name: 'python3-firewall'
+    state: 'installed'
+  when: ansible_distribution == 'Fedora'
+
+- name: Install package(s) for fence_xvm
+  yum:
+    name: "{{ fence_xvm_packages }}"
+    state: 'installed'
+  when: cluster_configure_fence_xvm|bool
+
+- name: Install package(s) for fence_kdump
+  yum:
+    name:  "{{ fence_kdump_packages }}"
+    state: 'installed'
+  when: cluster_configure_fence_kdump|bool
