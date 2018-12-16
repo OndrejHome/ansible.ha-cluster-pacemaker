@@ -7,7 +7,7 @@
 
 - name: Include distribution version specific variables - RHEL/CentOS
   include_vars: "el{{ ansible_distribution_major_version }}.yml"
-  when: ansible_distribution == 'RedHat'
+  when: ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
 - name: Include distribution version specific variables - Fedora
   include_vars: "fedora{{ ansible_distribution_major_version }}.yml"
@@ -63,7 +63,7 @@
 
 - name: Setup firewall for RHEL/CentOS systems
   include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
-  when: cluster_firewall|bool and ansible_distribution == 'RedHat'
+  when: cluster_firewall|bool and ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
 - name: Setup firewall for Fedora systems
   include_tasks: "firewall-fedora{{ ansible_distribution_major_version }}.yml"
