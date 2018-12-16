@@ -29,7 +29,7 @@
     permanent: true
     state: 'enabled'
     immediate: true
-  when: ansible_distribution_major_version == "7" and cluster_firewall|bool
+  when: (ansible_distribution_major_version == "7" or ansible_distribution == 'Fedora') and cluster_firewall|bool
 
 - name: create fence_xvm STONITH devices
   pcs_resource:
