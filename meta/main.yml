@@ -12,6 +12,7 @@ galaxy_info:
   - name: Fedora
     versions:
     - 28
+    - 29
   galaxy_tags:
   - clustering
   - pacemaker

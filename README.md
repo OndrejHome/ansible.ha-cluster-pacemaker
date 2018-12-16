@@ -3,6 +3,8 @@ ha-cluster-pacemaker
 
 Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 and Fedora 28 systems.
 
+Experimental support for Fedora 29 with pcs-0.10 when using OndrejHome.pcs-modules-2 from develop branch.
+
 Requirements
 ------------
 

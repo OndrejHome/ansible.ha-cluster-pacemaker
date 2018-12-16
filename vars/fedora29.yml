@@ -1,0 +1,9 @@
+---
+pacemaker_packages:
+ - pcs
+ - pacemaker
+fence_xvm_packages:
+ - fence-virt
+fence_kdump_packages:
+ - fence-agents-kdump
+ - kexec-tools
