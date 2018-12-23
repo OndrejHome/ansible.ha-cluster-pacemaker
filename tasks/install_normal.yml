@@ -3,6 +3,7 @@
   yum:
     name: 'libselinux-python'
     state: 'installed'
+  when: not (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8')
 
 - name: Install Pacemaker cluster packages to all nodes
   yum:

@@ -3,7 +3,7 @@ ha-cluster-pacemaker
 
 Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 and Fedora 28 systems.
 
-Experimental support for Fedora 29 with pcs-0.10 when using OndrejHome.pcs-modules-2 from develop branch.
+Experimental support for Fedora 29 and RHEL 8 Beta with pcs-0.10 when using OndrejHome.pcs-modules-2 from develop branch.
 
 Requirements
 ------------
@@ -94,7 +94,8 @@ Role Variables
     repos_type: 'ha'
     ```
 
-  - (RHEL only) custom_repository allows enabling an arbitrarily named repository to be enabled
+  - (RHEL only) custom_repository allows enabling an arbitrarily named repository to be enabled.
+    RHEL8 repo names can be found at http://downloads.redhat.com/redhat/rhel/rhel-8-beta/rhel-8-beta.repo
     ```
     custom_repository: ''
 
@@ -148,6 +149,9 @@ Inventory file example for CentOS/RHEL and Fedora systems.
     [cluster-fedora]
     192.168.22.23 vm_name=fastvm-fedora28-23 ansible_python_interpreter=/usr/bin/python3
     192.168.22.24 vm_name=fastvm-fedora28-24 ansible_python_interpreter=/usr/bin/python3
+    [cluster-rhel8-beta]
+    192.168.22.25 vm_name=fastvm-rhel-8.0-beta-25 ansible_python_interpreter=/usr/libexec/platform-python
+    192.168.22.26 vm_name=fastvm-rhel-8.0-beta-26 ansible_python_interpreter=/usr/libexec/platform-python
 
 
 License
