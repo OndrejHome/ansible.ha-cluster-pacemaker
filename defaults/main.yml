@@ -52,6 +52,10 @@ enable_beta_repos: false
 # - rs - Resilient Storage channel
 repos_type: 'ha'
 
+# (RHEL only) custom_repository
+# Enable custom arbitrary repository with needed packages
+# custom_repository: ''
+
 # Enable/Disable PCSD web GUI
 # available options are:
 # 'nochange' (default) - don't change the PCSD GUI settings

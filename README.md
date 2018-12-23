@@ -94,6 +94,12 @@ Role Variables
     repos_type: 'ha'
     ```
 
+  - (RHEL only) custom_repository allows enabling an arbitrarily named repository to be enabled
+    ```
+    custom_repository: ''
+
+    ```
+
   - (CentOS only) install the needed packages from the CD-ROM media available at /dev/cdrom
     ```
     use_local_media: false
