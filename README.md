@@ -157,6 +157,9 @@ Inventory file example for CentOS/RHEL and Fedora systems.
     192.168.22.25 vm_name=fastvm-rhel-8.0-beta-25 ansible_python_interpreter=/usr/libexec/platform-python
     192.168.22.26 vm_name=fastvm-rhel-8.0-beta-26 ansible_python_interpreter=/usr/libexec/platform-python
 
+Video examples of running role with defaults for:
+  - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
+  - Fedora 29 installing Fedora 29 two node cluster: https://asciinema.org/a/226467
 
 License
 -------

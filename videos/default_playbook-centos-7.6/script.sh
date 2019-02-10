@@ -1,6 +1,16 @@
 #!/bin/bash
 export ANSIBLE_FORCE_COLOR=true
 ##
+echo "!! python-jinja2 package in CentOS/RHEL is very old and has some incopatibilities."
+echo "Newer version is required when running plaubook from CentOS/RHEL machine !!"
+echo "You can use steps below as root to get newer version of python-jinja2 package."
+echo ""
+##
+echo "[root@examples ~]# curl https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/repo/epel-7/ondrejhome-ansible-deps-el7-epel-7.repo > /etc/yum.repos.d/ondrejhome-ansible-deps-el7-epel-7.repo"
+echo "[root@examples ~]# yum update python-jinja2 python-markupsafe"
+echo ""
+sleep 10
+##
 echo "[user@examples ~]$ cat /etc/redhat-release"
 cat /etc/redhat-release
 sleep 1

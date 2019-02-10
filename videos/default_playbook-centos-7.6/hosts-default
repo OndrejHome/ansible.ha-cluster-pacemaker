@@ -1,0 +1,3 @@
+[servers]
+192.168.22.41 vm_name=fastvm-centos-7.6-41
+192.168.22.42 vm_name=fastvm-centos-7.6-42

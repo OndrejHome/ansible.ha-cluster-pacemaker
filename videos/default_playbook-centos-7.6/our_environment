@@ -1,0 +1,13 @@
+============================================================
+KVM running 2 VMs with following configuration.
+Key for fence_xvm is located at /etc/cluster/fence_xvm.key
+on machine from which we run ansible.
+VM-1:
+  IP address:  192.168.34.41
+  VM name:     fastvm-centos-7.6-41 (as seen by hypervisor)
+  VM hostname: fastvm-centos-7-6-41
+VM-2:
+  IP address:  192.168.34.42
+  VM name:     fastvm-centos-7.6-42 (as seen by hypervisor)
+  VM hostname: fastvm-centos-7-6-42
+============================================================
