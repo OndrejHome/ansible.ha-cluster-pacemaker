@@ -106,6 +106,10 @@
   include_tasks: fence_xvm.yml
   when: cluster_configure_fence_xvm is defined and cluster_configure_fence_xvm|bool
 
+- name: Setup fence_vmware_soap
+  include_tasks: fence_vmware_soap.yml
+  when: cluster_configure_fence_vmware_soap is defined and cluster_configure_fence_vmware_soap|bool
+
 - name: Setup fence_kdump
   include_tasks: fence_kdump.yml
   when: cluster_configure_fence_kdump is defined and cluster_configure_fence_kdump|bool

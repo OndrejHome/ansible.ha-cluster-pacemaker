@@ -63,6 +63,23 @@ Role Variables
     cluster_configure_fence_xvm: true
     ```
 
+  - configure cluster with fence_vmware_soap fencing device ?
+    This will install fence_vmware_soap fencing agent and configure it. When this is enabled you
+    have to specify 3 additional variables with information on accessing the vCenter.
+    NOTE: You also need to define 'vm_name' in the inventory for each cluster node specifying the name or UUID of VM
+    as seen on the hypervisor or in the output of `fence_vmware_soap -o list` command.
+    ```
+    cluster_configure_fence_vmware_soap: false
+    fence_vmware_ipaddr: ''
+    fence_vmware_login: ''
+    fence_vmware_passwd: ''
+    ```
+    You can optionally change the additional attributes passed to fence_vmware_soap using the variable `fence_vmware_options`.
+    By default this variable enables encryption but disables validation of certificates.
+    ```
+    fence_vmware_options: 'ssl="1" ssl_insecure="1"'
+    ```
+
   - configure cluster with fence_kdump fencing device ?
     This starts kdump service and defines the fence_kdump stonith devices.
     NOTE: if the kdump service is not started this won't work properly or at all
@@ -144,6 +161,16 @@ For cluster to get properly authorize it is expected that firewall is already co
     - hosts: servers
       roles:
          - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
+
+Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_soap fencing device.
+
+    - hosts: servers
+      vars:
+        fence_vmware_ipaddr: 'vcenter-hostname-or-ip'
+        fence_vmware_login: 'vcenter-username'
+        fence_vmware_passwd: 'vcenter-password-for-username'
+      roles:
+         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_soap: true }
 
 Inventory file example for CentOS/RHEL and Fedora systems.
 

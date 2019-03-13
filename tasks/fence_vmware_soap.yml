@@ -1,0 +1,42 @@
+---
+- name: Check if 'vm_name' variable is defined for each node
+  fail:
+    msg: "'vm_name' must be defined for each node and contain name or UUID of VM as seen by hypervisor."
+  when: vm_name is not defined
+
+- name: Check if 'fence_vmware_ipaddr' variable is defined
+  fail:
+    msg: "'fence_vmware_ipaddr' variable has to be defined and contain 'hostname' or 'IP address' of vCenter or hypervisor"
+  when: fence_vmware_ipaddr is not defined
+
+- name: Check if 'fence_vmware_login' variable is defined
+  fail:
+    msg: "'fence_vmware_login' variable has to be defined and contain username to vCenter or hypervisor"
+  when: fence_vmware_login is not defined
+
+- name: Check if 'fence_vmware_passwd' variable is defined
+  fail:
+    msg: "'fence_vmware_passwd' variable has to be defined and contain password for user {{ fence_vmware_login }}"
+  when: fence_vmware_passwd is not defined
+
+- name: Install fence_vmware_soap fencing agent on both nodes
+  yum:
+    name: 'fence-agents-vmware-soap'
+    state: 'installed'
+
+- name: create fence_vmware_soap STONITH devices
+  pcs_resource:
+    name: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    resource_class: 'stonith'
+    resource_type: 'fence_vmware_soap'
+    options: "pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; ipaddr={{ fence_vmware_ipaddr }} login={{ fence_vmware_login }} passwd={{ fence_vmware_passwd }} {{ fence_vmware_options }}"
+  with_items: "{{ play_hosts }}"
+  run_once: true
+
+- name: create fence constraints
+  pcs_constraint_location:
+    resource: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    node_name: "{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    score: '-INFINITY'
+  with_items: "{{ play_hosts }}"
+  run_once: true

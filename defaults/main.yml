@@ -28,6 +28,15 @@ fence_xvm_key: '/etc/cluster/fence_xvm.key'
 # configure cluster with fence_kdump fencing device ?
 cluster_configure_fence_kdump: false
 
+# configure cluster with fence_vmware_soap fencing device?
+# You must provide IP/hostname of vCenter/hypervisor and username/password that is able to start/stop VMs for this cluster
+cluster_configure_fence_vmware_soap: false
+#fence_vmware_ipaddr: ''
+#fence_vmware_login: ''
+#fence_vmware_passwd: ''
+# by default we use encrypted configuration (ssl=1) without validating certificates (ssl_insecure=1)
+fence_vmware_options: 'ssl="1" ssl_insecure="1"'
+
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below
 #
