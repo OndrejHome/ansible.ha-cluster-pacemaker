@@ -180,9 +180,9 @@ Inventory file example for CentOS/RHEL and Fedora systems.
     [cluster-fedora]
     192.168.22.23 vm_name=fastvm-fedora28-23 ansible_python_interpreter=/usr/bin/python3
     192.168.22.24 vm_name=fastvm-fedora28-24 ansible_python_interpreter=/usr/bin/python3
-    [cluster-rhel8-beta]
-    192.168.22.25 vm_name=fastvm-rhel-8.0-beta-25 ansible_python_interpreter=/usr/libexec/platform-python
-    192.168.22.26 vm_name=fastvm-rhel-8.0-beta-26 ansible_python_interpreter=/usr/libexec/platform-python
+    [cluster-rhel8]
+    192.168.22.25 vm_name=fastvm-rhel-8.0-25 ansible_python_interpreter=/usr/libexec/platform-python
+    192.168.22.26 vm_name=fastvm-rhel-8.0-26 ansible_python_interpreter=/usr/libexec/platform-python
 
 Video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466

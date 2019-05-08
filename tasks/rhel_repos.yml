@@ -23,6 +23,10 @@
   command: subscription-manager repos --enable="rhel-{{ repos_type }}-for-rhel-{{ ansible_distribution_major_version }}-server-beta-rpms"
   when: "['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-beta-rpms']|join not in yum_repolist.stdout|default(['rhel-',repos_type,'-for-rhel-',ansible_distribution_major_version,'-server-beta-rpms']|join) and enable_beta_repos|bool and ansible_distribution_major_version in ['6','7']"
 
+- name: enable HA/RS repository (RHEL 8)
+  command: subscription-manager repos --enable="rhel-8-for-x86_64-{{ (repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability' ) }}-rpms"
+  when: "['rhel-8-for-x86_64-',(repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability' ),'-rpms']|join not in yum_repolist.stdout|default(['rhel-8-for-x86_64-',(repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability' ),'-rpms']|join) and enable_repos|bool and ansible_distribution_major_version in ['8']"
+
 - name: enable single custom repository
   command: subscription-manager repos --enable="{{ custom_repository }}"
   when: "custom_repository is defined and custom_repository not in yum_repolist.stdout|default(custom_repository)"
