@@ -1,9 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7 and Fedora 28 systems.
-
-Experimental support for Fedora 29 and RHEL 8 Beta with pcs-0.10 when using OndrejHome.pcs-modules-2 from develop branch.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7, RHEL 8 and Fedora 28/29/30 systems.
 
 Requirements
 ------------
@@ -15,6 +13,8 @@ Fedora: Don't forget to set `ansible_python_interpreter=/usr/bin/python3` for Fe
 RHEL 8: Don't forget to set `ansible_python_interpreter=/usr/libexec/platform-python` for RHEL 8 hosts as shown in example inventory at the end of this README. On RHEL 8 systems this role uses python from system (Python 3)
 
 This role requires at least version `2.9` of `python-jinja2` library. When this role is run from RHEL/CentOS 7 system you may encounter issue with old `python-jinja2` package described in Issue #6. To get the updated version of python-jinja2 and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/.
+
+pcs-0.10 on Fedora 29+ and RHEL 8 is supported when using 'OndrejHome.pcs-modules-2' version 20.0.0 or later.
 
 Role Variables
 --------------
