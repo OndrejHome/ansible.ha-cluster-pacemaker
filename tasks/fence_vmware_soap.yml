@@ -6,7 +6,7 @@
 
 - name: Check if 'fence_vmware_ipaddr' variable is defined
   fail:
-    msg: "'fence_vmware_ipaddr' variable has to be defined and contain 'hostname' or 'IP address' of vCenter or hypervisor"
+    msg: "'fence_vmware_ipaddr' variable has to be defined and contain 'hostname' or 'IP address' of vCenter/hypervisor"
   when: fence_vmware_ipaddr is not defined
 
 - name: Check if 'fence_vmware_login' variable is defined
@@ -29,7 +29,12 @@
     name: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
     resource_class: 'stonith'
     resource_type: 'fence_vmware_soap'
-    options: "pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }}; ipaddr={{ fence_vmware_ipaddr }} login={{ fence_vmware_login }} passwd={{ fence_vmware_passwd }} {{ fence_vmware_options }}"
+    options: >-
+      pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }};
+      ipaddr={{ fence_vmware_ipaddr }}
+      login={{ fence_vmware_login }}
+      passwd={{ fence_vmware_passwd }}
+      {{ fence_vmware_options }}
   with_items: "{{ play_hosts }}"
   run_once: true
 
