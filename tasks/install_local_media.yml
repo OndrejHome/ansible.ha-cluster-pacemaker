@@ -43,4 +43,4 @@
     state: 'installed'
     disablerepo: '*'
     enablerepo: "c{{ ansible_distribution_major_version }}-media"
-  when: and cluster_configure_fence_kdump|bool
+  when: cluster_configure_fence_kdump|bool
