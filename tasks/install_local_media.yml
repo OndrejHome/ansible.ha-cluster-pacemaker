@@ -14,6 +14,14 @@
     disablerepo: '*'
     enablerepo: "c{{ ansible_distribution_major_version }}-media"
 
+- name: Install firewall packages
+  yum:
+    name: '{{ firewall_packages }}'
+    state: 'installed'
+    disablerepo: '*'
+    enablerepo: "c{{ ansible_distribution_major_version }}-media"
+  when: cluster_firewall|bool
+
 - name: Install Pacemaker cluster packages to all nodes
   yum:
     name: "{{ pacemaker_packages }}"

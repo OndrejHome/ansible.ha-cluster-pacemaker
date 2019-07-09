@@ -10,11 +10,11 @@
     name: "{{ pacemaker_packages }}"
     state: 'installed'
 
-- name: Install python3 package for manipulating firewalld
+- name: Install firewall packages
   yum:
-    name: 'python3-firewall'
+    name: '{{ firewall_packages }}'
     state: 'installed'
-  when: ansible_distribution == 'Fedora'
+  when: cluster_firewall|bool
 
 - name: Install package(s) for fence_xvm
   yum:

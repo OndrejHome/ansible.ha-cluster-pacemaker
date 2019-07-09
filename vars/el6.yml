@@ -8,3 +8,5 @@ fence_xvm_packages:
 fence_kdump_packages:
  - fence-agents
  - kexec-tools
+firewall_packages:
+ - iptables
