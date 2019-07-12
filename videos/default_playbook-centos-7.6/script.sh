@@ -31,8 +31,8 @@ ls -l /etc/cluster/fence_xvm.key
 sleep 2
 
 ##
-echo "[user@examples ~]$ ansible-galaxy install OndrejHome.ha-cluster-pacemaker,19.0.0 OndrejHome.pcs-modules-2,19.0.0 -p roles"
-ansible-galaxy install OndrejHome.ha-cluster-pacemaker,19.0.0 OndrejHome.pcs-modules-2,19.0.0 -p roles
+echo "[user@examples ~]$ ansible-galaxy install ondrejhome.ha-cluster-pacemaker,19.0.0 ondrejhome.pcs-modules-2,19.0.0 -p roles"
+ansible-galaxy install ondrejhome.ha-cluster-pacemaker,19.0.0 ondrejhome.pcs-modules-2,19.0.0 -p roles
 sleep 2
 
 ##

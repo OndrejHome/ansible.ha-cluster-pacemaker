@@ -19,4 +19,4 @@ galaxy_info:
   - clustering
   - pacemaker
 dependencies:
-  - { role: OndrejHome.pcs-modules-2 }
+  - { role: ondrejhome.pcs-modules-2 }

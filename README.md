@@ -14,7 +14,7 @@ RHEL 8: Don't forget to set `ansible_python_interpreter=/usr/libexec/platform-py
 
 This role requires at least version `2.9` of `python-jinja2` library. When this role is run from RHEL/CentOS 7 system you may encounter issue with old `python-jinja2` package described in Issue #6. To get the updated version of python-jinja2 and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/.
 
-pcs-0.10 on Fedora 29+ and RHEL 8 is supported when using 'OndrejHome.pcs-modules-2' version 20.0.0 or later.
+pcs-0.10 on Fedora 29+ and RHEL 8 is supported when using 'ondrejhome.pcs-modules-2' version 20.0.0 or later.
 
 Role Variables
 --------------
@@ -141,7 +141,7 @@ Role Variables
     cluster_transport: 'default'
     ```
 
-  - Allow adding nodes to existing cluster when used with OndrejHome.pcs-modules-2 v16 or newer.
+  - Allow adding nodes to existing cluster when used with ondrejhome.pcs-modules-2 v16 or newer.
     ```
     allow_cluster_expansion: false
     ```
@@ -153,14 +153,14 @@ Example playbook for creating cluster named 'test-cluster' enabled on boot, with
 
     - hosts: servers
       roles:
-         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster' }
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster' }
 
 Example for creating cluster named 'test-cluster' without configuring firewalling and without fence_xvm.
 For cluster to get properly authorize it is expected that firewall is already configured or disabled.
 
     - hosts: servers
       roles:
-         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
 
 Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_soap fencing device.
 
@@ -170,7 +170,7 @@ Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_s
         fence_vmware_login: 'vcenter-username'
         fence_vmware_passwd: 'vcenter-password-for-username'
       roles:
-         - { role: 'OndrejHome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_soap: true }
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_soap: true }
 
 Inventory file example for CentOS/RHEL and Fedora systems.
 
