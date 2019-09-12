@@ -28,12 +28,25 @@
 # TODO allow to choose if to use FQDN or just short hostname, defaulting to short hostname
 # WARNING: the 'ansible_fqdn' is resolved from /etc/hosts file! If you change hostname
 # of machine through /etc/hosts the ansible will pick it up and use it!
-- name: Add hosts to /etc/hosts
+- name: Add hosts to /etc/hosts (using default (GW) IPv4 address)
   lineinfile:
     dest: '/etc/hosts'
     regexp: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} "
-    line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    line: >
+      {{ hostvars[item]['ansible_default_ipv4']['address'] }}
+      {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}
   with_items: "{{ play_hosts }}"
+  when: hostvars[item]['ansible_'+cluster_net_iface] is not defined
+
+- name: Add hosts to /etc/hosts (using alternative interface)
+  lineinfile:
+    dest: '/etc/hosts'
+    regexp: "{{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }} "
+    line: >
+      {{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }}
+      {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}
+  with_items: "{{ play_hosts }}"
+  when: hostvars[item]['ansible_'+cluster_net_iface] is defined
 
 - name: Create cluster system group
   group:

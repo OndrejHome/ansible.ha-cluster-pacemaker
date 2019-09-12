@@ -146,6 +146,13 @@ Role Variables
     allow_cluster_expansion: false
     ```
 
+  - Cluster network interface. If specified the role will map hosts to IPv4 addresses from this interface.
+    By default the IPv4 addresses from `ansible_default_ipv4` are used. For exmaple to use IPv4 addresses
+    from interface `ens8` use `cluster_net_iface: 'ens8'`. Interface must exists on all cluster nodes.
+    ```
+    cluster_net_iface: ''
+    ```
+
 Example Playbook
 ----------------
 
