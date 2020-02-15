@@ -13,9 +13,13 @@
   include_vars: "fedora{{ ansible_distribution_major_version }}.yml"
   when: ansible_distribution == 'Fedora'
 
-- name: (RHEL only) enable repositories
+- name: (RHEL) enable repositories
   include_tasks: rhel_repos.yml
   when: ansible_distribution == 'RedHat'
+
+- name: (CentOS) enable repositories
+  include_tasks: centos_repos.yml
+  when: ansible_distribution == 'CentOS'
 
 - name: Install packages from local media
   include_tasks: install_local_media.yml

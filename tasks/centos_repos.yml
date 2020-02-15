@@ -1,0 +1,19 @@
+---
+- name: get list of active repositories
+  command: yum repolist
+  args:
+    warn: false
+  register: yum_repolist
+  changed_when: false
+  check_mode: false
+
+- name: enable highavailability repository (CentOS 8.1+)
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-HA.repo'
+    section: 'HighAvailability'
+    option: 'enabled'
+    value: '1'
+  when: >-
+    'HighAvaiability' not in yum_repolist.stdout
+    and enable_repos | bool
+    and ansible_distribution_major_version in ['8']
