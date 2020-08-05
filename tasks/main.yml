@@ -1,8 +1,12 @@
 ---
+- name: Add a group to the inventory for remote nodes
+  group_by:
+    key: "cluster_is_remote_{{ cluster_is_remote | bool }}"
+
 - name: Check if cluster consist of at least 2 nodes
   fail:
-    msg: 'Cluster must have at least 2 members'
-  when: play_hosts|count() < 2
+    msg: 'Cluster must have at least 2 full members'
+  when: groups['cluster_is_remote_False']|default([])|count() < 2
   run_once: true
 
 - name: Include distribution version specific variables - RHEL/CentOS
@@ -102,10 +106,6 @@
   with_items: "{{ play_hosts }}"
   when: not cluster_is_remote | bool
 
-- name: Set a fact about whether the node is remote
-  set_fact:
-    cluster_is_remote: "{{ cluster_is_remote | bool }}"
-
 - name: set corosync redundant ring node ip if requested
   set_fact:
     rrp_ip: "{{ hostvars[inventory_hostname]['ansible_'+rrp_interface].ipv4.address }}"
@@ -118,7 +118,7 @@
  
 - name: Setup cluster
   pcs_cluster:
-    node_list: "{% for item in play_hosts %}{{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %} {% endfor %}"
+    node_list: "{% for item in groups['cluster_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %} {% endfor %}"
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"
     allowed_node_changes: "{% if allow_cluster_expansion|bool %}add{% else %}none{% endif %}"
@@ -131,6 +131,7 @@
   with_items:
     - pacemaker
     - corosync
+  when: not cluster_is_remote | bool
 
 - name: Enable cluster services on boot
   service:
@@ -140,6 +141,26 @@
   with_items:
     - pacemaker
     - corosync
+  when: not cluster_is_remote | bool
+
+- name: Get cluster status
+  command: pcs cluster status
+  run_once: true
+  changed_when: false
+  register: cluster_status
+
+- name: Add remote node
+  vars:
+    cluster_hostname: "{{ hostvars[inventory_hostname][cluster_hostname_fact] }}"
+    delegate_host: "{{ hostvars[groups['cluster_is_remote_False'][0]].inventory_hostname }}"
+    # NOTE: Without this, the host's ansible_host variable will not be
+    # respected when using delegate_to.
+    ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
+  command: pcs cluster node add-remote {{ cluster_hostname }}
+  when:
+    - cluster_hostname not in (cluster_status.stdout | regex_search('RemoteOnline.*') or '')
+    - cluster_is_remote | bool
+  delegate_to: "{{ delegate_host }}"
 
 ### fencing setup
 - name: Setup automatic fence_xvm

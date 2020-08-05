@@ -3,6 +3,9 @@ pacemaker_packages:
  - pcs
  - pacemaker
  - cman
+pacemaker_remote_packages:
+ - pcs
+ - pacemaker-remote
 fence_xvm_packages:
  - fence-virt
 fence_kdump_packages:

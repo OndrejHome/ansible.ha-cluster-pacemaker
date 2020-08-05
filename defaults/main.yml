@@ -96,3 +96,6 @@ cluster_etc_hosts: true
 
 # Which Ansible fact to use as the hostname of cluster nodes.
 cluster_hostname_fact: "ansible_hostname"
+
+# Whether the node should be setup as a remote pacemaker node.
+cluster_is_remote: false
