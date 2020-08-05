@@ -40,7 +40,9 @@
       {{ hostvars[item]['ansible_default_ipv4']['address'] }}
       {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}
   with_items: "{{ play_hosts }}"
-  when: hostvars[item]['ansible_'+cluster_net_iface] is not defined
+  when:
+    - cluster_etc_hosts | bool
+    - hostvars[item]['ansible_'+cluster_net_iface] is not defined
 
 - name: Add hosts to /etc/hosts (using alternative interface)
   lineinfile:
@@ -50,7 +52,9 @@
       {{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }}
       {{ hostvars[item]['ansible_fqdn'].split('.')[0] }}
   with_items: "{{ play_hosts }}"
-  when: hostvars[item]['ansible_'+cluster_net_iface] is defined
+  when:
+    - cluster_etc_hosts | bool
+    - hostvars[item]['ansible_'+cluster_net_iface] is defined
 
 - name: Create cluster system group
   group:
