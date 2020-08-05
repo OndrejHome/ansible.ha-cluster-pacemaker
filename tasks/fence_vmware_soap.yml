@@ -26,11 +26,11 @@
 
 - name: create fence_vmware_soap STONITH devices
   pcs_resource:
-    name: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    name: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
     resource_class: 'stonith'
     resource_type: 'fence_vmware_soap'
     options: >-
-      pcmk_host_map={{ hostvars[item]['ansible_fqdn'].split('.')[0] }}:{{ hostvars[item]['vm_name'] }};
+      pcmk_host_map={{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};
       ipaddr={{ fence_vmware_ipaddr }}
       login={{ fence_vmware_login }}
       passwd={{ fence_vmware_passwd }}
@@ -40,8 +40,8 @@
 
 - name: create fence constraints
   pcs_constraint_location:
-    resource: "fence-{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
-    node_name: "{{ hostvars[item]['ansible_fqdn'].split('.')[0] }}"
+    resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
+    node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
     score: '-INFINITY'
   with_items: "{{ play_hosts }}"
   run_once: true

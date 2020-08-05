@@ -93,3 +93,6 @@ rrp_interface: ''
 
 # Whether to add hosts to /etc/hosts.
 cluster_etc_hosts: true
+
+# Which Ansible fact to use as the hostname of cluster nodes.
+cluster_hostname_fact: "ansible_hostname"
