@@ -98,9 +98,19 @@
     password: "{{ cluster_user_pass }}"
   with_items: "{{ play_hosts }}"
 
+- name: set corosync redundant ring node ip if requested
+  set_fact:
+    rrp_ip: "{{ hostvars[inventory_hostname]['ansible_'+rrp_interface].ipv4.address }}"
+  when: rrp_ip is not defined and rrp_interface is defined and rrp_interface and 'ansible_'+rrp_interface in hostvars[inventory_hostname]
+
+- name: validate redundant ring ip
+  fail:
+    msg: "invalid redundant ip {{ rrp_ip }} for {{ node inventory_hostname }}: must be different than default ip {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+  when: rrp_ip is defined and rrp_ip == ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0])
+ 
 - name: Setup cluster
   pcs_cluster:
-    node_list: "{% for item in play_hosts %}{{ hostvars[item]['ansible_hostname'] }} {% endfor %}"
+    node_list: "{% for item in play_hosts %}{{ hostvars[item]['ansible_hostname'] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %} {% endfor %}"
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"
     allowed_node_changes: "{% if allow_cluster_expansion|bool %}add{% else %}none{% endif %}"
