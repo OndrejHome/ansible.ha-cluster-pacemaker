@@ -153,6 +153,15 @@ Role Variables
     cluster_net_iface: ''
     ```
 
+  - Redundant network interface. If specified the role will setup a corosync redundant ring using the default IPv4 from this interface.
+    Interface must exist on all cluster nodes.
+    ```
+      rrp_interface: ''
+    ```
+    NOTE: you can define this variable either in defaults/main.yml, in this case the same rrp_interface name is used for all hosts in the hosts file.
+          Either you specify an interface for each host present in the hosts file: this allows to use a specific interface name for each host (in the case they dont have the same interface name). Also note that instead of defining rrp_interface for a host, you can define rrp_ip: in this case this alternate ip is used to configure corosync RRP (this IP must be different than the host' default IPv4 address). This allows to use an alternate ip belonging to the same primary interface.
+
+
 Example Playbook
 ----------------
 
@@ -190,6 +199,9 @@ Inventory file example for CentOS/RHEL and Fedora systems.
     [cluster-rhel8]
     192.168.22.25 vm_name=fastvm-rhel-8.0-25 ansible_python_interpreter=/usr/libexec/platform-python
     192.168.22.26 vm_name=fastvm-rhel-8.0-26 ansible_python_interpreter=/usr/libexec/platform-python
+    [cluster-el-rrp]
+    192.168.22.27 vm_name=fastvm-centos-7.6-21 rrp_interface=ens6
+    192.168.22.28 vm_name=fastvm-centos-7.6-22 rrp_ip=192.168.22.29
 
 Video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
