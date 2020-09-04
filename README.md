@@ -237,10 +237,9 @@ Inventory file example for CentOS/RHEL and Fedora systems.
 
 Inventory file example with two full members and two remote nodes:
 
-    [cluster-full]
+    [cluster]
     192.168.22.21 vm_name=fastvm-centos-7.6-21
     192.168.22.22 vm_name=fastvm-centos-7.6-22
-    [cluster-remote]
     192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_is_remote=True
     192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_is_remote=True
 
