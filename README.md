@@ -182,7 +182,8 @@ Role Variables
   - Whether the node should be setup as a remote pacemaker node. By default
     this is `false`, and the node will be a full member of the Pacemaker
     cluster.  Pacemaker remote nodes are not full members of the cluster, and
-    allow exceeding the maximum cluster size of 32 full members.
+    allow exceeding the maximum cluster size of 32 full members. Note that
+    remote nodes are supported by this role only on EL7 and EL8.
 
     ```
     cluster_is_remote: false
