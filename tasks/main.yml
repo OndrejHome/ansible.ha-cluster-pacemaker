@@ -142,24 +142,28 @@
     - corosync
   when: not cluster_node_is_remote | bool
 
-- name: Get cluster status
-  command: pcs cluster status
-  run_once: true
-  changed_when: false
-  check_mode: false
-  register: cluster_status
+- block:
+    - name: Get pcs status
+      command: pcs status
+      run_once: true
+      changed_when: false
+      check_mode: false
+      register: pcs_status
 
-- name: Add remote node
+    - name: Add remote node
+      vars:
+        cluster_hostname: "{{ hostvars[inventory_hostname][cluster_hostname_fact] }}"
+      command: pcs cluster node add-remote {{ cluster_hostname }}
+      when:
+        - cluster_node_is_remote | bool
+        - (pcs_status.stdout | regex_search('\\b' ~ cluster_hostname ~ '\\s+\\(ocf::pacemaker:remote\\)') or '') | length == 0
   vars:
-    cluster_hostname: "{{ hostvars[inventory_hostname][cluster_hostname_fact] }}"
     delegate_host: "{{ hostvars[groups['cluster_node_is_remote_False'][0]].inventory_hostname }}"
     # NOTE: Without this, the host's ansible_host variable will not be
     # respected when using delegate_to.
     ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
-  command: pcs cluster node add-remote {{ cluster_hostname }}
   when:
-    - cluster_hostname not in (cluster_status.stdout | regex_search('RemoteOnline.*') or '')
-    - cluster_node_is_remote | bool
+    - groups['cluster_node_is_remote_False'] is defined
   delegate_to: "{{ delegate_host }}"
 
 ### fencing setup
