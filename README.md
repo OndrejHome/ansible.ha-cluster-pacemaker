@@ -186,7 +186,7 @@ Role Variables
     remote nodes are supported by this role only on EL7 and EL8.
 
     ```
-    cluster_is_remote: false
+    cluster_node_is_remote: false
     ```
 
 Example Playbook
@@ -241,8 +241,8 @@ Inventory file example with two full members and two remote nodes:
     [cluster]
     192.168.22.21 vm_name=fastvm-centos-7.6-21
     192.168.22.22 vm_name=fastvm-centos-7.6-22
-    192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_is_remote=True
-    192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_is_remote=True
+    192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_node_is_remote=True
+    192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_node_is_remote=True
 
 Video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466

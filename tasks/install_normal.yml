@@ -7,7 +7,7 @@
 
 - name: Install Pacemaker cluster packages to all nodes
   yum:
-    name: "{{ cluster_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
+    name: "{{ cluster_node_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
     state: 'installed'
 
 - name: Install firewall packages
