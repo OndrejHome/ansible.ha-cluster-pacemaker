@@ -146,6 +146,7 @@
   command: pcs cluster status
   run_once: true
   changed_when: false
+  check_mode: false
   register: cluster_status
 
 - name: Add remote node
