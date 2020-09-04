@@ -137,7 +137,6 @@
   service:
     name: "{{ item }}"
     enabled: true
-  when: cluster_enable_service|bool
   with_items:
     - pacemaker
     - corosync
