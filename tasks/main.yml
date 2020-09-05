@@ -121,7 +121,10 @@
 
 - name: Setup cluster
   pcs_cluster:
-    node_list: "{% for item in groups['cluster_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %} {% endfor %}"
+    node_list: >-
+      {% for item in groups['cluster_node_is_remote_False'] %}
+      {{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %}
+      {% endfor %}
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"
     allowed_node_changes: "{% if allow_cluster_expansion|bool %}add{% else %}none{% endif %}"
