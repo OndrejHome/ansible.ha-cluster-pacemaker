@@ -162,6 +162,33 @@ Role Variables
           Either you specify an interface for each host present in the hosts file: this allows to use a specific interface name for each host (in the case they dont have the same interface name). Also note that instead of defining rrp_interface for a host, you can define rrp_ip: in this case this alternate ip is used to configure corosync RRP (this IP must be different than the host' default IPv4 address). This allows to use an alternate ip belonging to the same primary interface.
 
 
+  - Whether to add hosts to /etc/hosts. By default an entry for the hostname
+    given by `cluster_hostname_fact` is added for each host to `/etc/hosts`.
+    This can be disabled by setting `cluster_etc_hosts` to `false`.
+
+    ```
+    cluster_etc_hosts: true
+    ```
+
+  - Which Ansible fact to use as the hostname of cluster nodes. By default this
+    role uses the `ansible_hostname` fact as the hostname for each host. In
+    some environments it may be useful to use the Fully Qualified Domain Name
+    (FQDN) `ansible_fqdn` or node name `ansible_nodename`.
+
+    ```
+    cluster_hostname_fact: "ansible_hostname"
+    ```
+
+  - Whether the node should be setup as a remote pacemaker node. By default
+    this is `false`, and the node will be a full member of the Pacemaker
+    cluster.  Pacemaker remote nodes are not full members of the cluster, and
+    allow exceeding the maximum cluster size of 32 full members. Note that
+    remote nodes are supported by this role only on EL7 and EL8.
+
+    ```
+    cluster_node_is_remote: false
+    ```
+
 Example Playbook
 ----------------
 
@@ -188,6 +215,12 @@ Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_s
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_soap: true }
 
+Example playbook for creating cluster named 'test-cluster' where `/etc/hosts` is not modified:
+
+    - hosts: servers
+      roles:
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_etc_hosts: false }
+
 Inventory file example for CentOS/RHEL and Fedora systems.
 
     [cluster-el]
@@ -202,6 +235,14 @@ Inventory file example for CentOS/RHEL and Fedora systems.
     [cluster-el-rrp]
     192.168.22.27 vm_name=fastvm-centos-7.6-21 rrp_interface=ens6
     192.168.22.28 vm_name=fastvm-centos-7.6-22 rrp_ip=192.168.22.29
+
+Inventory file example with two full members and two remote nodes:
+
+    [cluster]
+    192.168.22.21 vm_name=fastvm-centos-7.6-21
+    192.168.22.22 vm_name=fastvm-centos-7.6-22
+    192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_node_is_remote=True
+    192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_node_is_remote=True
 
 Video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466

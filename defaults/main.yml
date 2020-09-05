@@ -90,3 +90,12 @@ cluster_net_iface: ''
 #Redundant network interface. If specified the role will setup a corosync redundant ring using the default IPv4 from this interface.
 #Interface must exist on all cluster nodes.
 rrp_interface: ''
+
+# Whether to add hosts to /etc/hosts.
+cluster_etc_hosts: true
+
+# Which Ansible fact to use as the hostname of cluster nodes.
+cluster_hostname_fact: "ansible_hostname"
+
+# Whether the node should be setup as a remote pacemaker node.
+cluster_node_is_remote: false
