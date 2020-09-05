@@ -49,7 +49,7 @@ Role Variables
     cluster_firewall: true
     ```
 
-  - enable cluster on boot
+  - enable cluster on boot on normal (not pacemaker_remote) nodes
   
     ```
     cluster_enable_service: true

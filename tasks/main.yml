@@ -140,7 +140,9 @@
   with_items:
     - pacemaker
     - corosync
-  when: not cluster_node_is_remote | bool
+  when:
+    - cluster_enable_service | bool
+    - not cluster_node_is_remote | bool
 
 - block:
     - name: Get pcs status
