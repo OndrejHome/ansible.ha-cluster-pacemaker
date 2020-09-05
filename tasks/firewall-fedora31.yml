@@ -1,0 +1,13 @@
+---
+- name: Enable and start firewalld service
+  service:
+    name: 'firewalld'
+    enabled: true
+    state: 'started'
+
+- name: Enable 'high-availability' firewalld service
+  firewalld:
+    service: 'high-availability'
+    permanent: true
+    state: 'enabled'
+    immediate: true
