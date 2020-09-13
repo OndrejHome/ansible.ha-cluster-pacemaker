@@ -172,6 +172,7 @@
     ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
   when:
     - groups['cluster_node_is_remote_False'] is defined
+    - groups['cluster_node_is_remote_True']|default([])|count() > 0
   delegate_to: "{{ delegate_host }}"
 
 ### fencing setup

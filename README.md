@@ -16,6 +16,8 @@ This role requires at least version `2.9` of `python-jinja2` library. When this 
 
 pcs-0.10 on Fedora 29+ and CentOS/RHEL 8 is supported when using 'ondrejhome.pcs-modules-2' version 20.0.0 or later.
 
+Ansible version 2.9.10 and 2.9.11 will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`.
+
 Role Variables
 --------------
 
