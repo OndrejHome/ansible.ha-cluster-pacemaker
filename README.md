@@ -1,22 +1,46 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8 and Fedora 28/29/30/31/32 systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8 and Fedora 31/32 systems.
+
+This role can configure following aspects of pacemaker cluster:
+- enable needed system repositories
+- install needed packages
+- create and configure users and groups for running pacemaker cluster
+- configure firewall
+- generate items in `/etc/hosts`
+- authorize cluster nodes
+- create cluster or expand cluster (check `allow_cluster_expansion`)
+  - "2 or more" node cluster
+  - single heartbeat, rrp or knet with up to 8 links
+  - remote nodes
+  - use autodetected or custom selected interfaces/IPs for heartbeat
+- start and enable cluster on boot
+- configure stonith devices
+  - by default install and configure `fence_xvm` stonith devices
+  - optionally configure `fence_kdump`
+  - optionally configure `fence_vmware` or any other `fence_*` stonith devices
+
+Role fully supports `--check` mode for default configuration and partially supports it for most of other options.
+
+When reporting issue please provide following information (if possible):
+- used ansible version
+- OS from which ansible was run
+- playbook and invetory file that produced error (remove sensitive information where appropriate)
+- error message or description of missbehaviour that you have encountered
 
 Requirements
 ------------
 
-RHEL: It is expected that machines will already be registered and subscribed for access to 'High Availability' or 'Resilient storage' channels.
+This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHome/ansible.pcs-modules-2).
 
-Fedora: Don't forget to set `ansible_python_interpreter=/usr/bin/python3` for Fedora hosts as shown in example inventory at the end of this README. On Fedora systems this role uses Python 3.
+**Ansible 2.8** or later. (NOTE: it might be possible to use earlier versions, in case of issues please try updating Ansible to 2.8+)
 
-CentOS/RHEL 8: Don't forget to set `ansible_python_interpreter=/usr/libexec/platform-python` for CentOS/RHEL 8 hosts as shown in example inventory at the end of this README. On CentOS/RHEL 8 systems this role uses python from system (Python 3)
+**RHEL 6/7/8:** It is expected that machines will already be registered. Role will by default enable access to 'High Availability' or 'Resilient storage' channel. If this is not desired check the `enable_repos` variable.
 
-This role requires at least version `2.9` of `python-jinja2` library. When this role is run from RHEL/CentOS 7 system you may encounter issue with old `python-jinja2` package described in Issue #6. To get the updated version of python-jinja2 and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/.
+**RHEL/CentOS 7:** This role requires at least version `2.9` of `python-jinja2` library. If not present you may encounter error described in Issue #6. To get the updated version of `python-jinja2` and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/ for both CentOS 7 and RHEL 7.
 
-pcs-0.10 on Fedora 29+ and CentOS/RHEL 8 is supported when using 'ondrejhome.pcs-modules-2' version 20.0.0 or later.
-
-Ansible version 2.9.10 and 2.9.11 will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`.
+Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
 Role Variables
 --------------
@@ -194,22 +218,22 @@ Role Variables
 Example Playbook
 ----------------
 
-Example playbook for creating cluster named 'test-cluster' enabled on boot, with fence_xvm and firewall settings
+**Example playbook A** for creating cluster named 'test-cluster' enabled on boot, with `fence_xvm` and firewall settings. NOTE: `cluster_name` is optional and defaults to `pacemaker`.
 
-    - hosts: servers
+    - hosts: cluster
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster' }
 
-Example for creating cluster named 'test-cluster' without configuring firewalling and without fence_xvm.
-For cluster to get properly authorize it is expected that firewall is already configured or disabled.
+**Example playbook B** for creating cluster named 'test-cluster' without configuring firewall and without `fence_xvm`.
+For cluster to get properly authorized it is expected that firewall is already configured or disabled.
 
-    - hosts: servers
+    - hosts: cluster
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_firewall: false, cluster_configure_fence_xvm: false }
 
-Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_soap fencing device.
+**Example playbook C** for creating cluster named `vmware-cluster` with `fence_vmware_soap` fencing device.
 
-    - hosts: servers
+    - hosts: cluster
       vars:
         fence_vmware_ipaddr: 'vcenter-hostname-or-ip'
         fence_vmware_login: 'vcenter-username'
@@ -217,24 +241,27 @@ Example playbook for creating cluster named 'vmware-cluster' with fence_vmware_s
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_soap: true }
 
-Example playbook for creating cluster named 'test-cluster' where `/etc/hosts` is not modified:
+**Example playbook D** for creating cluster named `test-cluster` where `/etc/hosts` is not modified:
 
-    - hosts: servers
+    - hosts: cluster
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_etc_hosts: false }
 
-Inventory file example for CentOS/RHEL and Fedora systems.
+Inventory file example for CentOS/RHEL/Fedora systems createing basic clusters.
 
-    [cluster-el]
-    192.168.22.21 vm_name=fastvm-centos-7.6-21
-    192.168.22.22 vm_name=fastvm-centos-7.6-22
-    [cluster-fedora]
-    192.168.22.23 vm_name=fastvm-fedora28-23 ansible_python_interpreter=/usr/bin/python3
-    192.168.22.24 vm_name=fastvm-fedora28-24 ansible_python_interpreter=/usr/bin/python3
+    [cluster-centos7]
+    192.168.22.21 vm_name=fastvm-centos-7.8-21
+    192.168.22.22 vm_name=fastvm-centos-7.8-22
+    [cluster-fedora32]
+    192.168.22.23 vm_name=fastvm-fedora32-23
+    192.168.22.24 vm_name=fastvm-fedora32-24
     [cluster-rhel8]
-    192.168.22.25 vm_name=fastvm-rhel-8.0-25 ansible_python_interpreter=/usr/libexec/platform-python
-    192.168.22.26 vm_name=fastvm-rhel-8.0-26 ansible_python_interpreter=/usr/libexec/platform-python
-    [cluster-el-rrp]
+    192.168.22.25 vm_name=fastvm-rhel-8.0-25
+    192.168.22.26 vm_name=fastvm-rhel-8.0-26
+
+Inventory file example for cluster using RRP interconnnect on custom interface and/or using custom IP for RRP
+
+    [cluster-centos7-rrp]
     192.168.22.27 vm_name=fastvm-centos-7.6-21 rrp_interface=ens6
     192.168.22.28 vm_name=fastvm-centos-7.6-22 rrp_ip=192.168.22.29
 
@@ -246,7 +273,7 @@ Inventory file example with two full members and two remote nodes:
     192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_node_is_remote=True
     192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_node_is_remote=True
 
-Video examples of running role with defaults for:
+Old video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
   - Fedora 29 installing Fedora 29 two node cluster: https://asciinema.org/a/226467
 
@@ -257,8 +284,5 @@ GPLv3
 
 Author Information
 ------------------
-
-WARNING: this is alpha-version quality proof-of concept role that still needs some polishing and is using custom modules 
-         to interact with pacemaker through python. This is suitable for testing purposes only.
 
 To get in touch with author you can use email ondrej-xa2iel8u@famera.cz or create a issue on github when requesting some feature.
