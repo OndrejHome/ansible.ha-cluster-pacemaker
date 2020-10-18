@@ -42,6 +42,7 @@
     line: >
       {{ hostvars[item]['ansible_default_ipv4']['address'] }}
       {{ hostvars[item][cluster_hostname_fact] }}
+    mode: '0644'
   with_items: "{{ play_hosts }}"
   when:
     - cluster_etc_hosts | bool
@@ -54,6 +55,7 @@
     line: >
       {{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }}
       {{ hostvars[item][cluster_hostname_fact] }}
+    mode: '0644'
   with_items: "{{ play_hosts }}"
   when:
     - cluster_etc_hosts | bool
@@ -80,6 +82,7 @@
     dest: '/etc/sysconfig/pcsd'
     regexp: 'PCSD_DISABLE_GUI=.*'
     line: "PCSD_DISABLE_GUI={{ enable_pcsd_gui|bool|ternary('false','true') }}"
+    mode: '0644'
   when: enable_pcsd_gui != 'nochange'
 
 - name: Enable and start PCSD service

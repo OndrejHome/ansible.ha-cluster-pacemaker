@@ -5,6 +5,7 @@
     dest: '/etc/sysconfig/iptables'
     owner: 'root'
     group: 'root'
+    mode: '0644'
   notify:
     - restart iptables
 

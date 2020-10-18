@@ -8,6 +8,7 @@
   file:
     path: '/etc/cluster'
     state: 'directory'
+    mode: '0755'
 
 - name: Copy fence_xvm key to all cluster nodes
   copy:
