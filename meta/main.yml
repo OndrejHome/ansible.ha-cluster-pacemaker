@@ -14,6 +14,7 @@ galaxy_info:
     versions:
     - 31
     - 32
+    - 33
   galaxy_tags:
   - clustering
   - pacemaker
