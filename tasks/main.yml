@@ -98,7 +98,7 @@
     - ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
 
 - name: Setup firewall for Fedora systems
-  include_tasks: "firewall-fedora{{ ansible_distribution_major_version }}.yml"
+  include_tasks: "firewall-fedora.yml"
   when: cluster_firewall|bool and ansible_distribution == 'Fedora'
 
 - name: Authorize cluster nodes
