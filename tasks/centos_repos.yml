@@ -7,7 +7,7 @@
   changed_when: false
   check_mode: false
 
-- name: enable highavailability repository (CentOS 8.1+)
+- name: enable highavailability repository (CentOS 8.1/8.2)
   ini_file:
     dest: '/etc/yum.repos.d/CentOS-HA.repo'
     section: 'HighAvailability'
@@ -17,4 +17,17 @@
   when: >-
     'HighAvaiability' not in yum_repolist.stdout
     and enable_repos | bool
+    and ansible_distribution_version in ['8.1', '8.2']
+
+- name: enable highavailability repository (CentOS 8.3+)
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
+    section: 'ha'
+    option: 'enabled'
+    value: '1'
+    mode: '0644'
+  when: >-
+    'HighAvaiability' not in yum_repolist.stdout
+    and enable_repos | bool
     and ansible_distribution_major_version in ['8']
+    and ansible_distribution_version not in ['8.0', '8.1', '8.2']
