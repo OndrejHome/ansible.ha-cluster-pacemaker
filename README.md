@@ -1,7 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8 and Fedora 31/32/33 systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8, Fedora 31/32/33 and CentOS 8 Stream systems.
 
 This role can configure following aspects of pacemaker cluster:
 - enable needed system repositories
@@ -39,6 +39,8 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 **RHEL 6/7/8:** It is expected that machines will already be registered. Role will by default enable access to 'High Availability' or 'Resilient storage' channel. If this is not desired check the `enable_repos` variable.
 
 **RHEL/CentOS 7:** This role requires at least version `2.9` of `python-jinja2` library. If not present you may encounter error described in Issue #6. To get the updated version of `python-jinja2` and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/ for both CentOS 7 and RHEL 7.
+
+**CentOS 8 Stream** Tested with version 20201211 minimal usable ansible version is **2.9.16/2.10.4**. Version **2.8.18** was **not** working at time of testing. This is related to [Service is in unknown state #71528](https://github.com/ansible/ansible/issues/71528).
 
 Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
