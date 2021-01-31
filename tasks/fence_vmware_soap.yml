@@ -19,9 +19,9 @@
     msg: "'fence_vmware_passwd' variable has to be defined and contain password for user {{ fence_vmware_login }}"
   when: fence_vmware_passwd is not defined
 
-- name: Install fence_vmware_soap fencing agent on both nodes
+- name: Install fence_vmware_soap fencing agent on all nodes
   yum:
-    name: 'fence-agents-vmware-soap'
+    name:  "{{ fence_vmware_soap_packages }}"
     state: 'installed'
 
 - name: create fence_vmware_soap STONITH devices

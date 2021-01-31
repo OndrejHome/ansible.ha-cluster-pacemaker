@@ -11,5 +11,7 @@ fence_xvm_packages:
 fence_kdump_packages:
  - fence-agents-kdump
  - kexec-tools
+fence_vmware_soap_packages:
+ - fence-agents-vmware-soap
 firewall_packages:
  - firewalld
