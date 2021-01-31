@@ -19,7 +19,7 @@ This role can configure following aspects of pacemaker cluster:
 - configure stonith devices
   - by default install and configure `fence_xvm` stonith devices
   - optionally configure `fence_kdump`
-  - optionally configure `fence_vmware` or any other `fence_*` stonith devices
+  - optionally configure `fence_vmware` (SOAP/REST) or any other `fence_*` stonith devices
 
 Role fully supports `--check` mode for default configuration and partially supports it for most of other options.
 
@@ -91,22 +91,24 @@ Role Variables
     cluster_configure_fence_xvm: true
     ```
 
-  - configure cluster with fence_vmware_soap fencing device ?
-    This will install fence_vmware_soap fencing agent and configure it. When this is enabled you
+  - configure cluster with fence_vmware_soap/fence_vmware_rest fencing device ?
+    This will install fence_vmware_soap/fence_vmware_rest fencing agent and configure it. When this is enabled you
     have to specify 3 additional variables with information on accessing the vCenter.
     NOTE: You also need to define 'vm_name' in the inventory for each cluster node specifying the name or UUID of VM
-    as seen on the hypervisor or in the output of `fence_vmware_soap -o list` command.
+    as seen on the hypervisor or in the output of `fence_vmware_soap -o list`/`fence_vmware_rest` command.
     ```
     cluster_configure_fence_vmware_soap: false
+    cluster_configure_fence_vmware_rest: false
     fence_vmware_ipaddr: ''
     fence_vmware_login: ''
     fence_vmware_passwd: ''
     ```
-    You can optionally change the additional attributes passed to fence_vmware_soap using the variable `fence_vmware_options`.
+    You can optionally change the additional attributes passed to fence_vmware_soap/fence_vmware_rest using the variable `fence_vmware_options`.
     By default this variable enables encryption but disables validation of certificates.
     ```
     fence_vmware_options: 'ssl="1" ssl_insecure="1"'
     ```
+    NOTE: Only one of fence_vmware_soap/fence_vmware_rest can be configured as stonith devices share same name.
 
   - configure cluster with fence_kdump fencing device ?
     This starts kdump service and defines the fence_kdump stonith devices.

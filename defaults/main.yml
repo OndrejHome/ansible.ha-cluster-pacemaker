@@ -28,14 +28,16 @@ fence_xvm_key: '/etc/cluster/fence_xvm.key'
 # configure cluster with fence_kdump fencing device ?
 cluster_configure_fence_kdump: false
 
-# configure cluster with fence_vmware_soap fencing device?
+# configure cluster with fence_vmware_soap/fence_vmware_rest fencing device?
 # You must provide IP/hostname of vCenter/hypervisor and username/password that is able to start/stop VMs for this cluster
 cluster_configure_fence_vmware_soap: false
+cluster_configure_fence_vmware_rest: false
 #fence_vmware_ipaddr: ''
 #fence_vmware_login: ''
 #fence_vmware_passwd: ''
 # by default we use encrypted configuration (ssl=1) without validating certificates (ssl_insecure=1)
 fence_vmware_options: 'ssl="1" ssl_insecure="1"'
+# NOTE: Only one of fence_vmware_soap/fence_vmware_rest can be configured as stonith devices share same name.
 
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below
