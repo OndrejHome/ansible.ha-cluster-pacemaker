@@ -118,6 +118,17 @@ Role Variables
     cluster_configure_fence_kdump: false
     ```
 
+  - How to map fence devices to cluster nodes?
+    By default for every cluster node a separate stonith devices is created ('one-device-per-node').
+    Some fence agents can fence multiple nodes using same stonith device ('one-device-per-cluster')
+    and can have trouble when using multiple devices due to same user login count limits.
+    Available options:
+      - `one-device-per-node` - (default) - one stonith device per cluster node is created
+      - `one-device-per-cluster` - (on supported fence agents) - only one cluster-wide stonith device is created for all nodes, supported fence agents: `fence_vmware_rest`
+    ```
+    cluster_configure_stonith_style: 'one-device-per-node'
+    ```
+
   - (RHEL/CentOS) enable the repositories containing needed packages
     ```
     enable_repos: true
@@ -250,6 +261,17 @@ For cluster to get properly authorized it is expected that firewall is already c
     - hosts: cluster
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_etc_hosts: false }
+
+**Example playbook E** for creating cluster named `vmware-cluster` with single `fence_vmware_rest` fencing device for all cluster nodes.
+
+    - hosts: cluster
+      vars:
+        fence_vmware_ipaddr: 'vcenter-hostname-or-ip'
+        fence_vmware_login: 'vcenter-username'
+        fence_vmware_passwd: 'vcenter-password-for-username'
+      roles:
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_rest: true, cluster_configure_stonith_style: 'one-device-per-cluster' }
+
 
 Inventory file example for CentOS/RHEL/Fedora systems createing basic clusters.
 
