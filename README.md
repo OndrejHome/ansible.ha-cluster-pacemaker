@@ -124,7 +124,7 @@ Role Variables
     and can have trouble when using multiple devices due to same user login count limits.
     Available options:
       - `one-device-per-node` - (default) - one stonith device per cluster node is created
-      - `one-device-per-cluster` - (on supported fence agents) - only one cluster-wide stonith device is created for all nodes, supported fence agents: `fence_vmware_rest`
+      - `one-device-per-cluster` - (on supported fence agents) - only one cluster-wide stonith device is created for all nodes, supported fence agents: `fence_vmware_rest`, `fence_vmware_soap`, `fence_xvm`, `fence_kdump`
     ```
     cluster_configure_stonith_style: 'one-device-per-node'
     ```

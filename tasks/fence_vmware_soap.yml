@@ -24,24 +24,43 @@
     name:  "{{ fence_vmware_soap_packages }}"
     state: 'installed'
 
-- name: create fence_vmware_soap STONITH devices
-  pcs_resource:
-    name: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
-    resource_class: 'stonith'
-    resource_type: 'fence_vmware_soap'
-    options: >-
-      pcmk_host_map={{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};
-      ipaddr={{ fence_vmware_ipaddr }}
-      login={{ fence_vmware_login }}
-      passwd={{ fence_vmware_passwd }}
-      {{ fence_vmware_options }}
-  with_items: "{{ play_hosts }}"
-  run_once: true
+- name: Configure separate stonith devices per cluster node
+  block:
+    - name: create fence_vmware_soap STONITH devices
+      pcs_resource:
+        name: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
+        resource_class: 'stonith'
+        resource_type: 'fence_vmware_soap'
+        options: >-
+          pcmk_host_map={{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};
+          ipaddr={{ fence_vmware_ipaddr }}
+          login={{ fence_vmware_login }}
+          passwd={{ fence_vmware_passwd }}
+          {{ fence_vmware_options }}
+      with_items: "{{ play_hosts }}"
+      run_once: true
 
-- name: create fence constraints
-  pcs_constraint_location:
-    resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
-    node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
-    score: '-INFINITY'
-  with_items: "{{ play_hosts }}"
-  run_once: true
+    - name: create fence constraints
+      pcs_constraint_location:
+        resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
+        node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
+        score: '-INFINITY'
+      with_items: "{{ play_hosts }}"
+      run_once: true
+  when: cluster_configure_stonith_style is not defined or cluster_configure_stonith_style == 'one-device-per-node'
+
+- name: Configure single stonith device for all nodes
+  block:
+    - name: create fence_vmware_soap STONITH device
+      pcs_resource:
+        name: 'fence-vmware-soap'
+        resource_class: 'stonith'
+        resource_type: 'fence_vmware_soap'
+        options: >-
+          pcmk_host_map="{% for item in groups['cluster_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};{% endfor %}"
+          ipaddr={{ fence_vmware_ipaddr }}
+          login={{ fence_vmware_login }}
+          passwd={{ fence_vmware_passwd }}
+          {{ fence_vmware_options }}
+      run_once: true
+  when: cluster_configure_stonith_style is defined and cluster_configure_stonith_style == 'one-device-per-cluster'
