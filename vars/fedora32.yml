@@ -12,6 +12,7 @@ fence_kdump_packages:
  - kexec-tools
 fence_vmware_soap_packages:
  - fence-agents-vmware-soap
+ - python3-requests
 fence_vmware_rest_packages:
  - fence-agents-vmware-rest
 firewall_packages:
