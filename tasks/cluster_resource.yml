@@ -1,0 +1,13 @@
+---
+- name: Ensure pcs_resource are present.
+  pcs_resource:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    resource_class: "{{ item.resource_class | default(omit) }}"
+    resource_type: "{{ item.resource_type | default(omit) }}"
+    options: "{{ item.options | default(omit) }}"
+    force_resource_update: "{{ item.force_resource_update | default(omit) }}"
+    cib_file: "{{ item.cib_file | default(omit) }}"
+    child_name: "{{ resitemource.child_name | default(omit) }}"
+  with_items: "{{ cluster_resource }}"
+  run_once: True

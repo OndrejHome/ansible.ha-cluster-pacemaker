@@ -72,13 +72,13 @@ Role Variables
     ```
 
   - configuration of firewall for clustering, NOTE in RHEL/Centos 6 this replaces iptables configuration file!
-  
+
     ```
     cluster_firewall: true
     ```
 
   - enable cluster on boot on normal (not pacemaker_remote) nodes
-  
+
     ```
     cluster_enable_service: true
     ```
@@ -86,7 +86,7 @@ Role Variables
   - configure cluster with fence_xvm fencing device ?
     This will copy /etc/cluster/fence_xvm.key to nodes and add fencing devices to cluster
     NOTE: you need to define 'vm_name' in the inventory for each cluster node
-  
+
     ```
     cluster_configure_fence_xvm: true
     ```
@@ -113,7 +113,7 @@ Role Variables
   - configure cluster with fence_kdump fencing device ?
     This starts kdump service and defines the fence_kdump stonith devices.
     NOTE: if the kdump service is not started this won't work properly or at all
-  
+
     ```
     cluster_configure_fence_kdump: false
     ```
@@ -230,6 +230,81 @@ Role Variables
     cluster_node_is_remote: false
     ```
 
+  - Defined cluster properties (Not mandatory)
+
+    ```
+    cluster_property:
+      - name: required
+        state: optional
+        node: optional
+        value: optional
+        cib_file: optional
+    ```
+
+  - Defined cluster default ressources options (Not mandatory)
+
+    ```
+    cluster_resource_defaults:
+      - name: required
+        state: optional
+        defaults_type: optional
+        cib_file: optional
+        value: optional
+    ```
+
+  - Defined cluster resources (Not mandatory)
+
+    ```
+    cluster_resource:
+      - name: required
+        state: optional
+        resource_class: optional
+        resource_type: optional
+        options: optional
+        force_resource_update: optional
+        cib_file: optional
+        child_name: optional
+    ```
+
+  - Defined cluster constraint order (Not mandatory)
+
+    ```
+    cluster_constraint_order:
+      - resource1: required
+        resource2: required
+        state: optional
+        resource1_action: optional
+        resource2_action: optional
+        kind: optional
+        symmetrical: optional
+        cib_file: optional
+        score: optional
+    ```
+  - Defined cluster constraint colocation (Not mandatory)
+
+    ```
+    cluster_constraint_colocation:
+      - resource1: required
+        resource2: required
+        state: optional
+        resource1_role: optional
+        resource1_role: optional
+        cib_file: optional
+        score: optional
+    ```
+
+  - Defined cluster constraint location (Not mandatory)
+
+    ```
+    cluster_constraint_location:
+      - resource1: required
+        state: optional
+        resource1_role: optional
+        resource1_role: optional
+        cib_file: optional
+        score: optional
+    ```
+
 Example Playbook
 ----------------
 
@@ -272,6 +347,31 @@ For cluster to get properly authorized it is expected that firewall is already c
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_rest: true, cluster_configure_stonith_style: 'one-device-per-cluster' }
 
+**Example playbook Resources configuration** .
+
+    - hosts: cluster
+      vars:
+        cluster_property:
+          - name: 'stonith-enabled'
+            value: 'false'
+          - name: 'no-quorum-policy'
+            value: 'ignore'
+        cluster_resource:
+          - name: apache2
+            resource_type: 'systemd:apache2'
+            options: 'meta migration-threshold=2 op monitor interval=20s timeout=10s'
+          - name: cluster_vip
+            resource_type: 'ocf:heartbeat:IPaddr2'
+            options: 'ip=192.168.1.150 cidr_netmask=24 meta migration-threshold=2 op monitor interval=20'
+        cluster_constraint_colocation:
+          - resource1: 'cluster_vip'
+            resource2: 'apache2'
+            score: 'INFINITY'
+        cluster_resource_defaults:
+          - name: 'failure-timeout'
+            value: '30'
+      roles:
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'apache-cluster', cluster_configure_fence_xvm: false }
 
 Inventory file example for CentOS/RHEL/Fedora systems createing basic clusters.
 

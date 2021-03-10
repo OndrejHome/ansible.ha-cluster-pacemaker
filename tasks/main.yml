@@ -197,3 +197,27 @@
 
 - name: Setup custom fence devices
   include_tasks: fence_custom.yml
+
+- name: Manage cluster property
+  include_tasks: cluster_property.yml
+  when: cluster_property is defined
+
+- name: Manage cluster defaults resources
+  include_tasks: cluster_resource_defaults.yml
+  when: cluster_resource_defaults is defined
+
+- name: Manage cluster resources
+  include_tasks: cluster_resource.yml
+  when: cluster_resource is defined
+
+- name: Manage cluster constraint order
+  include_tasks: cluster_constraint_order.yml
+  when: cluster_constraint_order is defined
+
+- name: Manage cluster constraint colocation
+  include_tasks: cluster_constraint_colocation.yml
+  when: cluster_constraint_colocation is defined
+
+- name: Manage cluster constraint location
+  include_tasks: cluster_constraint_location.yml
+  when: cluster_constraint_location is defined
