@@ -42,6 +42,8 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 
 **CentOS 8 Stream** Tested with version 20201211 minimal usable ansible version is **2.9.16/2.10.4**. Version **2.8.18** was **not** working at time of testing. This is related to [Service is in unknown state #71528](https://github.com/ansible/ansible/issues/71528).
 
+**Debian Buster** Tested with version 20210310 with ansible version **2.10**. Debian version does not include the stonith configuration and the firewall configuration.
+
 Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
 Role Variables
@@ -72,13 +74,13 @@ Role Variables
     ```
 
   - configuration of firewall for clustering, NOTE in RHEL/Centos 6 this replaces iptables configuration file!
-  
+
     ```
     cluster_firewall: true
     ```
 
   - enable cluster on boot on normal (not pacemaker_remote) nodes
-  
+
     ```
     cluster_enable_service: true
     ```
@@ -86,7 +88,7 @@ Role Variables
   - configure cluster with fence_xvm fencing device ?
     This will copy /etc/cluster/fence_xvm.key to nodes and add fencing devices to cluster
     NOTE: you need to define 'vm_name' in the inventory for each cluster node
-  
+
     ```
     cluster_configure_fence_xvm: true
     ```
@@ -113,7 +115,7 @@ Role Variables
   - configure cluster with fence_kdump fencing device ?
     This starts kdump service and defines the fence_kdump stonith devices.
     NOTE: if the kdump service is not started this won't work properly or at all
-  
+
     ```
     cluster_configure_fence_kdump: false
     ```

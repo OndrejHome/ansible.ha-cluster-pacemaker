@@ -1,0 +1,13 @@
+---
+- name: Install Pacemaker cluster packages to all nodes
+  apt:
+    name: "{{ cluster_node_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
+    state: 'present'
+
+- name: Check if Corosync configuration is default configaration
+  shell: '/usr/bin/dpkg --verify corosync'
+  register: result
+
+- name: Destroy default configuration
+  shell: "pcs cluster destroy"
+  when: not result.stdout | regex_search(".* \/etc\/corosync\/corosync.conf$", multiline=True)
