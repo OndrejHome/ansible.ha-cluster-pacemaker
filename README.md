@@ -352,10 +352,8 @@ For cluster to get properly authorized it is expected that firewall is already c
     - hosts: cluster
       vars:
         cluster_property:
-          - name: 'stonith-enabled'
-            value: 'false'
-          - name: 'no-quorum-policy'
-            value: 'ignore'
+          - name: 'maintenance-mode'
+            value: 'true'
         cluster_resource:
           - name: apache2
             resource_type: 'systemd:apache2'
@@ -371,7 +369,7 @@ For cluster to get properly authorized it is expected that firewall is already c
           - name: 'failure-timeout'
             value: '30'
       roles:
-         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'apache-cluster', cluster_configure_fence_xvm: false }
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'apache-cluster'}
 
 Inventory file example for CentOS/RHEL/Fedora systems createing basic clusters.
 
