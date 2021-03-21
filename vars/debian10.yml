@@ -7,3 +7,4 @@ pacemaker_remote_packages:
  - pacemaker-remote
 
 cluster_configure_fence_xvm: false
+cluster_firewall: false
