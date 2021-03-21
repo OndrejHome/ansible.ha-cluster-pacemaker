@@ -5,9 +5,12 @@
     state: 'present'
 
 - name: Check if Corosync configuration is default configaration
-  shell: '/usr/bin/dpkg --verify corosync'
+  command: '/usr/bin/dpkg --verify corosync'
   register: result
+  changed_when: False
+  check_mode: False
 
 - name: Destroy default configuration
-  shell: "pcs cluster destroy"
+  pcs_cluster:
+    state: 'absent'
   when: not result.stdout | regex_search(".* \/etc\/corosync\/corosync.conf$", multiline=True)
