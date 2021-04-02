@@ -1,0 +1,21 @@
+---
+- name: Set fact if python is version 3
+  set_fact:
+    pacemaker_packages: "{{ pacemaker_packages + ['python3-distutils'] }} "
+  when: ansible_python_version.startswith('3')
+
+- name: Install Pacemaker cluster packages to all nodes
+  apt:
+    name: "{{ cluster_node_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
+    state: 'present'
+
+- name: Check if Corosync configuration is default configaration
+  command: '/usr/bin/dpkg --verify corosync'
+  register: result
+  changed_when: False
+  check_mode: False
+
+- name: Destroy default configuration
+  pcs_cluster:
+    state: 'absent'
+  when: not result.stdout | regex_search(".* \/etc\/corosync\/corosync.conf$", multiline=True)
