@@ -5,6 +5,5 @@
     state: "{{ item.state | default(omit) }}"
     node: "{{ item.node | default(omit) }}"
     value: "{{ item.value | default(omit) }}"
-    cib_file: "{{ resource.cib_file | default(omit) }}"
   with_items: "{{ cluster_property }}"
   run_once: True

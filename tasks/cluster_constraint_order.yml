@@ -8,6 +8,5 @@
     resource2_action: "{{ item.resource2_action | default(omit) }}"
     kind: "{{ item.kind | default(omit) }}"
     symmetrical: "{{ item.symmetrical | default(omit) }}"
-    cib_file: "{{ item.cib_file | default(omit) }}"
   with_items: "{{ cluster_constraint_order }}"
   run_once: True
