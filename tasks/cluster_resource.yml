@@ -7,6 +7,6 @@
     resource_type: "{{ item.resource_type | default(omit) }}"
     options: "{{ item.options | default(omit) }}"
     force_resource_update: "{{ item.force_resource_update | default(omit) }}"
-    child_name: "{{ resitemource.child_name | default(omit) }}"
+    child_name: "{{ item.child_name | default(omit) }}"
   with_items: "{{ cluster_resource }}"
   run_once: True
