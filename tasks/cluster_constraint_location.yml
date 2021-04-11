@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_onstraint_colocation users are present.
+- name: pcs_constraint_location constraints are present
   pcs_constraint_location:
     resource: "{{ item.resource }}"
     state: "{{ item.state | default(omit) }}"
