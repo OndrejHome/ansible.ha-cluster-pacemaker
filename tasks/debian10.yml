@@ -4,7 +4,7 @@
     name: "{{ cluster_node_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
     state: 'present'
 
-- name: Check if Corosync configuration is default configaration
+- name: Check if Corosync configuration is default configuration
   command: '/usr/bin/dpkg --verify corosync'
   register: result
   changed_when: False

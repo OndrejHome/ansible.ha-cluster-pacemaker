@@ -15,6 +15,9 @@ galaxy_info:
     - 31
     - 32
     - 33
+  - name: Debian
+    versions:
+    - 'buster'
   galaxy_tags:
   - clustering
   - pacemaker
