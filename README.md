@@ -294,6 +294,11 @@ Role Variables
         score: optional
     ```
 
+Security considerations
+-----------------------
+
+Please consider updating the default value for `cluster_user_pass`.
+
 Example Playbook
 ----------------
 
