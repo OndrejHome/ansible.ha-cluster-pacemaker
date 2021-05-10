@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_resource_default are defined.
+- name: Ensure pcs_resource_defaults are defined.
   pcs_resource_defaults:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"

@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_onstraint_colocation users are present.
+- name: Ensure pcs_constraint_colocation users are present.
   pcs_constraint_colocation:
     resource1: "{{ item.resource1 }}"
     resource2: "{{ item.resource2 }}"
