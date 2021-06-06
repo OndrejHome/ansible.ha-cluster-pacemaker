@@ -42,6 +42,8 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 
 **CentOS 8 Stream** Tested with version 20201211 minimal usable ansible version is **2.9.16/2.10.4**. Version **2.8.18** was **not** working at time of testing. This is related to [Service is in unknown state #71528](https://github.com/ansible/ansible/issues/71528).
 
+**Debian Buster** Tested with version 20210310 with ansible version **2.10**. Debian version does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested.
+
 Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
 Role Variables

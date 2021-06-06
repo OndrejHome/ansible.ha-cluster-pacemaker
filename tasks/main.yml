@@ -25,13 +25,21 @@
   include_tasks: centos_repos.yml
   when: ansible_distribution == 'CentOS'
 
+- name: Include distribution version specific variables - debian
+  include_vars: "debian10.yml"
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "10"
+
+- name: Include distribution specific task - Debian
+  include_tasks: "debian10.yml"
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "10"
+
 - name: Install packages from local media
   include_tasks: install_local_media.yml
   when: use_local_media|bool
 
 - name: Install packages from system defined repositories
   include_tasks: install_normal.yml
-  when: not use_local_media|bool
+  when: not use_local_media|bool and ansible_distribution != 'Debian'
 
 # WARNING: the hostname is resolved from /etc/hosts file! If you change hostname
 # of machine through /etc/hosts the ansible will pick it up and use it!
