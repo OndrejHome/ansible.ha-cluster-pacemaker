@@ -357,10 +357,10 @@ For cluster to get properly authorized it is expected that firewall is already c
           - name: 'maintenance-mode'
             value: 'true'
         cluster_resource:
-          - name: apache2
+          - name: 'apache2'
             resource_type: 'systemd:apache2'
             options: 'meta migration-threshold=2 op monitor interval=20s timeout=10s'
-          - name: cluster_vip
+          - name: 'cluster_vip'
             resource_type: 'ocf:heartbeat:IPaddr2'
             options: 'ip=192.168.1.150 cidr_netmask=24 meta migration-threshold=2 op monitor interval=20'
         cluster_constraint_colocation:
