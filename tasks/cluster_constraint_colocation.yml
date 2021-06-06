@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_constraint_colocation users are present.
+- name: Configure cluster colocation constraints - pcs_constraint_colocation
   pcs_constraint_colocation:
     resource1: "{{ item.resource1 }}"
     resource2: "{{ item.resource2 }}"

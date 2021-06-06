@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_property are present.
+- name: Configure cluster properties - pcs_property
   pcs_property:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"

@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_resource_defaults are defined.
+- name: Configure cluster resource defaults - pcs_resource_defaults
   pcs_resource_defaults:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"

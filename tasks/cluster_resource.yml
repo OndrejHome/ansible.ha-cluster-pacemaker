@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_resource are present.
+- name: Configure cluster resources - pcs_resource
   pcs_resource:
     name: "{{ item.name }}"
     state: "{{ item.state | default(omit) }}"

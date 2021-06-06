@@ -232,7 +232,7 @@ Role Variables
     cluster_node_is_remote: false
     ```
 
-  - Defined cluster properties (Not mandatory)
+  - Configure cluster properties (Not mandatory)
 
     ```
     cluster_property:
@@ -243,7 +243,7 @@ Role Variables
         cib_file: optional
     ```
 
-  - Defined cluster default ressources options (Not mandatory)
+  - Configure cluster resource defaults (Not mandatory)
 
     ```
     cluster_resource_defaults:
@@ -254,7 +254,7 @@ Role Variables
         value: optional
     ```
 
-  - Defined cluster resources (Not mandatory)
+  - Configure cluster resources (Not mandatory)
 
     ```
     cluster_resource:
@@ -268,7 +268,7 @@ Role Variables
         child_name: optional
     ```
 
-  - Defined cluster constraint order (Not mandatory)
+  - Configure cluster order constraints (Not mandatory)
 
     ```
     cluster_constraint_order:
@@ -282,7 +282,7 @@ Role Variables
         cib_file: optional
         score: optional
     ```
-  - Defined cluster constraint colocation (Not mandatory)
+  - Configure cluster colocation constraints (Not mandatory)
 
     ```
     cluster_constraint_colocation:
@@ -295,7 +295,7 @@ Role Variables
         score: optional
     ```
 
-  - Defined cluster constraint location (Not mandatory)
+  - Configure cluster location constraints (Not mandatory)
 
     ```
     cluster_constraint_location:

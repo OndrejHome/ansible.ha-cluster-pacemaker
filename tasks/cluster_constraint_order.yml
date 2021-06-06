@@ -1,5 +1,5 @@
 ---
-- name: Ensure pcs_constraint_order users are present.
+- name: Configure cluster order constraints - pcs_constraint_order
   pcs_constraint_order:
     resource1: "{{ item.resource1 }}"
     resource2: "{{ item.resource2 }}"

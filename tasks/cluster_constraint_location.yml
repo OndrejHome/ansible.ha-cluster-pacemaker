@@ -1,5 +1,5 @@
 ---
-- name: pcs_constraint_location constraints are present
+- name: Configure cluster location constraints - pcs_constraint_location
   pcs_constraint_location:
     resource: "{{ item.resource }}"
     state: "{{ item.state | default(omit) }}"
