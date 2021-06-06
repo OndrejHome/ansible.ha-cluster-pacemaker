@@ -1,0 +1,12 @@
+---
+- name: Configure cluster order constraints - pcs_constraint_order
+  pcs_constraint_order:
+    resource1: "{{ item.resource1 }}"
+    resource2: "{{ item.resource2 }}"
+    state: "{{ item.state | default(omit) }}"
+    resource1_action: "{{ item.resource1_action | default(omit) }}"
+    resource2_action: "{{ item.resource2_action | default(omit) }}"
+    kind: "{{ item.kind | default(omit) }}"
+    symmetrical: "{{ item.symmetrical | default(omit) }}"
+  with_items: "{{ cluster_constraint_order }}"
+  run_once: True

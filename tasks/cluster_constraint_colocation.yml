@@ -1,0 +1,11 @@
+---
+- name: Configure cluster colocation constraints - pcs_constraint_colocation
+  pcs_constraint_colocation:
+    resource1: "{{ item.resource1 }}"
+    resource2: "{{ item.resource2 }}"
+    state: "{{ item.state | default(omit) }}"
+    resource1_role: "{{ item.resource1_role | default(omit) }}"
+    resource2_role: "{{ item.resource2_role | default(omit) }}"
+    score: "{{ item.score | default(omit) }}"
+  with_items: "{{ cluster_constraint_colocation }}"
+  run_once: True

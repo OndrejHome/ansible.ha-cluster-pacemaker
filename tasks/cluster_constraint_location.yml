@@ -1,0 +1,11 @@
+---
+- name: Configure cluster location constraints - pcs_constraint_location
+  pcs_constraint_location:
+    resource: "{{ item.resource }}"
+    state: "{{ item.state | default(omit) }}"
+    node_name: "{{ item.node_name }}"
+    resource1_role: "{{ item.resource1_role | default(omit) }}"
+    resource2_role: "{{ item.resource2_role | default(omit) }}"
+    score: "{{ item.score | default(omit) }}"
+  with_items: "{{ cluster_constraint_location }}"
+  run_once: True

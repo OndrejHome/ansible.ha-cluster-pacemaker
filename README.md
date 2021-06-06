@@ -232,6 +232,68 @@ Role Variables
     cluster_node_is_remote: false
     ```
 
+  - Configure cluster properties (Not mandatory)
+
+    ```
+    cluster_property:
+      - name: required
+        node: optional
+        value: optional
+    ```
+
+  - Configure cluster resource defaults (Not mandatory)
+
+    ```
+    cluster_resource_defaults:
+      - name: required
+        defaults_type: optional
+        value: optional
+    ```
+
+  - Configure cluster resources (Not mandatory)
+
+    ```
+    cluster_resource:
+      - name: required
+        resource_class: optional
+        resource_type: optional
+        options: optional
+        force_resource_update: optional
+        ignored_meta_attributes: optional
+        child_name: optional
+    ```
+
+  - Configure cluster order constraints (Not mandatory)
+
+    ```
+    cluster_constraint_order:
+      - resource1: required
+        resource1_action: optional
+        resource2: required
+        resource2_action: optional
+        kind: optional
+        symmetrical: optional
+    ```
+  - Configure cluster colocation constraints (Not mandatory)
+
+    ```
+    cluster_constraint_colocation:
+      - resource1: required
+        resource1_role: optional
+        resource2: required
+        resource2_role: optional
+        score: optional
+    ```
+
+  - Configure cluster location constraints (Not mandatory)
+
+    ```
+    cluster_constraint_location:
+      - resource: required
+        node_name: required
+        score: optional
+    ```
+
 Example Playbook
 ----------------
 
@@ -274,6 +336,29 @@ For cluster to get properly authorized it is expected that firewall is already c
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_rest: true, cluster_configure_stonith_style: 'one-device-per-cluster' }
 
+**Example playbook Resources configuration** .
+
+    - hosts: cluster
+      vars:
+        cluster_property:
+          - name: 'maintenance-mode'
+            value: 'true'
+        cluster_resource:
+          - name: 'apache2'
+            resource_type: 'systemd:apache2'
+            options: 'meta migration-threshold=2 op monitor interval=20s timeout=10s'
+          - name: 'cluster_vip'
+            resource_type: 'ocf:heartbeat:IPaddr2'
+            options: 'ip=192.168.1.150 cidr_netmask=24 meta migration-threshold=2 op monitor interval=20'
+        cluster_constraint_colocation:
+          - resource1: 'cluster_vip'
+            resource2: 'apache2'
+            score: 'INFINITY'
+        cluster_resource_defaults:
+          - name: 'failure-timeout'
+            value: '30'
+      roles:
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'apache-cluster'}
 
 Inventory file example for CentOS/RHEL/Fedora systems createing basic clusters.
 

@@ -1,0 +1,12 @@
+---
+- name: Configure cluster resources - pcs_resource
+  pcs_resource:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    resource_class: "{{ item.resource_class | default(omit) }}"
+    resource_type: "{{ item.resource_type | default(omit) }}"
+    options: "{{ item.options | default(omit) }}"
+    force_resource_update: "{{ item.force_resource_update | default(omit) }}"
+    child_name: "{{ item.child_name | default(omit) }}"
+  with_items: "{{ cluster_resource }}"
+  run_once: True

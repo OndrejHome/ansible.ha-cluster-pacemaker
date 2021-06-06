@@ -205,3 +205,28 @@
 
 - name: Setup custom fence devices
   include_tasks: fence_custom.yml
+
+### Cluster configuration setup
+- name: Configure cluster properties
+  include_tasks: cluster_property.yml
+  when: cluster_property is defined
+
+- name: Configure cluster resource defaults
+  include_tasks: cluster_resource_defaults.yml
+  when: cluster_resource_defaults is defined
+
+- name: Configure cluster resources
+  include_tasks: cluster_resource.yml
+  when: cluster_resource is defined
+
+- name: Configure cluster order constraints
+  include_tasks: cluster_constraint_order.yml
+  when: cluster_constraint_order is defined
+
+- name: Configure cluster colocation constraints
+  include_tasks: cluster_constraint_colocation.yml
+  when: cluster_constraint_colocation is defined
+
+- name: Configure cluster location constraints
+  include_tasks: cluster_constraint_location.yml
+  when: cluster_constraint_location is defined

@@ -1,0 +1,9 @@
+---
+- name: Configure cluster properties - pcs_property
+  pcs_property:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    node: "{{ item.node | default(omit) }}"
+    value: "{{ item.value | default(omit) }}"
+  with_items: "{{ cluster_property }}"
+  run_once: True

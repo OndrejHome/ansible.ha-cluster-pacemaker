@@ -1,0 +1,9 @@
+---
+- name: Configure cluster resource defaults - pcs_resource_defaults
+  pcs_resource_defaults:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default(omit) }}"
+    defaults_type: "{{ item.defaults_type | default(omit) }}"
+    value: "{{ item.value | default(omit) }}"
+  with_items: "{{ cluster_resource_defaults }}"
+  run_once: True
