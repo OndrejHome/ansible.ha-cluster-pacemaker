@@ -237,10 +237,8 @@ Role Variables
     ```
     cluster_property:
       - name: required
-        state: optional
         node: optional
         value: optional
-        cib_file: optional
     ```
 
   - Configure cluster resource defaults (Not mandatory)
@@ -248,9 +246,7 @@ Role Variables
     ```
     cluster_resource_defaults:
       - name: required
-        state: optional
         defaults_type: optional
-        cib_file: optional
         value: optional
     ```
 
@@ -259,12 +255,11 @@ Role Variables
     ```
     cluster_resource:
       - name: required
-        state: optional
         resource_class: optional
         resource_type: optional
         options: optional
         force_resource_update: optional
-        cib_file: optional
+        ignored_meta_attributes: optional
         child_name: optional
     ```
 
@@ -273,25 +268,20 @@ Role Variables
     ```
     cluster_constraint_order:
       - resource1: required
-        resource2: required
-        state: optional
         resource1_action: optional
+        resource2: required
         resource2_action: optional
         kind: optional
         symmetrical: optional
-        cib_file: optional
-        score: optional
     ```
   - Configure cluster colocation constraints (Not mandatory)
 
     ```
     cluster_constraint_colocation:
       - resource1: required
+        resource1_role: optional
         resource2: required
-        state: optional
-        resource1_role: optional
-        resource1_role: optional
-        cib_file: optional
+        resource2_role: optional
         score: optional
     ```
 
@@ -299,11 +289,8 @@ Role Variables
 
     ```
     cluster_constraint_location:
-      - resource1: required
-        state: optional
-        resource1_role: optional
-        resource1_role: optional
-        cib_file: optional
+      - resource: required
+        node_name: required
         score: optional
     ```
 
