@@ -85,7 +85,7 @@
 
 - name: Enable/Disable PCSD web GUI
   lineinfile:
-    dest: '/etc/sysconfig/pcsd'
+    dest: "{{ pcsd_configuration_file }}"
     regexp: 'PCSD_DISABLE_GUI=.*'
     line: "PCSD_DISABLE_GUI={{ enable_pcsd_gui|bool|ternary('false','true') }}"
     mode: '0644'

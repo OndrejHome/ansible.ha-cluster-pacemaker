@@ -15,3 +15,5 @@ fence_vmware_soap_packages:
  - fence-agents
 firewall_packages:
  - iptables
+
+pcsd_configuration_file: /etc/sysconfig/pcsd
