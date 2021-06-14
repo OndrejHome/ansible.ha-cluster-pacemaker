@@ -16,3 +16,5 @@ fence_vmware_rest_packages:
  - fence-agents-vmware-rest
 firewall_packages:
  - firewalld
+
+pcsd_configuration_file: /etc/sysconfig/pcsd
