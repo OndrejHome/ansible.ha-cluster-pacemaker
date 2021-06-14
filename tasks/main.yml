@@ -23,17 +23,13 @@
     - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_distribution_file_variety|lower }}{{ ansible_distribution_major_version }}.yml"
 
-- name: (RHEL) enable repositories
-  include_tasks: rhel_repos.yml
-  when: ansible_distribution == 'RedHat'
-
-- name: (CentOS) enable repositories
-  include_tasks: centos_repos.yml
-  when: ansible_distribution == 'CentOS'
-
-- name: Include distribution specific task - Debian
-  include_tasks: "debian10.yml"
-  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == "10"
+- name: Include distribution specific tasks
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution|lower }}_repos.yml"
+      skip: yes
 
 - name: Install packages from local media
   include_tasks: install_local_media.yml
