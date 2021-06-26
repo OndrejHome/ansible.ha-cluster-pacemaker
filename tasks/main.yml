@@ -97,11 +97,11 @@
     enabled: true
     state: 'started'
 
-- name: Setup firewall for RHEL/CentOS systems
+- name: Setup firewall for RHEL/CentOS/AlmaLinux systems
   include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
   when:
     - cluster_firewall|bool
-    - ansible_distribution == 'RedHat' or ansible_distribution == 'CentOS'
+    - ansible_distribution in ['RedHat','CentOS','AlmaLinux']
 
 - name: Setup firewall for Fedora systems
   include_tasks: "firewall-fedora.yml"
