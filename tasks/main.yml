@@ -1,12 +1,23 @@
 ---
+- name: Generate random ID for this cluster deployment
+  set_fact:
+    rand_id: "{{ 1024 | random }}"
+  run_once: true
+  changed_when: false
+  check_mode: false
+  # This ID is used for ansible group names grouping machines from this run of role.
+  # If this role is run multiple times in single playbook with different hosts this
+  # ID will distinguish these different hosts
+  # FIXME: this is workaround for inability to "remove things from groups"
+
 - name: Add a group to the inventory for remote nodes
   group_by:
-    key: "cluster_node_is_remote_{{ cluster_node_is_remote | bool }}"
+    key: "cluster{{ rand_id }}_node_is_remote_{{ cluster_node_is_remote | bool }}"
 
 - name: Check if cluster consist of at least 2 nodes
   fail:
     msg: 'Cluster must have at least 2 full members'
-  when: groups['cluster_node_is_remote_False']|default([])|count() < 2
+  when: groups['cluster'+rand_id+'_node_is_remote_False']|default([])|count() < 2
   run_once: true
 
 - name: Check if cluster_user_pass is not default
@@ -131,7 +142,7 @@
 - name: Setup cluster
   pcs_cluster:
     node_list: >-
-      {% for item in groups['cluster_node_is_remote_False'] %}
+      {% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}
       {{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %}
       {% endfor %}
     cluster_name: "{{ cluster_name }}"
@@ -175,13 +186,13 @@
         - cluster_node_is_remote | bool
         - (pcs_status.stdout | regex_search('\\b' ~ cluster_hostname ~ '\\s+\\(ocf::pacemaker:remote\\)') or '') | length == 0
   vars:
-    delegate_host: "{{ hostvars[groups['cluster_node_is_remote_False'][0]].inventory_hostname }}"
+    delegate_host: "{{ hostvars[groups['cluster'+rand_id+'_node_is_remote_False'][0]].inventory_hostname }}"
     # NOTE: Without this, the host's ansible_host variable will not be
     # respected when using delegate_to.
     ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
   when:
-    - groups['cluster_node_is_remote_False'] is defined
-    - groups['cluster_node_is_remote_True']|default([])|count() > 0
+    - groups['cluster'+rand_id+'_node_is_remote_False'] is defined
+    - groups['cluster'+rand_id+'_node_is_remote_True']|default([])|count() > 0
   delegate_to: "{{ delegate_host }}"
 
 ### fencing setup
