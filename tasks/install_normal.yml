@@ -4,7 +4,7 @@
     name: 'libselinux-python'
     state: 'installed'
   when:
-    - not (ansible_distribution in ['RedHat','CentOS','AlmaLinux'] and ansible_distribution_major_version == '8')
+    - not (ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky'] and ansible_distribution_major_version == '8')
     - not (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '31')
 
 - name: Install Pacemaker cluster packages to all nodes
