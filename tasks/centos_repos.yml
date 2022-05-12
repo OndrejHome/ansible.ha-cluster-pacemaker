@@ -7,7 +7,7 @@
   changed_when: false
   check_mode: false
 
-- name: enable highavailability repository (CentOS 8.1/8.2)
+- name: EOL enable highavailability repository (CentOS 8.1, 8.2)
   ini_file:
     dest: '/etc/yum.repos.d/CentOS-HA.repo'
     section: 'HighAvailability'
@@ -20,7 +20,7 @@
     and enable_repos | bool
     and ansible_distribution_version in ['8.1', '8.2']
 
-- name: enable highavailability repository (CentOS 8.3+)
+- name: EOL enable highavailability repository (CentOS 8.3, 8.4, 8.5)
   ini_file:
     dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
     section: 'ha'
@@ -33,6 +33,56 @@
     and enable_repos | bool
     and ansible_distribution_major_version in ['8']
     and ansible_distribution_version not in ['8.0', '8.1', '8.2', '8']
+
+- name: EOL disable mirrorlist for CentOS Linux 8.1, 8.2 HA repository
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-HA.repo'
+    section: 'HighAvailability'
+    option: 'mirrorlist'
+    create: 'no'
+    mode: '0644'
+    state: absent
+  when: >-
+    enable_repos | bool
+    and ansible_distribution_version in ['8.1', '8.2']
+
+- name: EOL disable mirrorlist for CentOS Linux 8.3, 8.4, 8.5 HA repository
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
+    section: 'ha'
+    option: 'mirrorlist'
+    create: 'no'
+    mode: '0644'
+    state: absent
+  when: >-
+    enable_repos | bool
+    and ansible_distribution_version in ['8.3', '8.4', '8.5']
+
+- name: EOL configure baseurl for CentOS Linux 8.1, 8.2 HA repository
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-HA.repo'
+    section: 'HighAvailability'
+    option: 'baseurl'
+    value: 'http://vault.centos.org/$contentdir/$releasever/HighAvailability/$basearch/os/'
+    create: 'no'
+    mode: '0644'
+    state: present
+  when: >-
+    enable_repos | bool
+    and ansible_distribution_version in ['8.1', '8.2']
+
+- name: EOL configure baseurl for CentOS Linux 8.3, 8.4, 8.5 HA repository
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
+    section: 'ha'
+    option: 'baseurl'
+    value: 'http://vault.centos.org/$contentdir/$releasever/HighAvailability/$basearch/os/'
+    create: 'no'
+    mode: '0644'
+    state: present
+  when: >-
+    enable_repos | bool
+    and ansible_distribution_version in ['8.3', '8.4', '8.5']
 
 - name: enable highavailability repository (CentOS 8 Stream)
   ini_file:
