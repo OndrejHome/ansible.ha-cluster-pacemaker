@@ -39,7 +39,7 @@
 
 - name: Install package(s) for fence_kdump
   yum:
-    name:  "{{ fence_kdump_packages }}"
+    name: "{{ fence_kdump_packages }}"
     state: 'installed'
     disablerepo: '*'
     enablerepo: "c{{ ansible_distribution_major_version }}-media"

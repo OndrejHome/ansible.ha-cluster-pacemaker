@@ -26,7 +26,7 @@
 
 - name: Install fence_vmware_rest fencing agent on all nodes
   yum:
-    name:  "{{ fence_vmware_rest_packages }}"
+    name: "{{ fence_vmware_rest_packages }}"
     state: 'installed'
 
 - name: Configure separate stonith devices per cluster node

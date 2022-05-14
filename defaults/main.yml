@@ -32,9 +32,10 @@ cluster_configure_fence_kdump: false
 # You must provide IP/hostname of vCenter/hypervisor and username/password that is able to start/stop VMs for this cluster
 cluster_configure_fence_vmware_soap: false
 cluster_configure_fence_vmware_rest: false
-#fence_vmware_ipaddr: ''
-#fence_vmware_login: ''
-#fence_vmware_passwd: ''
+# fence_vmware_ipaddr: ''
+# fence_vmware_login: ''
+# fence_vmware_passwd: ''
+
 # by default we use encrypted configuration (ssl=1) without validating certificates (ssl_insecure=1)
 fence_vmware_options: 'ssl="1" ssl_insecure="1"'
 # NOTE: Only one of fence_vmware_soap/fence_vmware_rest can be configured as stonith devices share same name.
@@ -42,13 +43,13 @@ fence_vmware_options: 'ssl="1" ssl_insecure="1"'
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below
 #
-#cluster_fence_config:
-#  fence_device_1:
-#    fence_type: 'fence_vmware_soap'
-#    fence_options: 'pcmk_host_map="fastvm-1:vm_name_on_hypevisor1" ipaddr="vcenter.hostname" login="root" passwd="testest" ssl="1" ssl_insecure="1" op monitor interval=30s'
-#  fence_device_2:
-#    fence_type: 'fence_xvm'
-#    fence_options: 'pcmk_host_map="fastvm-2:vm_name_n_hypervisor2" op monitor interval=30s'
+# cluster_fence_config:
+#   fence_device_1:
+#     fence_type: 'fence_vmware_soap'
+#     fence_options: 'pcmk_host_map="fastvm-1:vm_name_on_hypevisor1" ipaddr="vcenter.hostname" login="root" passwd="testest" ssl="1" ssl_insecure="1" op monitor interval=30s'
+#   fence_device_2:
+#     fence_type: 'fence_xvm'
+#     fence_options: 'pcmk_host_map="fastvm-2:vm_name_n_hypervisor2" op monitor interval=30s'
 
 # How to map fence devices to cluster nodes?
 # by default for every cluster node a separate stonith devices is created ('one-device-per-node').
@@ -98,8 +99,8 @@ allow_cluster_expansion: false
 # from interface `ens8` use `cluster_net_iface: 'ens8'`. Interface must exists on all cluster nodes.
 cluster_net_iface: ''
 
-#Redundant network interface. If specified the role will setup a corosync redundant ring using the default IPv4 from this interface.
-#Interface must exist on all cluster nodes.
+# Redundant network interface. If specified the role will setup a corosync redundant ring using the default IPv4 from this interface.
+# Interface must exist on all cluster nodes.
 rrp_interface: ''
 
 # Whether to add hosts to /etc/hosts.

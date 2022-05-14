@@ -26,6 +26,6 @@
 
 - name: Install package(s) for fence_kdump
   yum:
-    name:  "{{ fence_kdump_packages }}"
+    name: "{{ fence_kdump_packages }}"
     state: 'installed'
   when: cluster_configure_fence_kdump|bool
