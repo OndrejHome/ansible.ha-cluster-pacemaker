@@ -9,4 +9,4 @@
     force_resource_update: "{{ item.force_resource_update | default(omit) }}"
     child_name: "{{ item.child_name | default(omit) }}"
   with_items: "{{ cluster_resource }}"
-  run_once: True
+  run_once: true

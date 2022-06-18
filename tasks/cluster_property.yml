@@ -6,4 +6,4 @@
     node: "{{ item.node | default(omit) }}"
     value: "{{ item.value | default(omit) }}"
   with_items: "{{ cluster_property }}"
-  run_once: True
+  run_once: true

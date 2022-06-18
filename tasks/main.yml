@@ -40,7 +40,7 @@
     - files:
         - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_distribution|lower }}_repos.yml"
-      skip: yes
+      skip: true
 
 - name: Install packages from local media
   include_tasks: install_local_media.yml

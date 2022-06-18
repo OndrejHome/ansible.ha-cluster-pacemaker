@@ -9,4 +9,4 @@
     kind: "{{ item.kind | default(omit) }}"
     symmetrical: "{{ item.symmetrical | default(omit) }}"
   with_items: "{{ cluster_constraint_order }}"
-  run_once: True
+  run_once: true
