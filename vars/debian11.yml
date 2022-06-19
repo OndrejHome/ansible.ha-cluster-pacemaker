@@ -1,0 +1,12 @@
+---
+pacemaker_packages:
+ - pcs
+ - pacemaker
+pacemaker_remote_packages:
+ - pcs
+ - pacemaker-remote
+
+cluster_configure_fence_xvm: false
+cluster_firewall: false
+
+pcsd_configuration_file: /etc/default/pcsd

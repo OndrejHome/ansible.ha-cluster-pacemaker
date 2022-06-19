@@ -1,0 +1,24 @@
+---
+- name: Install Pacemaker cluster packages to all nodes
+  apt:
+    name: "{{ cluster_node_is_remote | bool | ternary(pacemaker_remote_packages, pacemaker_packages) }}"
+    state: 'present'
+    cache_valid_time: 3600
+
+- name: Install dependencies for pcs-modules-2
+  apt:
+    name: 'python3-distutils'
+    state: 'present'
+    cache_valid_time: 3600
+  when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '11'
+
+- name: Check if Corosync configuration is default configuration
+  command: '/usr/bin/dpkg --verify corosync'
+  register: result
+  changed_when: false
+  check_mode: false
+
+- name: Destroy default configuration
+  pcs_cluster:
+    state: 'absent'
+  when: not result.stdout | regex_search(".* \/etc\/corosync\/corosync.conf$", multiline=True)
