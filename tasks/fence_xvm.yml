@@ -25,7 +25,7 @@
     state: 'enabled'
     immediate: true
   when: >-
-    (ansible_distribution_major_version in [ "7", "8" ] or ansible_distribution == 'Fedora')
+    (ansible_distribution_major_version in [ "7", "8", "9" ] or ansible_distribution == 'Fedora')
     and cluster_firewall|bool
 
 - name: Configure separate stonith devices per cluster node
