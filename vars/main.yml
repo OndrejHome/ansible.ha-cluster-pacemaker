@@ -1,0 +1,3 @@
+---
+# common values that can be overriden by other files in this directory
+kdump_service_name: 'kdump'

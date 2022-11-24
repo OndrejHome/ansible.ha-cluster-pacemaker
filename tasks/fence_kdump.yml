@@ -1,7 +1,7 @@
 ---
 - name: Enable kdump service
   service:
-    name: 'kdump'
+    name: "{{ kdump_service_name }}"
     state: 'started'
     enabled: true
 
