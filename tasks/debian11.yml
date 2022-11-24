@@ -12,6 +12,13 @@
     cache_valid_time: 3600
   when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '11'
 
+- name: Install package(s) for fence_kdump
+  apt:
+    name: "{{ fence_kdump_packages }}"
+    state: 'present'
+    cache_valid_time: 3600
+  when: cluster_configure_fence_kdump|bool
+
 - name: Check if Corosync configuration is default configuration
   command: '/usr/bin/dpkg --verify corosync'
   register: result

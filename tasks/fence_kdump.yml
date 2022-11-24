@@ -12,9 +12,10 @@
         name: "fence-kdump-{{ hostvars[item][cluster_hostname_fact] }}"
         resource_class: 'stonith'
         resource_type: 'fence_kdump'
-        options: "pcmk_host_list={{ hostvars[item][cluster_hostname_fact] }}"
+        options: "pcmk_host_list={{ hostvars[item][cluster_hostname_fact] }} {% if ansible_distribution == 'Debian' %}pcmk_monitor_action=metadata{% endif %}"
       with_items: "{{ play_hosts }}"
       run_once: true
+      # FIXME: fence_kdump on Debian returns exit code 1 for 'monitor' op so we use 'metadata' as dummy replacement
 
     - name: create fence constraints
       pcs_constraint_location:
