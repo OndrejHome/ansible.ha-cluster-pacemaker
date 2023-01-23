@@ -2,7 +2,7 @@
 - name: get list of active repositories
   command: yum repolist
   args:
-    warn: false
+    warn: "{{ (ansible_version.full is version('2.14','<')) | ternary(false, omit) }}"
   register: yum_repolist
   changed_when: false
   check_mode: false
