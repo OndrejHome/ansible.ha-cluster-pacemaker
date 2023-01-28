@@ -1,0 +1,20 @@
+---
+pacemaker_packages:
+ - pcs
+ - pacemaker
+pacemaker_remote_packages:
+ - pcs
+ - pacemaker-remote
+fence_xvm_packages:
+ - fence-virt
+fence_kdump_packages:
+ - fence-agents-kdump
+ - kexec-tools
+fence_vmware_soap_packages:
+ - fence-agents-vmware-soap
+fence_vmware_rest_packages:
+ - fence-agents-vmware-rest
+firewall_packages:
+ - firewalld
+
+pcsd_configuration_file: /etc/sysconfig/pcsd

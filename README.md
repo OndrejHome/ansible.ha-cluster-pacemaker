@@ -1,7 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36 and CentOS 8 Stream systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36/37 and CentOS 8 Stream systems.
 
 This role can configure following aspects of pacemaker cluster:
 - enable needed system repositories
@@ -48,7 +48,7 @@ Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is u
 
 On **CentOS Linux 8** you have to ensure that BaseOS and Appstream repositories are working properly. As the CentOS Linux 8 is in the End-Of-Life phase, this role will configure HA repository to point to vault.centos.org if repository configuration (`enable_repos: true`) is requested (it is by default).
 
-**pcs-0.11** version distributions (AlmaLinux 9, Rocky Linux 9, RHEL 9, Fedora 36) are supported only with ondrejhome.pcs-modules-2 version 27.0.0 or higher.
+**pcs-0.11** version distributions (AlmaLinux 9, Rocky Linux 9, RHEL 9, Fedora 36/37) are supported only with ondrejhome.pcs-modules-2 version 27.0.0 or higher.
 
 Role Variables
 --------------
