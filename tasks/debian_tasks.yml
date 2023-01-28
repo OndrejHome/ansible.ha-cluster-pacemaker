@@ -1,0 +1,11 @@
+---
+- name: Check if Corosync configuration is default configuration
+  command: '/usr/bin/dpkg --verify corosync'
+  register: result
+  changed_when: false
+  check_mode: false
+
+- name: Destroy default configuration
+  pcs_cluster:
+    state: 'absent'
+  when: not result.stdout | regex_search(".* \/etc\/corosync\/corosync.conf$", multiline=True)

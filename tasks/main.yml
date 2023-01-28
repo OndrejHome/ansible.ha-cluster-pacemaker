@@ -35,11 +35,10 @@
     - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_distribution_file_variety|lower }}{{ ansible_distribution_major_version }}.yml"
 
-- name: Include distribution specific tasks
+- name: Include distribution specific repository configuration
   include_tasks: "{{ item }}"
   with_first_found:
     - files:
-        - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
         - "{{ ansible_distribution|lower }}_repos.yml"
       skip: true
 
@@ -49,7 +48,14 @@
 
 - name: Install packages from system defined repositories
   include_tasks: install_normal.yml
-  when: not use_local_media|bool and ansible_distribution != 'Debian'
+  when: not use_local_media|bool
+
+- name: Include distribution specific tasks
+  include_tasks: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution|lower }}_tasks.yml"
+      skip: true
 
 # WARNING: the hostname is resolved from /etc/hosts file! If you change hostname
 # of machine through /etc/hosts the ansible will pick it up and use it!
