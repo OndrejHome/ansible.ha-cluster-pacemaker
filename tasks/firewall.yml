@@ -1,0 +1,40 @@
+---
+- name: Configure firewalld
+  block:
+    - name: Enable and start firewalld service
+      service:
+        name: 'firewalld'
+        enabled: true
+        state: 'started'
+
+    - name: Enable 'high-availability' firewalld service
+      firewalld:
+        service: 'high-availability'
+        permanent: true
+        state: 'enabled'
+        immediate: true
+  when: ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky','Fedora']
+
+- name: Configure iptables (EL6)
+  block:
+    - name: Copy iptables configuration
+      copy:
+        src: 'iptables'
+        dest: '/etc/sysconfig/iptables'
+        owner: 'root'
+        group: 'root'
+        mode: '0644'
+      notify:
+        - restart iptables
+
+    - name: Enable and start iptables service
+      service:
+        name: 'iptables'
+        enabled: true
+        state: 'started'
+
+    - name: Run handlers to reload iptables on system
+      meta: flush_handlers
+  when:
+    - ansible_distribution in ['RedHat']
+    - ansible_distribution_major_version == '6'

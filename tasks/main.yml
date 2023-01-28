@@ -115,15 +115,9 @@
     enabled: true
     state: 'started'
 
-- name: Setup firewall for RHEL/CentOS/AlmaLinux/Rocky systems
-  include_tasks: "firewall-el{{ ansible_distribution_major_version }}.yml"
-  when:
-    - cluster_firewall|bool
-    - ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky']
-
-- name: Setup firewall for Fedora systems
-  include_tasks: "firewall-fedora.yml"
-  when: cluster_firewall|bool and ansible_distribution == 'Fedora'
+- name: Setup firewall
+  include_tasks: "firewall.yml"
+  when: cluster_firewall|bool
 
 - name: Authorize cluster nodes
   pcs_auth:
