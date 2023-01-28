@@ -11,6 +11,7 @@
   # FIXME: this is workaround for inability to "remove things from groups"
 
 - name: Add a group to the inventory for remote nodes
+  changed_when: false
   group_by:
     key: "cluster{{ rand_id }}_node_is_remote_{{ cluster_node_is_remote | bool }}"
 
