@@ -13,7 +13,9 @@
         permanent: true
         state: 'enabled'
         immediate: true
-  when: ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky','Fedora']
+  when:
+    - ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky','Fedora']
+    - not (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6')
 
 - name: Configure iptables (EL6)
   block:
