@@ -31,6 +31,9 @@ galaxy_info:
         - 'buster'
         - 'bullseye'
         - 'bookworm'
+    - name: Ubuntu
+      versions:
+        - 'focal'
   galaxy_tags:
     - clustering
     - pacemaker

@@ -55,6 +55,7 @@
   with_first_found:
     - files:
         - "{{ ansible_distribution | lower }}_tasks.yml"
+        - "{{ ansible_distribution_file_variety | lower }}_tasks.yml"
       skip: true
 
 - name: Detect the primary (ring0) cluster IP on all nodes

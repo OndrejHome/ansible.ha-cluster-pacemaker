@@ -16,6 +16,7 @@
         - not (ansible_distribution in ['CentOS','AlmaLinux'] and ansible_distribution_major_version == '10')
         - not (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '31')
         - not (ansible_distribution == 'Debian')
+        - not (ansible_distribution == 'Ubuntu')
 
     - name: "Packages: Add python3-setuptools package for compatibility with distutils module"
       set_fact:
@@ -79,11 +80,11 @@
   yum:
     name: "{{ packages_for_installation }}"
     state: 'installed'
-  when: ansible_distribution != 'Debian'
+  when: ansible_pkg_mgr != 'apt'
 
 - name: Install packages (APT)
   apt:
     name: "{{ packages_for_installation }}"
     state: 'present'
     cache_valid_time: 3600
-  when: ansible_distribution == 'Debian'
+  when: ansible_pkg_mgr == 'apt'
