@@ -115,6 +115,15 @@
     enabled: true
     state: 'started'
 
+- name: (Debian 11) Enable and start PCSD-ruby service
+  service:
+    name: 'pcsd-ruby'
+    enabled: true
+    state: 'started'
+  when:
+    - ansible_distribution|lower == 'debian'
+    - ansible_distribution_major_version == '11'
+
 - name: Setup firewall
   include_tasks: "firewall.yml"
   when: cluster_firewall|bool
