@@ -17,7 +17,9 @@
     - name: "Packages: Add pcs-modules-2 Debian dependencies"
       set_fact:
         packages_for_installation: "{{ packages_for_installation + ['python3-distutils'] }}"
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '11'
+      when:
+        - ansible_distribution == 'Debian'
+        - ansible_distribution_major_version in ['10','11']
 
     - name: "Packages: Add firewall packages"
       set_fact:
