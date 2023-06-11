@@ -1,0 +1,15 @@
+---
+pacemaker_packages:
+ - pcs
+ - pacemaker
+pacemaker_remote_packages:
+ - pcs
+ - pacemaker-remote
+fence_kdump_packages:
+ - kdump-tools
+
+kdump_service_name: 'kdump-tools'
+cluster_configure_fence_xvm: false
+cluster_firewall: false
+
+pcsd_configuration_file: /etc/default/pcsd

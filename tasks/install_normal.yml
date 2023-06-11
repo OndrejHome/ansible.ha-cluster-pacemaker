@@ -19,7 +19,7 @@
         packages_for_installation: "{{ packages_for_installation + ['python3-distutils'] }}"
       when:
         - ansible_distribution == 'Debian'
-        - ansible_distribution_major_version in ['10','11']
+        - ansible_distribution_major_version in ['10','11','12']
 
     - name: "Packages: Add firewall packages"
       set_fact:
