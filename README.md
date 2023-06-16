@@ -289,6 +289,7 @@ Role Variables
         resource2: required
         resource2_role: optional
         score: optional
+        influence: optional
     ```
 
   - Configure cluster location constraints (Not mandatory)
