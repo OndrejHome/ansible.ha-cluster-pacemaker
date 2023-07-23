@@ -57,6 +57,18 @@
         - "{{ ansible_distribution|lower }}_tasks.yml"
       skip: true
 
+- name: Detect the primary (ring0) cluster IP on all nodes
+  set_fact:
+    ring0_ip: "{{ item }}"
+  loop: "{{ ring0_ip_ordered_detection_list }}"
+  when: ring0_ip|default('')|count() == 0
+  # NOTE: first detected IP from given list of possibilities is being used for given node
+
+- name: Verify that we were able to detect primary (ring0) cluster IP on all nodes
+  fail:
+    msg: "Unable to determine ring0 IP address on node {{ inventory_hostname }}. Try setting 'cluster_net_iface' for this node to give it hint where to look for cluster ip."
+  when: ring0_ip|count() == 0
+
 # WARNING: the hostname is resolved from /etc/hosts file! If you change hostname
 # of machine through /etc/hosts the ansible will pick it up and use it!
 - name: Add hosts to /etc/hosts (using default (GW) IPv4 address)
@@ -136,17 +148,25 @@
   with_items: "{{ play_hosts }}"
   when: not cluster_node_is_remote | bool
 
-- name: set corosync redundant ring node ip if requested
+- name: set corosync redundant ring node ip if requested (from rrp_interface)
   set_fact:
     rrp_ip: "{{ hostvars[inventory_hostname]['ansible_'+rrp_interface].ipv4.address }}"
-  when: rrp_ip is not defined and rrp_interface is defined and rrp_interface and 'ansible_'+rrp_interface in hostvars[inventory_hostname]
+  when:
+    - rrp_ip is not defined
+    - rrp_interface is defined
+    - rrp_interface and 'ansible_'+rrp_interface in hostvars[inventory_hostname]
 
 - name: validate redundant ring ip
   fail:
     msg: >-
       invalid redundant ip {{ rrp_ip }} for {{ ansible_hostname }}:
-      must be different than default ip {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}
-  when: rrp_ip is defined and rrp_ip == ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0])
+      must be different than primary ip {{ ring0_ip }}
+  when:
+    - rrp_ip is defined
+    - rrp_ip == ring0_ip
+  with_items: "{{ play_hosts }}"
+  run_once: true
+  delegate_to: 'localhost'
   any_errors_fatal: true
 
 - name: Setup cluster
