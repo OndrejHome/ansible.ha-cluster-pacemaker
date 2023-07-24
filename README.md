@@ -195,9 +195,10 @@ Role Variables
     allow_cluster_expansion: false
     ```
 
-  - Cluster network interface. If specified the role will map hosts to IPv4 addresses from this interface.
-    By default the IPv4 addresses from `ansible_default_ipv4` are used. For exmaple to use IPv4 addresses
-    from interface `ens8` use `cluster_net_iface: 'ens8'`. Interface must exists on all cluster nodes.
+  - Cluster network interface. If specified the role will map hosts to primary IPv4 address from this interface.
+    By default the IPv4 address from `ansible_default_ipv4` or first IPv4 from `ansible_all_ipv4_addresses`is used.
+    For exmaple to use primary IPv4 address from interface `ens8` use `cluster_net_iface: 'ens8'`.
+    Interface must exists on all cluster nodes.
     ```
     cluster_net_iface: ''
     ```
@@ -236,6 +237,17 @@ Role Variables
 
     ```
     cluster_node_is_remote: false
+    ```
+
+  - Ordered list of variables for detecting primary cluster IP (ring0). First matched IPv4 is used and rest
+    of detected IPv4s are skipped. In majority cases this should not require change, in some special cases
+    such as when there is no default GW or non-primary IPv4 from given interface should be used this can be adjusted.
+    ```
+    ring0_ip_ordered_detection_list:
+      - "{{ hostvars[inventory_hostname]['ansible_'+cluster_net_iface].ipv4.address|default('') }}"
+      - "{{ ansible_default_ipv4.address|default('') }}"
+      - "{{ ansible_all_ipv4_addresses[0]|default('') }}"
+
     ```
 
   - Configure cluster properties (Not mandatory)
