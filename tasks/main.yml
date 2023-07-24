@@ -71,31 +71,17 @@
 
 # WARNING: the hostname is resolved from /etc/hosts file! If you change hostname
 # of machine through /etc/hosts the ansible will pick it up and use it!
-- name: Add hosts to /etc/hosts (using default (GW) IPv4 address)
+- name: Add hosts to /etc/hosts
   lineinfile:
     dest: '/etc/hosts'
-    regexp: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} "
+    regexp: "{{ hostvars[item]['ring0_ip'] }} "
     line: >
-      {{ hostvars[item]['ansible_default_ipv4']['address'] }}
+      {{ hostvars[item]['ring0_ip'] }}
       {{ hostvars[item][cluster_hostname_fact] }}
     mode: '0644'
   with_items: "{{ play_hosts }}"
   when:
     - cluster_etc_hosts | bool
-    - hostvars[item]['ansible_'+cluster_net_iface] is not defined
-
-- name: Add hosts to /etc/hosts (using alternative interface)
-  lineinfile:
-    dest: '/etc/hosts'
-    regexp: "{{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }} "
-    line: >
-      {{ hostvars[item]['ansible_'+cluster_net_iface]['ipv4']['address'] }}
-      {{ hostvars[item][cluster_hostname_fact] }}
-    mode: '0644'
-  with_items: "{{ play_hosts }}"
-  when:
-    - cluster_etc_hosts | bool
-    - hostvars[item]['ansible_'+cluster_net_iface] is defined
 
 - name: Create cluster system group
   group:
