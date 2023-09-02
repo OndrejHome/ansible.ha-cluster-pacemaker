@@ -20,6 +20,7 @@ This role can configure following aspects of pacemaker cluster:
   - by default install and configure `fence_xvm` stonith devices
   - optionally configure `fence_kdump`
   - optionally configure `fence_vmware` (SOAP/REST) or any other `fence_*` stonith devices
+  - optionally configure `fence_aws`
 
 Role fully supports `--check` mode for default configuration and partially supports it for most of other options.
 
@@ -125,6 +126,23 @@ Role Variables
     ```
     cluster_configure_fence_kdump: false
     ```
+
+  - configure cluster with fence_aws fencing device?
+    You must provide instance id/region of AWS and Instance Profile that is able to start/stop instances for this cluster.
+    When this is enabled you have to specify 1 additional variables with information on AWS region.
+    NOTE: If you don't set up instance profile, it won't work properly or at all
+
+    ```
+    cluster_configure_fence_aws: false
+    fence_aws_region: ''
+    ```
+    NOTE: You also need to define 'instance_id' in the inventory for each cluster node specifying the instance id 
+    as seen on the AWS or in the output of `fence_aws -o list` command. ([https://access.redhat.com/articles/4175371](https://access.redhat.com/articles/4175371))
+
+    You can optionally change the additional attributes passed to fence_aws using the variable `fence_aws_options`.
+    ```
+    fence_aws_options: 'power_timeout=240 pcmk_reboot_timeout=600 pcmk_reboot_retries=4 pcmk_delay_max=45 op start timeout=600 op stop timeout=600 op monitor interval=180'
+    ``` 
 
   - How to map fence devices to cluster nodes?
     By default for every cluster node a separate stonith devices is created ('one-device-per-node').
@@ -359,6 +377,14 @@ For cluster to get properly authorized it is expected that firewall is already c
         fence_vmware_passwd: 'vcenter-password-for-username'
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_rest: true, cluster_configure_stonith_style: 'one-device-per-cluster' }
+
+**Example playbook F** for creating cluster named `aws-cluster` with single `fence_aws` fencing device for all cluster nodes.
+
+    - hosts: cluster
+      vars:
+        fence_aws_region: 'aws-region'
+      roles:
+        - { role: 'ansible.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false }
 
 **Example playbook Resources configuration** .
 
