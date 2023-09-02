@@ -1,0 +1,47 @@
+---
+- name: Check if 'instance_id' variable is defined for each node
+  fail:
+    msg: "'instance_id' must be defined for each node and Instance ID of instance as seen by AWS Console."
+  when: instance_id is not defined
+
+- name: Check if 'fence_aws_region' variable is defined for inventory
+  fail:
+    msg: "'fence_aws_region' must be defined for each node."
+  when: fence_aws_region is not defined
+
+- name: Configure separate stonith devices per cluster node
+  block:
+    - name: create fence_aws STONITH devices
+      pcs_resource:
+        name: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
+        resource_class: 'stonith'
+        resource_type: 'fence_aws'
+        options: >-
+          pcmk_host_map={{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['instance_id'] }};
+          region={{ fence_aws_region }}
+          {{ fence_aws_options }}
+      with_items: "{{ play_hosts }}"
+      run_once: true
+
+    - name: create fence constraints
+      pcs_constraint_location:
+        resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
+        node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
+        score: '-INFINITY'
+      with_items: "{{ play_hosts }}"
+      run_once: true
+  when: cluster_configure_stonith_style is not defined or cluster_configure_stonith_style == 'one-device-per-node'
+
+- name: Configure single stonith device for all nodes
+  block:
+    - name: create fence_aws STONITH device
+      pcs_resource:
+        name: 'fence-aws'
+        resource_class: 'stonith'
+        resource_type: 'fence_aws'
+        options: >-
+          pcmk_host_map="{% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['instance_id'] }};{% endfor %}"
+          region={{ fence_aws_region }}
+          {{ fence_aws_options }}
+      run_once: true
+  when: cluster_configure_stonith_style is defined and cluster_configure_stonith_style == 'one-device-per-cluster'

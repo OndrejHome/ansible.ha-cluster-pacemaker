@@ -14,6 +14,8 @@ fence_vmware_soap_packages:
  - fence-agents-vmware-soap
 fence_vmware_rest_packages:
  - fence-agents-vmware-rest
+fence_aws_packages:
+ - fence-agents-aws
 firewall_packages:
  - firewalld
 

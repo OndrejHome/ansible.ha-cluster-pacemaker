@@ -95,7 +95,7 @@
     password: >-
       {{ cluster_user_pass |
       password_hash('sha512', ansible_hostname|replace('-','x') |
-      truncate(16, True, '', 0)) }}
+      truncate(16, True, '')) }}
     groups: "{{ cluster_group }}"
     comment: 'HA Cluster Administrator'
 
@@ -227,6 +227,10 @@
 - name: Setup fence_kdump
   include_tasks: fence_kdump.yml
   when: cluster_configure_fence_kdump is defined and cluster_configure_fence_kdump|bool
+
+- name: Setup fence_aws
+  include_tasks: fence_aws.yml
+  when: cluster_configure_fence_aws is defined and cluster_configure_fence_aws|bool
 
 - name: Setup custom fence devices
   include_tasks: fence_custom.yml
