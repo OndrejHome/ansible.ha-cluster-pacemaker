@@ -42,7 +42,9 @@ fence_vmware_options: 'ssl="1" ssl_insecure="1"'
 
 # configure cluster with fence_aws fencing device?
 # You must provide instance id/region of AWS and Instance Profile that is able to start/stop instances for this cluster
-cluster_configure_fence_aws: true
+# NOTE: you need to define 'instance_id' in the inventory for each cluster node
+cluster_configure_fence_aws: false
+# fence_aws_region: ''
 fence_aws_options: 'power_timeout=240 pcmk_reboot_timeout=600 pcmk_reboot_retries=4 pcmk_delay_max=45 op start timeout=600 op stop timeout=600 op monitor interval=180'
 
 # custom fence device configuration variable which allows you to define your own fence devices
