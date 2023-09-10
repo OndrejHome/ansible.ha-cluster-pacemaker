@@ -137,7 +137,7 @@ Role Variables
     fence_aws_region: ''
     ```
     NOTE: You also need to define 'instance_id' in the inventory for each cluster node specifying the instance id 
-    as seen on the AWS or in the output of `fence_aws -o list` command. ([https://access.redhat.com/articles/4175371](https://access.redhat.com/articles/4175371))
+    as seen on the AWS or in the output of `fence_aws -o list` command. ([man fence_aws](https://www.mankier.com/8/fence_aws))
 
     You can optionally change the additional attributes passed to fence_aws using the variable `fence_aws_options`.
     ```
@@ -435,6 +435,12 @@ Inventory file example with two full members and two remote nodes:
     192.168.22.22 vm_name=fastvm-centos-7.6-22
     192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_node_is_remote=True
     192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_node_is_remote=True
+
+Inventory file example with fence_aws:
+
+    [cluster]
+    172.31.0.1	instance_id="i-acbdefg1234567890"
+    172.31.0.2	instance_id="i-acbdefg0987654321"
 
 Old video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
