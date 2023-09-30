@@ -45,7 +45,12 @@ fence_vmware_options: 'ssl="1" ssl_insecure="1"'
 # NOTE: you need to define 'instance_id' in the inventory for each cluster node
 cluster_configure_fence_aws: false
 # fence_aws_region: ''
-fence_aws_options: 'power_timeout=240 pcmk_reboot_timeout=600 pcmk_reboot_retries=4 pcmk_delay_max=45 op start timeout=600 op stop timeout=600 op monitor interval=180'
+
+# aws fence device option variable which allows you to define aws fence devices
+# for proper options check document examples below
+# https://access.redhat.com/articles/4175371#create-stonith
+# https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html
+# fence_aws_options: ''
 
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below

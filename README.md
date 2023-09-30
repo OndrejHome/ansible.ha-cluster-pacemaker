@@ -141,8 +141,11 @@ Role Variables
 
     You can optionally change the additional attributes passed to fence_aws using the variable `fence_aws_options`.
     ```
-    fence_aws_options: 'power_timeout=240 pcmk_reboot_timeout=600 pcmk_reboot_retries=4 pcmk_delay_max=45 op start timeout=600 op stop timeout=600 op monitor interval=180'
+    fence_aws_options: ''
     ``` 
+    NOTE: for proper options check document examples below.   
+    [https://access.redhat.com/articles/4175371#create-stonith](https://access.redhat.com/articles/4175371#create-stonith)   
+    [https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html)    
 
   - How to map fence devices to cluster nodes?
     By default for every cluster node a separate stonith devices is created ('one-device-per-node').
@@ -381,10 +384,8 @@ For cluster to get properly authorized it is expected that firewall is already c
 **Example playbook F** for creating cluster named `aws-cluster` with single `fence_aws` fencing device for all cluster nodes.
 
     - hosts: cluster
-      vars:
-        fence_aws_region: 'aws-region'
       roles:
-        - { role: 'ansible.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false }
+        - { role: 'ansible.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false, fence_aws_region: 'aws-region' }
 
 **Example playbook Resources configuration** .
 
