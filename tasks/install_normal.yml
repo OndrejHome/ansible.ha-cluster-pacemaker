@@ -45,6 +45,11 @@
       set_fact:
         packages_for_installation: "{{ packages_for_installation + fence_vmware_soap_packages }}"
       when: cluster_configure_fence_vmware_soap is defined and cluster_configure_fence_vmware_soap|bool
+
+    - name: "Packages: Add fence_aws packages"
+      set_fact:
+        packages_for_installation: "{{ packages_for_installation + fence_aws_packages }}"
+      when: cluster_configure_fence_aws|bool
   run_once: true
   delegate_to: localhost
 

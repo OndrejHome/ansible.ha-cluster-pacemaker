@@ -20,6 +20,7 @@ This role can configure following aspects of pacemaker cluster:
   - by default install and configure `fence_xvm` stonith devices
   - optionally configure `fence_kdump`
   - optionally configure `fence_vmware` (SOAP/REST) or any other `fence_*` stonith devices
+  - optionally configure `fence_aws`
 
 Role fully supports `--check` mode for default configuration and partially supports it for most of other options.
 
@@ -125,6 +126,26 @@ Role Variables
     ```
     cluster_configure_fence_kdump: false
     ```
+
+  - configure cluster with fence_aws fencing device?
+    You must provide instance id/region of AWS and Instance Profile that is able to start/stop instances for this cluster.
+    When this is enabled you have to specify 1 additional variables with information on AWS region.
+    NOTE: If you don't set up instance profile, it won't work properly or at all
+
+    ```
+    cluster_configure_fence_aws: false
+    fence_aws_region: ''
+    ```
+    NOTE: You also need to define 'instance_id' in the inventory for each cluster node specifying the instance id 
+    as seen on the AWS or in the output of `fence_aws -o list` command. ([man fence_aws](https://www.mankier.com/8/fence_aws))
+
+    You can optionally change the additional attributes passed to fence_aws using the variable `fence_aws_options`.
+    ```
+    fence_aws_options: ''
+    ``` 
+    NOTE: for proper options check document examples below.   
+    [https://access.redhat.com/articles/4175371#create-stonith](https://access.redhat.com/articles/4175371#create-stonith)   
+    [https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html)    
 
   - How to map fence devices to cluster nodes?
     By default for every cluster node a separate stonith devices is created ('one-device-per-node').
@@ -360,6 +381,12 @@ For cluster to get properly authorized it is expected that firewall is already c
       roles:
          - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'vmware-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_vmware_rest: true, cluster_configure_stonith_style: 'one-device-per-cluster' }
 
+**Example playbook F** for creating cluster named `aws-cluster` with single `fence_aws` fencing device for all cluster nodes.
+
+    - hosts: cluster
+      roles:
+        - { role: 'ansible.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false, fence_aws_region: 'aws-region' }
+
 **Example playbook Resources configuration** .
 
     - hosts: cluster
@@ -409,6 +436,12 @@ Inventory file example with two full members and two remote nodes:
     192.168.22.22 vm_name=fastvm-centos-7.6-22
     192.168.22.23 vm_name=fastvm-centos-7.6-23 cluster_node_is_remote=True
     192.168.22.24 vm_name=fastvm-centos-7.6-24 cluster_node_is_remote=True
+
+Inventory file example with fence_aws:
+
+    [cluster]
+    172.31.0.1	instance_id="i-acbdefg1234567890"
+    172.31.0.2	instance_id="i-acbdefg0987654321"
 
 Old video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
