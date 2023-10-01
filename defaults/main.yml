@@ -41,16 +41,16 @@ fence_vmware_options: 'ssl="1" ssl_insecure="1"'
 # NOTE: Only one of fence_vmware_soap/fence_vmware_rest can be configured as stonith devices share same name.
 
 # configure cluster with fence_aws fencing device?
-# You must provide instance id/region of AWS and Instance Profile that is able to start/stop instances for this cluster
+# You must provide AWS region and configure Instance Profile (in AWS) that is able to start/stop instances for this cluster
 # NOTE: you need to define 'instance_id' in the inventory for each cluster node
 cluster_configure_fence_aws: false
 # fence_aws_region: ''
 
-# aws fence device option variable which allows you to define aws fence devices
-# for proper options check document examples below
+# aws fence device options variable allows to define additional options for fence_aws devices.
+# For example of some used options check documents below.
 # https://access.redhat.com/articles/4175371#create-stonith
 # https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html
-# fence_aws_options: ''
+fence_aws_options: ''
 
 # custom fence device configuration variable which allows you to define your own fence devices
 # for proper options check examples below

@@ -129,21 +129,21 @@ Role Variables
 
   - configure cluster with fence_aws fencing device?
     You must provide instance id/region of AWS and Instance Profile that is able to start/stop instances for this cluster.
-    When this is enabled you have to specify 1 additional variables with information on AWS region.
+    When this is enabled you have to specify `fence_aws_region` variable with information on AWS region.
     NOTE: If you don't set up instance profile, it won't work properly or at all
 
     ```
     cluster_configure_fence_aws: false
     fence_aws_region: ''
     ```
-    NOTE: You also need to define 'instance_id' in the inventory for each cluster node specifying the instance id 
-    as seen on the AWS or in the output of `fence_aws -o list` command. ([man fence_aws](https://www.mankier.com/8/fence_aws))
+    NOTE: You also need to define `instance_id` in the inventory for each cluster node by specifying the instance id
+    as seen in the AWS web console or in the output of `fence_aws -o list` command. ([man fence_aws](https://www.mankier.com/8/fence_aws))
 
-    You can optionally change the additional attributes passed to fence_aws using the variable `fence_aws_options`.
+    You can optionally change the additional attributes passed to fence_aws using the `fence_aws_options` variable.
     ```
     fence_aws_options: ''
     ``` 
-    NOTE: for proper options check document examples below.   
+    NOTE: Examples of proper options for some specific use cases can be found in documents below.   
     [https://access.redhat.com/articles/4175371#create-stonith](https://access.redhat.com/articles/4175371#create-stonith)   
     [https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html](https://docs.aws.amazon.com/sap/latest/sap-hana/sap-hana-on-aws-cluster-resources-1.html)    
 
