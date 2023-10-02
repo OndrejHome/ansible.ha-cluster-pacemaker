@@ -1,5 +1,5 @@
 ---
-- name: get list of active repositories
+- name: Get list of active repositories
   command: yum repolist
   args:
     warn: "{{ (ansible_version.full is version('2.14','<')) | ternary(false, omit) }}"
@@ -84,7 +84,7 @@
     enable_repos | bool
     and ansible_distribution_version in ['8.3', '8.4', '8.5']
 
-- name: enable highavailability repository (CentOS 8 Stream)
+- name: Enable highavailability repository (CentOS 8 Stream)
   ini_file:
     dest: '/etc/yum.repos.d/CentOS-Stream-HighAvailability.repo'
     section: 'ha'

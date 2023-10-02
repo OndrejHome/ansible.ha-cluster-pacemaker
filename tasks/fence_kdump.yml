@@ -8,7 +8,7 @@
 - name: Configure separate stonith devices per cluster node
   when: cluster_configure_stonith_style is not defined or cluster_configure_stonith_style == 'one-device-per-node'
   block:
-    - name: create fence_kdump STONITH devices
+    - name: Create fence_kdump STONITH devices
       pcs_resource:
         name: "fence-kdump-{{ hostvars[item][cluster_hostname_fact] }}"
         resource_class: 'stonith'
@@ -18,7 +18,7 @@
       run_once: true
       # FIXME: fence_kdump on Debian returns exit code 1 for 'monitor' op so we use 'metadata' as dummy replacement
 
-    - name: create fence constraints
+    - name: Create fence constraints
       pcs_constraint_location:
         resource: "fence-kdump-{{ hostvars[item][cluster_hostname_fact] }}"
         node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
@@ -29,7 +29,7 @@
 - name: Configure single stonith device for all nodes
   when: cluster_configure_stonith_style is defined and cluster_configure_stonith_style == 'one-device-per-cluster'
   block:
-    - name: create fence_kdump STONITH device
+    - name: Create fence_kdump STONITH device
       pcs_resource:
         name: "fence-kdump"
         resource_class: 'stonith'

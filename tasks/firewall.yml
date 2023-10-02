@@ -30,7 +30,7 @@
         group: 'root'
         mode: '0644'
       notify:
-        - restart iptables
+        - Restart iptables
 
     - name: Enable and start iptables service
       service:

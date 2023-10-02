@@ -134,7 +134,7 @@
   with_items: "{{ play_hosts }}"
   when: not cluster_node_is_remote | bool
 
-- name: set corosync redundant ring node ip if requested (from rrp_interface)
+- name: Set corosync redundant ring node ip if requested (from rrp_interface)
   set_fact:
     rrp_ip: "{{ hostvars[inventory_hostname]['ansible_'+rrp_interface].ipv4.address }}"
   when:
@@ -142,7 +142,7 @@
     - rrp_interface is defined
     - rrp_interface and 'ansible_'+rrp_interface in hostvars[inventory_hostname]
 
-- name: validate redundant ring ip
+- name: Validate redundant ring ip
   fail:
     msg: >-
       invalid redundant ip {{ rrp_ip }} for {{ ansible_hostname }}:

@@ -1,5 +1,5 @@
 ---
-- name: mount cdrom to /media/CentOS
+- name: Mount cdrom to /media/CentOS
   mount:
     name: '/media/CentOS'
     src: '/dev/cdrom'
