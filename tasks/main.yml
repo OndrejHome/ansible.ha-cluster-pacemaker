@@ -186,7 +186,17 @@
     - cluster_enable_service | bool
     - not cluster_node_is_remote | bool
 
-- block:
+- name: Block for adding remote nodes
+  vars:
+    delegate_host: "{{ hostvars[groups['cluster'+rand_id+'_node_is_remote_False'][0]].inventory_hostname }}"
+    # NOTE: Without this, the host's ansible_host variable will not be
+    # respected when using delegate_to.
+    ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
+  when:
+    - groups['cluster'+rand_id+'_node_is_remote_False'] is defined
+    - groups['cluster'+rand_id+'_node_is_remote_True']|default([])|count() > 0
+  delegate_to: "{{ delegate_host }}"
+  block:
     - name: Get pcs status
       command: pcs status
       run_once: true
@@ -201,15 +211,6 @@
       when:
         - cluster_node_is_remote | bool
         - (pcs_status.stdout | regex_search('\\b' ~ cluster_hostname ~ '\\s+\\(ocf::pacemaker:remote\\)') or '') | length == 0
-  vars:
-    delegate_host: "{{ hostvars[groups['cluster'+rand_id+'_node_is_remote_False'][0]].inventory_hostname }}"
-    # NOTE: Without this, the host's ansible_host variable will not be
-    # respected when using delegate_to.
-    ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"
-  when:
-    - groups['cluster'+rand_id+'_node_is_remote_False'] is defined
-    - groups['cluster'+rand_id+'_node_is_remote_True']|default([])|count() > 0
-  delegate_to: "{{ delegate_host }}"
 
 ### fencing setup
 - name: Setup automatic fence_xvm

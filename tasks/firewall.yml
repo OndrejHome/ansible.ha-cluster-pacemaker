@@ -1,5 +1,8 @@
 ---
 - name: Configure firewalld
+  when:
+    - ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky','Fedora']
+    - not (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6')
   block:
     - name: Enable and start firewalld service
       service:
@@ -13,11 +16,11 @@
         permanent: true
         state: 'enabled'
         immediate: true
-  when:
-    - ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky','Fedora']
-    - not (ansible_distribution == 'RedHat' and ansible_distribution_major_version == '6')
 
 - name: Configure iptables (EL6)
+  when:
+    - ansible_distribution in ['RedHat']
+    - ansible_distribution_major_version == '6'
   block:
     - name: Copy iptables configuration
       copy:
@@ -37,6 +40,3 @@
 
     - name: Run handlers to reload iptables on system
       meta: flush_handlers
-  when:
-    - ansible_distribution in ['RedHat']
-    - ansible_distribution_major_version == '6'

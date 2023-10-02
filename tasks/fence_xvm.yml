@@ -29,6 +29,7 @@
     and cluster_firewall|bool
 
 - name: Configure separate stonith devices per cluster node
+  when: cluster_configure_stonith_style is not defined or cluster_configure_stonith_style == 'one-device-per-node'
   block:
     - name: create fence_xvm STONITH devices
       pcs_resource:
@@ -48,9 +49,9 @@
         score: '-INFINITY'
       with_items: "{{ play_hosts }}"
       run_once: true
-  when: cluster_configure_stonith_style is not defined or cluster_configure_stonith_style == 'one-device-per-node'
 
 - name: Configure single stonith device for all nodes
+  when: cluster_configure_stonith_style is defined and cluster_configure_stonith_style == 'one-device-per-cluster'
   block:
     - name: create fence_xvm STONITH device
       pcs_resource:
@@ -61,6 +62,5 @@
           pcmk_host_map="{% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};{% endfor %}"
           op monitor interval=30s
       run_once: true
-  when: cluster_configure_stonith_style is defined and cluster_configure_stonith_style == 'one-device-per-cluster'
 
 # FIXME - EL6 firewall
