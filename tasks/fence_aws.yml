@@ -41,7 +41,7 @@
         resource_class: 'stonith'
         resource_type: 'fence_aws'
         options: >-
-          pcmk_host_map="{% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['instance_id'] }};{% endfor %}"
+          pcmk_host_map="{% for item in groups['cluster' + rand_id + '_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['instance_id'] }};{% endfor %}"
           region={{ fence_aws_region }}
           {{ fence_aws_options }}
       run_once: true

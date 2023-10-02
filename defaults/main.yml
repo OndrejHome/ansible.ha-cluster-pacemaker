@@ -126,6 +126,6 @@ cluster_node_is_remote: false
 
 # Ordered list of variables for detecting primary cluster IP (ring0)
 ring0_ip_ordered_detection_list:
-  - "{{ hostvars[inventory_hostname]['ansible_'+cluster_net_iface].ipv4.address|default('') }}"
-  - "{{ ansible_default_ipv4.address|default('') }}"
-  - "{{ ansible_all_ipv4_addresses[0]|default('') }}"
+  - "{{ hostvars[inventory_hostname]['ansible_' + cluster_net_iface].ipv4.address | default('') }}"
+  - "{{ ansible_default_ipv4.address | default('') }}"
+  - "{{ ansible_all_ipv4_addresses[0] | default('') }}"

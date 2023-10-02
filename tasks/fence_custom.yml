@@ -5,5 +5,5 @@
     resource_class: 'stonith'
     resource_type: "{{ item.value.fence_type }}"
     options: "{{ item.value.fence_options }}"
-  with_dict: "{{ cluster_fence_config|default({}) }}"
+  with_dict: "{{ cluster_fence_config | default({}) }}"
   run_once: true

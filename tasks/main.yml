@@ -32,14 +32,14 @@
 - name: Include distribution version specific variables
   include_vars: "{{ item }}"
   with_first_found:
-    - "{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml"
-    - "{{ ansible_distribution_file_variety|lower }}{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution_file_variety | lower }}{{ ansible_distribution_major_version }}.yml"
 
 - name: Include distribution specific repository configuration
   include_tasks: "{{ item }}"
   with_first_found:
     - files:
-        - "{{ ansible_distribution|lower }}_repos.yml"
+        - "{{ ansible_distribution | lower }}_repos.yml"
       skip: true
 
 - name: Install packages from local media
@@ -54,7 +54,7 @@
   include_tasks: "{{ item }}"
   with_first_found:
     - files:
-        - "{{ ansible_distribution|lower }}_tasks.yml"
+        - "{{ ansible_distribution | lower }}_tasks.yml"
       skip: true
 
 - name: Detect the primary (ring0) cluster IP on all nodes
@@ -94,7 +94,7 @@
     state: 'present'
     password: >-
       {{ cluster_user_pass |
-      password_hash('sha512', ansible_hostname|replace('-','x') |
+      password_hash('sha512', ansible_hostname | replace('-', 'x') |
       truncate(16, True, '', 0)) }}
     groups: "{{ cluster_group }}"
     comment: 'HA Cluster Administrator'
@@ -103,7 +103,7 @@
   lineinfile:
     dest: "{{ pcsd_configuration_file }}"
     regexp: 'PCSD_DISABLE_GUI=.*'
-    line: "PCSD_DISABLE_GUI={{ enable_pcsd_gui|bool|ternary('false','true') }}"
+    line: "PCSD_DISABLE_GUI={{ enable_pcsd_gui | bool | ternary('false', 'true') }}"
     mode: '0644'
   when: enable_pcsd_gui != 'nochange'
 
@@ -136,7 +136,7 @@
 
 - name: Set corosync redundant ring node ip if requested (from rrp_interface)
   set_fact:
-    rrp_ip: "{{ hostvars[inventory_hostname]['ansible_'+rrp_interface].ipv4.address }}"
+    rrp_ip: "{{ hostvars[inventory_hostname]['ansible_' + rrp_interface].ipv4.address }}"
   when:
     - rrp_ip is not defined
     - rrp_interface is defined
@@ -158,12 +158,12 @@
 - name: Setup cluster
   pcs_cluster:
     node_list: >-
-      {% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}
+      {% for item in groups['cluster' + rand_id + '_node_is_remote_False'] %}
       {{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %}
       {% endfor %}
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"
-    allowed_node_changes: "{% if allow_cluster_expansion|bool %}add{% else %}none{% endif %}"
+    allowed_node_changes: "{% if allow_cluster_expansion | bool %}add{% else %}none{% endif %}"
   run_once: true
 
 - name: Start cluster services on all nodes
@@ -188,7 +188,7 @@
 
 - name: Block for adding remote nodes
   vars:
-    delegate_host: "{{ hostvars[groups['cluster'+rand_id+'_node_is_remote_False'][0]].inventory_hostname }}"
+    delegate_host: "{{ hostvars[groups['cluster' + rand_id + '_node_is_remote_False'][0]].inventory_hostname }}"
     # NOTE: Without this, the host's ansible_host variable will not be
     # respected when using delegate_to.
     ansible_host: "{{ hostvars[delegate_host].ansible_host | default(delegate_host) }}"

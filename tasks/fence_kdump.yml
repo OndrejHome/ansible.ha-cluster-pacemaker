@@ -35,5 +35,5 @@
         resource_class: 'stonith'
         resource_type: 'fence_kdump'
         options: >-
-          pcmk_host_map="{% for item in groups['cluster'+rand_id+'_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};{% endfor %}"
+          pcmk_host_map="{% for item in groups['cluster' + rand_id + '_node_is_remote_False'] %}{{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};{% endfor %}"
       run_once: true

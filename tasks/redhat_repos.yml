@@ -2,7 +2,7 @@
 - name: Get list of active repositories
   command: yum repolist
   args:
-    warn: "{{ (ansible_version.full is version('2.14','<')) | ternary(false, omit) }}"
+    warn: "{{ (ansible_version.full is version('2.14', '<')) | ternary(false, omit) }}"
   register: yum_repolist
   changed_when: false
   check_mode: false
@@ -50,9 +50,9 @@
 - name: Enable HA/RS repository (RHEL 8/9)
   command: >-
     subscription-manager repos
-    --enable="rhel-{{ ansible_distribution_major_version }}-for-x86_64-{{ (repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability' ) }}-rpms"
+    --enable="rhel-{{ ansible_distribution_major_version }}-for-x86_64-{{ (repos_type == 'rs') | ternary('resilientstorage', 'highavailability') }}-rpms"
   when: >-
-    ['rhel-',ansible_distribution_major_version,'-for-x86_64-',(repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability' ),'-rpms'] | join
+    ['rhel-',ansible_distribution_major_version,'-for-x86_64-',(repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability'),'-rpms'] | join
     not in yum_repolist.stdout
     and enable_repos | bool
     and ansible_distribution_major_version in ['8','9']
