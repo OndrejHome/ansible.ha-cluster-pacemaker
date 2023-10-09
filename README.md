@@ -385,7 +385,7 @@ For cluster to get properly authorized it is expected that firewall is already c
 
     - hosts: cluster
       roles:
-        - { role: 'ansible.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false, fence_aws_region: 'aws-region' }
+        - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false, fence_aws_region: 'aws-region' }
 
 **Example playbook Resources configuration** .
 
