@@ -2,9 +2,11 @@
 pacemaker_packages:
  - pcs
  - pacemaker
+ - pacemaker-cli-utils
 pacemaker_remote_packages:
  - pcs
  - pacemaker-remote
+ - pacemaker-cli-utils
 fence_kdump_packages:
  - kdump-tools
 
