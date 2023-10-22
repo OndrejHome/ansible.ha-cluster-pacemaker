@@ -208,6 +208,7 @@
       vars:
         cluster_hostname: "{{ hostvars[inventory_hostname][cluster_hostname_fact] }}"
       command: pcs cluster node add-remote {{ cluster_hostname }}
+      changed_when: true
       when:
         - cluster_node_is_remote | bool
         - (pcs_status.stdout | regex_search('\\b' ~ cluster_hostname ~ '\\s+\\(ocf::pacemaker:remote\\)') or '') | length == 0
