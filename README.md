@@ -339,6 +339,34 @@ Security considerations
 
 Please consider updating the default value for `cluster_user_pass`.
 
+Ansible module_defaults
+-----------------------
+
+While this role does not expose all configuration options through variables, one can use the [`module_defaults`](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_module_defaults.html#module-defaults) to change the default values of parameters that this role does not use. Below is non-exhaustive list of examples where this may become useful.
+
+**Example module_default A** for setting the totem token to 15 seconds
+
+    - hosts: cluster
+      modules_defaults:
+        pcs_cluster:
+          token: 15000               # default is 'null' - depends on OS default value
+
+**Example module_default B** for disabling installation of weak dependencies on EL8+/Fedora systems
+
+    - hosts: cluster
+      modules_defaults:
+        yum:
+          install_weak_deps: false   # default is 'true'
+
+**Example module_default C** for disabling installation of package recommends on Debian systems
+
+    - hosts: cluster
+      modules_defaults:
+        apt:
+          install_recommends: false  # default is 'null' - depends on OS configuration
+
+NOTE: The `module_defaults` only applies to options that are not specified in task - you cannot override value that is set by task in this role, only the value of options that are not used can be changed.
+
 Example Playbook
 ----------------
 
