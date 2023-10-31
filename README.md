@@ -339,6 +339,41 @@ Security considerations
 
 Please consider updating the default value for `cluster_user_pass`.
 
+To protect the sensitive values in variables passed to this role you can use `ansible-vault` to encrypt them. The recommended approach is to create a separate file with desired variables and their values, encrypt the whole file with `ansible-vault encrypt` and then include this file in `pre_tasks:` section so it is loaded before the role is executed. Example below illustrates this whole process.
+
+**Creating encrypted_vars.yaml file**
+
+- 1. Create plain text `encrypted_vars.yaml` file with your desired secret values
+    ```
+    # cat encrypted_vars.yaml
+    ---
+    cluster_user_pass: 'cluster-user-pass'
+    fence_vmware_login: 'vcenter-user'
+    fence_vmware_passwd: 'vcenter-pass'
+    ```
+
+- 2. Encrypt file suing `ansible-vault`
+    ```
+    # ansible-vault encrypt encrypted_vars.yaml
+    ```
+
+- 3. Verify the new content of `encrypted_vars.yaml`
+    ```
+    # cat encrypted_vars.yaml
+    $ANSIBLE_VAULT;1.1;AES256
+    31306461386430...
+    ```
+
+**Example playbook that is using values from `encrypted_vars.yaml`**
+
+    - hosts: cluster
+       pre_tasks:
+         - include_vars: encrypted_vars.yaml
+       roles:
+         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster' }
+
+**NOTE:** Encrypting only the variable's value and putting it into `vars:` is discouraged as it could results in errors like `argument 1 must be str, not AnsibleVaultEncryptedUnicode`. Approach that encrypts whole file seems to be not affected by this issue.
+
 Ansible module_defaults
 -----------------------
 
