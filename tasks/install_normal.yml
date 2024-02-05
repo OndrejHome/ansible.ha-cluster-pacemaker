@@ -12,7 +12,7 @@
         packages_for_installation: "{{ packages_for_installation + ['libselinux-python'] }}"
       when:
         - not (ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky'] and ansible_distribution_major_version == '8')
-        - not (ansible_distribution in ['RedHat','AlmaLinux','Rocky'] and ansible_distribution_major_version == '9')
+        - not (ansible_distribution in ['RedHat','CentOS','AlmaLinux','Rocky'] and ansible_distribution_major_version == '9')
         - not (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '31')
         - not (ansible_distribution == 'Debian')
 

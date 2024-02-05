@@ -1,7 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36/37/38 and CentOS 8 Stream systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36/37/38 and CentOS 8/9 Stream systems.
 
 This role can configure following aspects of pacemaker cluster:
 - enable needed system repositories
@@ -42,6 +42,8 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 **RHEL/CentOS 7:** This role requires at least version `2.9` of `python-jinja2` library. If not present you may encounter error described in Issue #6. To get the updated version of `python-jinja2` and its dependencies you can use following RPM repository - https://copr.fedorainfracloud.org/coprs/ondrejhome/ansible-deps-el7/ for both CentOS 7 and RHEL 7.
 
 **CentOS 8 Stream** Tested with version 20240129 minimal recommended ansible version is **2.11.0** which starts to identify system as 'CentOS' instead of 'RedHat' (unline CentOS Linux). The older CentOS 8 Stream versions 20201211 minimal usable ansible version is **2.9.16/2.10.4**. Version **2.8.18** was **not** working at time of testing. This is related to [Service is in unknown state #71528](https://github.com/ansible/ansible/issues/71528).
+
+**CentOS 9 Stream** Tested with version 20240129 minimal recommended ansible is **2.11.0**.
 
 **Debian Buster** Tested with version 20210310 with ansible version **2.10** and **Debian Bullseye** Tested with version 20220326 with ansible version **2.12**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested.
 

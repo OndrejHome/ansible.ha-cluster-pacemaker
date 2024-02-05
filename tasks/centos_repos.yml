@@ -97,3 +97,16 @@
     and enable_repos | bool
     and ansible_distribution_major_version in ['8']
     and ansible_distribution_version not in ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+
+- name: Enable highavailability repository (CentOS 9 Stream)
+  ini_file:
+    dest: '/etc/yum.repos.d/centos-addons.repo'
+    section: 'highavailability'
+    option: 'enabled'
+    value: '1'
+    create: 'no'
+    mode: '0644'
+  when: >-
+    'HighAvailability' not in yum_repolist.stdout
+    and enable_repos | bool
+    and ansible_distribution_major_version in ['9']
