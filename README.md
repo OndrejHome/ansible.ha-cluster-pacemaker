@@ -329,10 +329,22 @@ Role Variables
 
   - Configure cluster location constraints (Not mandatory)
 
+    **node based**
+
     ```
     cluster_constraint_location:
       - resource: required
         node_name: required
+        score: optional
+    ```
+
+    **rule based** (_needs ondrejhome.pcs-modules-2 v30 or newer_)
+
+    ```
+    cluster_constraint_location:
+      - resource: required
+        constraint_id: required
+        rule: required
         score: optional
     ```
 

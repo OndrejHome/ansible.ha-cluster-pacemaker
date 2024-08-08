@@ -3,7 +3,9 @@
   pcs_constraint_location:
     resource: "{{ item.resource }}"
     state: "{{ item.state | default(omit) }}"
-    node_name: "{{ item.node_name }}"
+    node_name: "{{ item.node_name | default(omit) }}"
+    rule: "{{ item.rule | default(omit) }}"
+    constraint_id: "{{ item.constraint_id | default(omit) }}"
     resource1_role: "{{ item.resource1_role | default(omit) }}"
     resource2_role: "{{ item.resource2_role | default(omit) }}"
     score: "{{ item.score | default(omit) }}"
