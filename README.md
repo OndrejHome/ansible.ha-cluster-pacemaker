@@ -338,7 +338,7 @@ Role Variables
         score: optional
     ```
 
-    **rule based** (_needs ondrejhome.pcs-modules-2 v30 or newer_)
+    **rule based** (_needs ondrejhome.pcs-modules-2 version 30.0.0 or newer_)
 
     ```
     cluster_constraint_location:
