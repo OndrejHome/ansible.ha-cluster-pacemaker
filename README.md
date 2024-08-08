@@ -1,7 +1,7 @@
 ha-cluster-pacemaker
 =========
 
-Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36/37/38/39 and CentOS 8/9 Stream systems.
+Role for configuring and expanding basic pacemaker cluster on CentOS/RHEL 6/7/8/9, AlmaLinux 8/9, Rocky Linux 8/9, Fedora 31/32/33/34/35/36/37/38/39/40 and CentOS 8/9 Stream systems.
 
 This role can configure following aspects of pacemaker cluster:
 - enable needed system repositories
