@@ -86,11 +86,13 @@
 - name: Create cluster system group
   group:
     name: "{{ cluster_group }}"
+    system: true
     state: 'present'
 
 - name: Create cluster system user
   user:
     name: "{{ cluster_user }}"
+    system: true
     state: 'present'
     password: >-
       {{ cluster_user_pass |
