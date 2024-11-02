@@ -20,7 +20,7 @@
     and enable_repos | bool
     and ansible_distribution_major_version in ['8']
 
-- name: Enable highavailability repository (AlmaLinux 9)
+- name: Enable highavailability repository (AlmaLinux 9/10)
   ini_file:
     dest: '/etc/yum.repos.d/almalinux-highavailability.repo'
     section: 'highavailability'
@@ -31,4 +31,4 @@
   when: >-
     'HighAvailability' not in yum_repolist.stdout
     and enable_repos | bool
-    and ansible_distribution_major_version in ['9']
+    and ansible_distribution_major_version in ['9','10']
