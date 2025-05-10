@@ -17,6 +17,12 @@
         - not (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '31')
         - not (ansible_distribution == 'Debian')
 
+    - name: "Packages: Add python3-setuptools package for compatibility with distutils module"
+      set_fact:
+        packages_for_installation: "{{ packages_for_installation + ['python3-setuptools'] }}"
+      when:
+        - (ansible_distribution in ['AlmaLinux'] and ansible_distribution_major_version == '10') or (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '42')
+
     - name: "Packages: Add pcs-modules-2 Debian dependencies"
       set_fact:
         packages_for_installation: "{{ packages_for_installation + ['python3-distutils'] }}"
@@ -53,6 +59,21 @@
       set_fact:
         packages_for_installation: "{{ packages_for_installation + fence_aws_packages }}"
       when: cluster_configure_fence_aws|bool
+
+- name: Workaround for Fedora systems python3-libdnf5 package
+  # https://github.com/ansible/ansible/issues/84206
+  when:
+    - ansible_distribution == 'Fedora'
+    - ansible_distribution_major_version in ['41','42']
+  block:
+    - name: (fedora-workaround) Fetch list of installed RPMs
+      command: rpm -qa
+      register: rpm_qa
+      changed_when: false
+      check_mode: false
+    - name: (fedora-workaround) Install python3-libdnf5 package if missing
+      command: dnf install -y python3-libdnf5
+      when: rpm_qa.stdout_lines | select('search', '^python3-libdnf5-[0-9]') | length == 0
 
 - name: Install packages (YUM)
   yum:
