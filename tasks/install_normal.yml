@@ -64,7 +64,7 @@
   # https://github.com/ansible/ansible/issues/84206
   when:
     - ansible_distribution == 'Fedora'
-    - ansible_distribution_major_version in ['41','42']
+    - ansible_distribution_major_version in ['41','42', '43']
   block:
     - name: (fedora-workaround) Fetch list of installed RPMs
       command: rpm -qa
