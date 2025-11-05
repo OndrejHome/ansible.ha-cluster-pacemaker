@@ -23,12 +23,19 @@
       when:
         - (ansible_distribution in ['AlmaLinux'] and ansible_distribution_major_version == '10') or (ansible_distribution == 'Fedora' and ansible_distribution_major_version >= '42')
 
-    - name: "Packages: Add pcs-modules-2 Debian dependencies"
+    - name: "Packages: Add pcs-modules-2 Debian dependencies (Debian 10/11/12)"
       set_fact:
         packages_for_installation: "{{ packages_for_installation + ['python3-distutils'] }}"
       when:
         - ansible_distribution == 'Debian'
         - ansible_distribution_major_version in ['10','11','12']
+
+    - name: "Packages: Add pcs-modules-2 Debian dependencies (Debian 13)"
+      set_fact:
+        packages_for_installation: "{{ packages_for_installation + ['python3-setuptools'] }}"
+      when:
+        - ansible_distribution == 'Debian'
+        - ansible_distribution_major_version in ['13']
 
     - name: "Packages: Add firewall packages"
       set_fact:
@@ -86,4 +93,5 @@
     name: "{{ packages_for_installation }}"
     state: 'present'
     cache_valid_time: 3600
+    install_recommends: "{{ omit if ansible_distribution_major_version not in ['13'] else 'false' }}"
   when: ansible_distribution == 'Debian'

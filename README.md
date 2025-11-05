@@ -49,6 +49,8 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 
 **Debian Bookworm** Tested with ansible version **2.14** and **Debian Bookwork**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested.
 
+**Debian Trixie** Tested with ansible version **2.16**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested. Due to large size of dependencies for pacemaker packages in Debian Trixie the role automatically sets `install_recommends: false` for `apt` module.
+
 Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
 On **CentOS Linux 8** you have to ensure that BaseOS and Appstream repositories are working properly. As the CentOS Linux 8 is in the End-Of-Life phase, this role will configure HA repository to point to vault.centos.org if repository configuration (`enable_repos: true`) is requested (it is by default).
