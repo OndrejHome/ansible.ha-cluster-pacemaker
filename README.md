@@ -400,14 +400,14 @@ While this role does not expose all configuration options through variables, one
 **Example module_default A** for setting the totem token to 15 seconds
 
     - hosts: cluster
-      modules_defaults:
+      module_defaults:
         pcs_cluster:
           token: 15000               # default is 'null' - depends on OS default value
 
 **Example module_default B** for disabling installation of weak dependencies on EL8+/Fedora systems
 
     - hosts: cluster
-      modules_defaults:
+      module_defaults:
         yum:
           install_weak_deps: false   # default is 'true'
 
