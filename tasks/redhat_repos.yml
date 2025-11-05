@@ -51,7 +51,7 @@
     and enable_beta_repos | bool
     and ansible_distribution_major_version in ['6','7']
 
-- name: Enable HA/RS repository (RHEL 8/9)
+- name: Enable HA/RS repository (RHEL 8/9/10)
   command: >-
     subscription-manager repos
     --enable="rhel-{{ ansible_distribution_major_version }}-for-x86_64-{{ (repos_type == 'rs') | ternary('resilientstorage', 'highavailability') }}-rpms"
@@ -60,7 +60,7 @@
     ['rhel-',ansible_distribution_major_version,'-for-x86_64-',(repos_type == 'rs') | ternary( 'resilientstorage', 'highavailability'),'-rpms'] | join
     not in yum_repolist.stdout
     and enable_repos | bool
-    and ansible_distribution_major_version in ['8','9']
+    and ansible_distribution_major_version in ['8','9','10']
 
 - name: Enable single custom repository
   command: subscription-manager repos --enable="{{ custom_repository }}"
