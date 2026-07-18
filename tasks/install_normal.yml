@@ -25,14 +25,14 @@
 
     - name: "Packages: Add pcs-modules-2 Debian dependencies (Debian 10/11/12)"
       set_fact:
-        packages_for_installation: "{{ packages_for_installation + ['python3-distutils'] }}"
+        packages_for_installation: "{{ packages_for_installation + ['python3-distutils', 'libxml2-utils'] }}"
       when:
         - ansible_distribution == 'Debian'
         - ansible_distribution_major_version in ['10','11','12']
 
     - name: "Packages: Add pcs-modules-2 Debian dependencies (Debian 13)"
       set_fact:
-        packages_for_installation: "{{ packages_for_installation + ['python3-setuptools'] }}"
+        packages_for_installation: "{{ packages_for_installation + ['python3-setuptools', 'libxml2-utils'] }}"
       when:
         - ansible_distribution == 'Debian'
         - ansible_distribution_major_version in ['13']
