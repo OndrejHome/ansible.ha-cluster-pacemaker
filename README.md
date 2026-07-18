@@ -49,7 +49,9 @@ This role depend on role [ondrejhome.pcs-modules-2](https://github.com/OndrejHom
 
 **Debian Bookworm** Tested with ansible version **2.14** and **Debian Bookwork**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested.
 
-**Debian Trixie** Tested with ansible version **2.16**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested. Due to large size of dependencies for pacemaker packages in Debian Trixie the role automatically sets `install_recommends: false` for `apt` module.
+**Debian Trixie** Tested with ansible version **2.16**. Debian part of this role does not include the stonith configuration and the firewall configuration. **Note:** This role went only through limited testing on Debian - not all features of this role were tested.
+
+**Debian** Due to large size of dependencies for pacemaker packages in some Debian releases (such as Trixie) the role automatically sets `install_recommends: false` for `apt` module when installing packages.
 
 Ansible version **2.9.10** and **2.9.11** will fail with error `"'hostvars' is undefined"` when trying to configure remote nodes. This applies only when there is at least one node with `cluster_node_is_remote=True`. **Avoid these Ansible versions** if you plan to configure remote nodes with this role.
 
