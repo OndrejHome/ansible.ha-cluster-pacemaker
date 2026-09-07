@@ -1,7 +1,7 @@
 ---
 - name: Generate random ID for this cluster deployment
   set_fact:
-    rand_id: "{{ 1024 | random }}"
+    rand_id: "{{ 1024 | random | string }}"
   run_once: true
   changed_when: false
   check_mode: false
