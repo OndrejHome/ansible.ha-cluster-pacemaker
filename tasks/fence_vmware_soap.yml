@@ -33,7 +33,7 @@
           login={{ fence_vmware_login }}
           passwd={{ fence_vmware_passwd }}
           {{ fence_vmware_options }}
-      with_items: "{{ play_hosts }}"
+      with_items: "{{ ansible_play_batch }}"
       run_once: true
 
     - name: Create fence constraints
@@ -41,7 +41,7 @@
         resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
         node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
         score: '-INFINITY'
-      with_items: "{{ play_hosts }}"
+      with_items: "{{ ansible_play_batch }}"
       run_once: true
 
 - name: Configure single stonith device for all nodes

@@ -79,7 +79,7 @@
       {{ hostvars[item]['ring0_ip'] }}
       {{ hostvars[item][cluster_hostname_fact] }}
     mode: '0644'
-  with_items: "{{ play_hosts }}"
+  with_items: "{{ ansible_play_batch }}"
   when:
     - cluster_etc_hosts | bool
 
@@ -131,7 +131,7 @@
     node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
     username: "{{ cluster_user }}"
     password: "{{ cluster_user_pass }}"
-  with_items: "{{ play_hosts }}"
+  with_items: "{{ ansible_play_batch }}"
   when: not cluster_node_is_remote | bool
 
 - name: Set corosync redundant ring node ip if requested (from rrp_interface)
@@ -150,7 +150,7 @@
   when:
     - rrp_ip is defined
     - rrp_ip == ring0_ip
-  with_items: "{{ play_hosts }}"
+  with_items: "{{ ansible_play_batch }}"
   run_once: true
   delegate_to: 'localhost'
   any_errors_fatal: true
