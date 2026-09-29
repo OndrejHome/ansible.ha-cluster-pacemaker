@@ -159,7 +159,11 @@
   pcs_cluster:
     node_list: >-
       {% for item in groups['cluster' + rand_id + '_node_is_remote_False'] %}
+      {% if cluster_ring0_addr_use_ip | bool %}
+      {{ hostvars[item][cluster_hostname_fact] }} addr={{ hostvars[item].ring0_ip }}{% if hostvars[item].rrp_ip is defined %} addr={{ hostvars[item].rrp_ip }}{% endif %}
+      {% else %}
       {{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %}
+      {% endif %}
       {% endfor %}
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"

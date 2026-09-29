@@ -242,6 +242,14 @@ Role Variables
     NOTE: you can define this variable either in defaults/main.yml, in this case the same rrp_interface name is used for all hosts in the hosts file.
           Either you specify an interface for each host present in the hosts file: this allows to use a specific interface name for each host (in the case they dont have the same interface name). Also note that instead of defining rrp_interface for a host, you can define rrp_ip: in this case this alternate ip is used to configure corosync RRP (this IP must be different than the host' default IPv4 address). This allows to use an alternate ip belonging to the same primary interface.
 
+  - Whether to use the IP address instead of the hostname for `ring0_addr` in corosync.conf. By default the
+    hostname given by `cluster_hostname_fact` is used as `ring0_addr` and corosync resolves it at startup.
+    When set to `true`, the primary cluster IP (`ring0_ip`, see `cluster_net_iface`) is used as `ring0_addr`,
+    while the hostname is kept as the node `name`. The redundant ring (`rrp_ip`) uses an IP in both cases.
+    Requires pcs-0.10 or newer (not available on EL6 and EL7).
+    ```
+    cluster_ring0_addr_use_ip: false
+    ```
 
   - Whether to add hosts to /etc/hosts. By default an entry for the hostname
     given by `cluster_hostname_fact` is added for each host to `/etc/hosts`.
