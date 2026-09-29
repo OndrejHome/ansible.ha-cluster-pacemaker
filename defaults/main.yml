@@ -115,8 +115,8 @@ cluster_net_iface: ''
 # Interface must exist on all cluster nodes.
 rrp_interface: ''
 
-# Whether to use the IP address (ring0_ip) instead of the hostname for ring0_addr in corosync.conf.
-# The hostname is still used as the cluster node name. Requires pcs-0.10 or newer.
+# Whether to use the IP address (ring0_ip) instead of the hostname for ring0_addr in corosync.conf
+# and for connecting to pcsd. The hostname is still used as the cluster node name. Requires pcs-0.10 or newer.
 cluster_ring0_addr_use_ip: false
 
 # Whether to add hosts to /etc/hosts.

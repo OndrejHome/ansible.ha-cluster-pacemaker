@@ -245,7 +245,8 @@ Role Variables
   - Whether to use the IP address instead of the hostname for `ring0_addr` in corosync.conf. By default the
     hostname given by `cluster_hostname_fact` is used as `ring0_addr` and corosync resolves it at startup.
     When set to `true`, the primary cluster IP (`ring0_ip`, see `cluster_net_iface`) is used as `ring0_addr`,
-    while the hostname is kept as the node `name`. The redundant ring (`rrp_ip`) uses an IP in both cases.
+    while the hostname is kept as the node `name`. pcs then also connects to pcsd on the nodes using this IP.
+    The redundant ring (`rrp_ip`) uses an IP in both cases.
     Requires pcs-0.10 or newer (not available on EL6 and EL7).
     ```
     cluster_ring0_addr_use_ip: false
