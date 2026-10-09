@@ -27,6 +27,7 @@ galaxy_info:
         - 41
         - 42
         - 43
+        - 44
     - name: Debian
       versions:
         - 'buster'
