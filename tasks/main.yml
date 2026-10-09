@@ -129,6 +129,7 @@
 - name: Authorize cluster nodes
   pcs_auth:
     node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
+    node_addr: "{{ hostvars[item].ring0_ip if cluster_ring0_addr_use_ip | bool else omit }}"
     username: "{{ cluster_user }}"
     password: "{{ cluster_user_pass }}"
   with_items: "{{ play_hosts }}"
@@ -160,7 +161,11 @@
   pcs_cluster:
     node_list: >-
       {% for item in groups['cluster' + rand_id + '_node_is_remote_False'] %}
+      {% if cluster_ring0_addr_use_ip | bool %}
+      {{ hostvars[item][cluster_hostname_fact] }} addr={{ hostvars[item].ring0_ip }}{% if hostvars[item].rrp_ip is defined %} addr={{ hostvars[item].rrp_ip }}{% endif %}
+      {% else %}
       {{ hostvars[item][cluster_hostname_fact] }}{% if hostvars[item].rrp_ip is defined %},{{ hostvars[item].rrp_ip }}{% endif %}
+      {% endif %}
       {% endfor %}
     cluster_name: "{{ cluster_name }}"
     transport: "{{ cluster_transport }}"
