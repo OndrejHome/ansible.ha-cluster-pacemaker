@@ -247,7 +247,7 @@ Role Variables
     When set to `true`, the primary cluster IP (`ring0_ip`, see `cluster_net_iface`) is used as `ring0_addr`,
     while the hostname is kept as the node `name`. pcs then also connects to pcsd on the nodes using this IP.
     The redundant ring (`rrp_ip`) uses an IP in both cases.
-    Requires pcs-0.10 or newer (not available on EL6 and EL7).
+    Requires pcs-0.10 or newer (not available on EL6 and EL7). Requires ondrejhome.pcs-modules-2 version 39.0.0 or newer.
     ```
     cluster_ring0_addr_use_ip: false
     ```
@@ -481,6 +481,12 @@ For cluster to get properly authorized it is expected that firewall is already c
       roles:
         - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'aws-cluster', cluster_configure_fence_xvm: false, cluster_configure_fence_aws: true, cluster_configure_stonith_style: 'one-device-per-cluster', enable_repos: false, fence_aws_region: 'aws-region' }
 
+**Example playbook G** for creating cluster named `test-cluster` that will use IP defined in `ring0_ip` variable for each host for cluster communication and will not add any entries to /etc/hosts.
+
+    - hosts: cluster
+      roles:
+        - { role: 'ondrejhome.ha-cluster-pacemaker', cluster_name: 'test-cluster', cluster_ring0_addr_use_ip: true, cluster_etc_hosts: false }
+
 **Example playbook Resources configuration** .
 
     - hosts: cluster
@@ -536,6 +542,12 @@ Inventory file example with fence_aws:
     [cluster]
     172.31.0.1	instance_id="i-acbdefg1234567890"
     172.31.0.2	instance_id="i-acbdefg0987654321"
+
+Inventory file example for cluster using specific ring0 IPs for communication
+
+    [cluster-almalinux-ring0]
+    192.168.22.27 vm_name=fastvm-alma-9.8-21 ring0_ip=10.0.1.27
+    192.168.22.28 vm_name=fastvm-alma-9.8-22 ring0_ip=10.0.1.28
 
 Old video examples of running role with defaults for:
   - CentOS 7.6 installing CentOS 7.6 two node cluster: https://asciinema.org/a/226466
