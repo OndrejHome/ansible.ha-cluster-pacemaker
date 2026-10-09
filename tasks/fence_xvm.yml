@@ -39,7 +39,7 @@
         options: >-
           pcmk_host_map={{ hostvars[item][cluster_hostname_fact] }}:{{ hostvars[item]['vm_name'] }};
           op monitor interval=30s
-      with_items: "{{ play_hosts }}"
+      with_items: "{{ ansible_play_batch }}"
       run_once: true
 
     - name: Create fence constraints
@@ -47,7 +47,7 @@
         resource: "fence-{{ hostvars[item][cluster_hostname_fact] }}"
         node_name: "{{ hostvars[item][cluster_hostname_fact] }}"
         score: '-INFINITY'
-      with_items: "{{ play_hosts }}"
+      with_items: "{{ ansible_play_batch }}"
       run_once: true
 
 - name: Configure single stonith device for all nodes
